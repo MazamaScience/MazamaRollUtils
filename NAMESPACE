@@ -1,0 +1,3 @@
+useDynLib(MazamaRollUtils, .registration=TRUE)
+exportPattern("^[[:alpha:]]+")
+importFrom(Rcpp, evalCpp)
