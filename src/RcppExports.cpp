@@ -5,19 +5,21 @@
 
 using namespace Rcpp;
 
-// rcpp_hello_world
-List rcpp_hello_world();
-RcppExport SEXP _MazamaRollUtils_rcpp_hello_world() {
+// hampel
+RObject hampel(NumericVector x, int n);
+RcppExport SEXP _MazamaRollUtils_hampel(SEXP xSEXP, SEXP nSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(rcpp_hello_world());
+    Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
+    Rcpp::traits::input_parameter< int >::type n(nSEXP);
+    rcpp_result_gen = Rcpp::wrap(hampel(x, n));
     return rcpp_result_gen;
 END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_MazamaRollUtils_rcpp_hello_world", (DL_FUNC) &_MazamaRollUtils_rcpp_hello_world, 0},
+    {"_MazamaRollUtils_hampel", (DL_FUNC) &_MazamaRollUtils_hampel, 2},
     {NULL, NULL, 0}
 };
 

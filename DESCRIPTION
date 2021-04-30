@@ -14,5 +14,9 @@ Description: A suite of utility functions for calculating rolling mins, means, m
 License: GPL-3
 URL: https://github.com/MazamaScience/MazamaRollUtils
 BugReports: https://github.com/MazamaScience/MazamaRollUtils/issues
-Imports: Rcpp (>= 1.0.6)
+Imports: 
+  Rcpp (>= 1.0.6),
+  RcppRoll (>= 0.3.0)
+Depends: 
+  RcppRoll
 LinkingTo: Rcpp
