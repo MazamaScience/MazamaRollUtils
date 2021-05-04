@@ -5,79 +5,69 @@
 
 using namespace Rcpp;
 
+class HampelFilter {
+public:
 
-double HampelFilter(std::vector<double> x, unsigned int windowSize = 5, double threshold = 1)
-{
+    std::multiset <double> arr;
 
-    // half window for median num
-    const unsigned medianNum = windowSize/2;
-    const double kappa = 1.4826;
-
-    double filteredVal = (x)[medianNum];
-
-    std::vector<double> sortedVector, kVector;
-
-    sortedVector.assign(x.begin(), x.end());
-    std::sort(sortedVector.begin(), sortedVector.end());
-
-    double medianVal = sortedVector[medianNum];
-
-    for (auto &value : sortedVector)
-    {
-        kVector.emplace_back(std::fabs(value - medianVal));
+    void insert(double x) {
+        arr.insert(x);
     }
 
-    std::sort(kVector.begin(), kVector.end());
-    double kValue = kVector[medianNum] * kappa;
-
-    if (std::fabs(filteredVal - medianVal) >= threshold * kValue)
-    {
-        filteredVal = medianVal;
+    void erase(double x) {
+        arr.erase(arr.find(x));
     }
 
-    return filteredVal;
+    double median() {
 
-}
+        int n = arr.size();
 
+        double a = *std::next(arr.begin(), n/2 - 1);
+        double b = *std::next(arr.begin(), n/2);
+
+        if (arr.size() & 1) {
+            return b;
+        }
+        return (a + b) * 0.5;
+
+    }
+
+    std::vector<double> medianSlidingWindow(NumericVector x, int windowSize) {
+
+        std::vector<double> ans;
+
+        arr.clear();
+
+        for (int i = 0; i < windowSize; ++i) {
+            insert(x[i]);
+        }
+
+        for (int i = windowSize, j = 0; i < x.size(); ++i, ++j) {
+            ans.push_back(median());
+            erase(x[j]);
+            insert(x[i]);
+        }
+        ans.push_back(median());
+        return ans;
+    }
+
+
+};
 
 // O(n) hampel filter solution of a subarray of size n
+
 // [[Rcpp::export]]
 RObject hampel (NumericVector x, unsigned int windowSize = 5, double threshold = 1)
 {
     // debug test
     x = {1,2,4,9,23,8,12,4,2};
+    //
 
-    // collector vector and output filtered
-    std::vector<double> collector, filtered;
+    HampelFilter ob;
 
-    // handle 0th position
-    for (int i = collector.size(); i < windowSize / 2; ++i)
-    {
-        collector.emplace_back(0);
-    }
+    // double out = sliding_window_mad(x, 5);
 
-    // use circular array
-    unsigned int step = 0;
-    while(step < x.size() - (windowSize / 2))
-    {
-
-        // Add input vector at step to back of collector
-        collector.emplace_back(x[step]);
-        if (collector.size() == windowSize)
-        {
-            filtered.emplace_back(HampelFilter(collector, windowSize, 1));
-            collector.erase(collector.begin());
-        }
-        ++step;
-    }
-
-    for (auto &value : filtered)
-    {
-        // debug
-        // std::cout << value;
-    }
-
-    return Rcpp::wrap(filtered);
+    return Rcpp::wrap(ob.medianSlidingWindow(x, 3));
 
 }
 
