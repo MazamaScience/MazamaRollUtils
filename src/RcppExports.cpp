@@ -6,20 +6,21 @@
 using namespace Rcpp;
 
 // hampel
-RObject hampel(NumericVector x, int n);
-RcppExport SEXP _MazamaRollUtils_hampel(SEXP xSEXP, SEXP nSEXP) {
+RObject hampel(NumericVector x, unsigned int windowSize, double threshold);
+RcppExport SEXP _MazamaRollUtils_hampel(SEXP xSEXP, SEXP windowSizeSEXP, SEXP thresholdSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
-    Rcpp::traits::input_parameter< int >::type n(nSEXP);
-    rcpp_result_gen = Rcpp::wrap(hampel(x, n));
+    Rcpp::traits::input_parameter< unsigned int >::type windowSize(windowSizeSEXP);
+    Rcpp::traits::input_parameter< double >::type threshold(thresholdSEXP);
+    rcpp_result_gen = Rcpp::wrap(hampel(x, windowSize, threshold));
     return rcpp_result_gen;
 END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_MazamaRollUtils_hampel", (DL_FUNC) &_MazamaRollUtils_hampel, 2},
+    {"_MazamaRollUtils_hampel", (DL_FUNC) &_MazamaRollUtils_hampel, 3},
     {NULL, NULL, 0}
 };
 
