@@ -6,85 +6,132 @@
 #include <stdlib.h>
 #include <cmath>
 
+
 using namespace Rcpp;
 
 class Roll {
 
 public:
 
-  std::multiset <double> window;
+  NumericVector x;
 
-  void windowInsert(double x) {
-    window.insert(x);
+  int align;
+  int win;
+
+  void  initRoll(NumericVector data, int windowSize, int alignment) {
+    x = data;
+    win = windowSize;
+    align = alignment;
   }
 
-  void windowErase(double x) {
-    window.erase(window.find(x));
-  }
+  double windowMean(const int &index) {
 
-  double windowMedian() {
+    // Calculate the window average
+    double mean = 0;
 
-    size_t n = window.size();
+    for (size_t i = 0; i < win; ++i) {
 
-    double a = *std::next(window.begin(), n / 2 - 1);
-    double b = *std::next(window.begin(), n / 2);
+      if (align == -1) { // index at left edge of window
+        mean += x[index + i];
+      } else if (align == 0) { // index at center of window
+        mean += x[index - (win / 2) + i];
+      } else { // index at right edge of window
+        mean += x[index - i];
+      }
 
-    if (window.size() & 1) {
-      return b;
-    }
-    return (a + b) * 0.5;
-
-  }
-
-  double windowMean() {
-
-    size_t n = window.size();
-    return 1.0 * std::accumulate(window.begin(), window.end(), 0LL) / n;
-  }
-
-  // Roll Median
-  std::vector<double> rollMedian(NumericVector x, int windowSize) {
-
-    std::vector<double> ans;
-
-    window.clear();
-
-    // initial condition
-    for (size_t i = 0; i < windowSize; ++i) {
-      windowInsert(x[i]);
     }
 
-    for (size_t i = windowSize, j = 0; i < x.size(); ++i, ++j) {
-      ans.push_back(windowMedian());
-      windowErase(x[j]);
-      windowInsert(x[i]);
-    }
-    ans.push_back(windowMedian());
-    return ans;
+    mean /= win;
+
+    return mean;
+
   }
 
-  // Roll Standard deviation (Welford's Algorithm)
-  std::vector<double> rollMean(NumericVector x, int windowSize) {
+  double windowMedian(const int &index) {
 
-    std::vector<double> ans;
+    // Get the half-window width
+    int k = win / 2;
 
-    window.clear();
+    // Calculate the median value
+    NumericVector out(win, NA_REAL);
 
-    // initial condition
-    for (size_t i = 0; i < windowSize; ++i) {
-      windowInsert(x[i]);
+    for( int i=0; i<win; i++ ) {
+
+      out[i] = x[index - k + i];
+
     }
 
-    for (size_t i = windowSize, j = 0; i < x.size(); ++i, ++j) {
-      ans.push_back(windowMean());
-      windowErase(x[j]);
-      windowInsert(x[i]);
-    }
-    ans.push_back(windowMean());
+    std::sort(out.begin(), out.end());
 
-    return ans;
+    return win % 2 ? out[k] : (out[k - 1 ] + out[k]) / 2;
+
+
   }
 
+
+  NumericVector rollMean() {
+
+    size_t len = x.size();
+
+    // Initialize the output vector with NA
+    NumericVector out(len, NA_REAL);
+
+
+    // Get the start and endpoints
+    int start = 0;
+    int end = x.size();
+
+    if (align == -1) {
+
+      // "left" aligned means the index is at the left edge of the window
+      start = 0;
+      end = len - (win - 1);
+
+    } else if (align == 0) {
+
+      // "center" aligned
+      start = win / 2;
+      end = len - win / 2;
+
+    } else {
+
+      // "right" aligned means the index is at the right edge of the window
+      start = win - 1;
+      end = len;
+
+    }
+
+    // For the valid region, calculate the result
+    for( int ind = start; ind < end; ++ind ) {
+
+      out[ind] = windowMean(ind);
+
+    }
+
+    return out;
+
+  }
+
+  NumericVector rollMedian() {
+
+    int len = x.size();
+
+    // Initialize the output vector with NA's
+    NumericVector out(len, NA_REAL);
+
+    // Get the half-window width
+    int k = win / 2;
+
+    // For the valid region, calculate the result
+    for( int ind = k; ind < len - k; ++ind ) {
+
+      out[ind] = windowMedian(ind);
+
+    }
+
+    return out;
+
+  }
 
 };
 

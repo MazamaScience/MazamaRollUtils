@@ -5,22 +5,35 @@
 
 using namespace Rcpp;
 
-// hampel
-RObject hampel(NumericVector x, unsigned int windowSize, double threshold);
-RcppExport SEXP _MazamaRollUtils_hampel(SEXP xSEXP, SEXP windowSizeSEXP, SEXP thresholdSEXP) {
+// rollMedian
+NumericVector rollMedian(NumericVector x, unsigned int windowSize, double threshold);
+RcppExport SEXP _MazamaRollUtils_rollMedian(SEXP xSEXP, SEXP windowSizeSEXP, SEXP thresholdSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
     Rcpp::traits::input_parameter< unsigned int >::type windowSize(windowSizeSEXP);
     Rcpp::traits::input_parameter< double >::type threshold(thresholdSEXP);
-    rcpp_result_gen = Rcpp::wrap(hampel(x, windowSize, threshold));
+    rcpp_result_gen = Rcpp::wrap(rollMedian(x, windowSize, threshold));
+    return rcpp_result_gen;
+END_RCPP
+}
+// rollMean
+NumericVector rollMean(NumericVector x, unsigned int windowSize);
+RcppExport SEXP _MazamaRollUtils_rollMean(SEXP xSEXP, SEXP windowSizeSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
+    Rcpp::traits::input_parameter< unsigned int >::type windowSize(windowSizeSEXP);
+    rcpp_result_gen = Rcpp::wrap(rollMean(x, windowSize));
     return rcpp_result_gen;
 END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_MazamaRollUtils_hampel", (DL_FUNC) &_MazamaRollUtils_hampel, 3},
+    {"_MazamaRollUtils_rollMedian", (DL_FUNC) &_MazamaRollUtils_rollMedian, 3},
+    {"_MazamaRollUtils_rollMean", (DL_FUNC) &_MazamaRollUtils_rollMean, 2},
     {NULL, NULL, 0}
 };
 
