@@ -30,10 +30,23 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// rollVar
+NumericVector rollVar(NumericVector x, unsigned int windowSize);
+RcppExport SEXP _MazamaRollUtils_rollVar(SEXP xSEXP, SEXP windowSizeSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
+    Rcpp::traits::input_parameter< unsigned int >::type windowSize(windowSizeSEXP);
+    rcpp_result_gen = Rcpp::wrap(rollVar(x, windowSize));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_MazamaRollUtils_rollMedian", (DL_FUNC) &_MazamaRollUtils_rollMedian, 3},
     {"_MazamaRollUtils_rollMean", (DL_FUNC) &_MazamaRollUtils_rollMean, 2},
+    {"_MazamaRollUtils_rollVar", (DL_FUNC) &_MazamaRollUtils_rollVar, 2},
     {NULL, NULL, 0}
 };
 

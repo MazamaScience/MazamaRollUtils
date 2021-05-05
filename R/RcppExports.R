@@ -9,3 +9,7 @@ rollMean <- function(x, windowSize = 5L) {
     .Call(`_MazamaRollUtils_rollMean`, x, windowSize)
 }
 
+rollVar <- function(x, windowSize = 5L) {
+    .Call(`_MazamaRollUtils_rollVar`, x, windowSize)
+}
+

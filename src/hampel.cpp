@@ -30,5 +30,14 @@ NumericVector rollMean (NumericVector x, unsigned int windowSize = 5) {
 }
 
 
+// Roll Variance
+// [[Rcpp::export]]
+NumericVector rollVar (NumericVector x, unsigned int windowSize = 5) {
+  Roll ob;
+  ob.initRoll(x, windowSize, 0);
+  return ob.rollVar();
+}
+
+
 
 
