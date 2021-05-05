@@ -12,9 +12,7 @@ using namespace Rcpp;
 NumericVector rollMedian (NumericVector x, unsigned int windowSize = 5, double threshold = 1) {
 
   Roll ob;
-
   ob.initRoll(x, windowSize, 0);
-
   return ob.rollMedian();
 
 }
@@ -22,20 +20,21 @@ NumericVector rollMedian (NumericVector x, unsigned int windowSize = 5, double t
 // Roll Mean
 // [[Rcpp::export]]
 NumericVector rollMean (NumericVector x, unsigned int windowSize = 5) {
+
   Roll ob;
-
   ob.initRoll(x, windowSize, 0);
-
   return ob.rollMean();
-}
 
+}
 
 // Roll Variance
 // [[Rcpp::export]]
 NumericVector rollVar (NumericVector x, unsigned int windowSize = 5) {
+
   Roll ob;
   ob.initRoll(x, windowSize, 0);
   return ob.rollVar();
+
 }
 
 

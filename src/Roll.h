@@ -13,17 +13,13 @@ class Roll {
 
 public:
 
-  NumericVector X;
-
-  int align;
-  int N;
-  int K;
-
   void initRoll(NumericVector data, int windowSize, int alignment) {
+
     X = data;
     N = windowSize;
     align = alignment;
     K = windowSize / 2;
+
   }
 
   double windowMean(const int &index) {
@@ -33,13 +29,20 @@ public:
 
     for (size_t i = 0; i < N; ++i) {
 
-      if (align == -1) { // index at left edge of window
-        mean += X[index + i];
-      } else if (align == 0) { // index at center of window
-        mean += X[index - K + i];
-      } else { // index at right edge of window
-        mean += X[index - i];
+      int s;
+      switch (align) {
+        case -1 :
+          s = index + i;
+          break;
+        case 0 :
+          s = index - K + i;
+          break;
+        case 1 :
+          s = index - i;
+          break;
       }
+
+      mean += X[s];
 
     }
 
@@ -54,7 +57,7 @@ public:
     // Calculate the median value
     NumericVector out(N, NA_REAL);
 
-    for( int i=0; i < N; i++ ) {
+    for (int i = 0; i < N; i++) {
 
       out[i] = X[index - K + i];
 
@@ -62,7 +65,7 @@ public:
 
     std::sort(out.begin(), out.end());
 
-    return N % 2 ? out[K] : (out[K - 1 ] + out[K]) / 2;
+    return N % 2 ? out[K] : (out[K - 1] + out[K]) / 2;
 
 
   }
@@ -75,13 +78,20 @@ public:
 
     for (int i = 0; i < N; ++i) {
 
-      if (align == -1) { // index at left edge of window
-        var += (X[index + i] - mean) * (X[index + i] - mean);
-      } else if (align == 0) { // index at center of window
-        var += (X[index - K + i] - mean) * (X[index - K + i] - mean);
-      } else { // index at right edge of window
-        var += (X[index - i] - mean) * (X[index - i] - mean);
+      int s;
+      switch (align) {
+        case -1 :
+          s = index + i;
+          break;
+        case 0 :
+          s = index - K + i;
+          break;
+        case 1 :
+          s = index - i;
+          break;
       }
+
+      var += (X[s] - mean) * (X[s] - mean);
 
     }
 
@@ -100,32 +110,26 @@ public:
     NumericVector out(len, NA_REAL);
 
 
-    // Get the start and endpoints
     int start = 0;
-    int end = X.size();
+    int end = len;
 
-    if (align == -1) {
-
-      // "left" aligned means the index is at the left edge of the window
-      start = 0;
-      end = len - (N - 1);
-
-    } else if (align == 0) {
-
-      // "center" aligned
-      start = K;
-      end = len - K;
-
-    } else {
-
-      // "right" aligned means the index is at the right edge of the window
-      start = N - 1;
-      end = len;
-
+    switch (align) {
+      case -1:
+        start = 0;
+        end = len - (N - 1);
+        break;
+      case 0:
+        start = K;
+        end = len - K;
+        break;
+      case 1:
+        start = N - 1;
+        end = len;
+        break;
     }
 
     // For the valid region, calculate the result
-    for( int ind = start; ind < end; ++ind ) {
+    for (int ind = start; ind < end; ++ind) {
 
       out[ind] = windowMean(ind);
 
@@ -143,7 +147,7 @@ public:
     NumericVector out(len, NA_REAL);
 
     // For the valid region, calculate the result
-    for( int ind = K; ind < len - K; ++ind ) {
+    for (int ind = K; ind < len - K; ++ind) {
 
       out[ind] = windowMedian(ind);
 
@@ -160,26 +164,26 @@ public:
     // Initialize the output vector with NA's
     NumericVector out(len, NA_REAL);
 
-    // Get the start and endpoints
     int start = 0;
     int end = len;
 
-    if (align == -1) {
-      // "left" aligned means the index is at the left edge of the window
-      start = 0;
-      end = len - (N - 1);
-    } else if (align == 0) {
-      // "center" aligned
-      start = K;
-      end = len - K;
-    } else {
-      // "right" aligned means the index is at the right edge of the window
-      start = N - 1;
-      end = len;
+    switch (align) {
+      case -1:
+        start = 0;
+        end = len - (N - 1);
+        break;
+      case 0:
+        start = K;
+        end = len - K;
+        break;
+      case 1:
+        start = N - 1;
+        end = len;
+        break;
     }
 
     // For the valid region, calculate the result
-    for( int i = start; i < end; ++i) {
+    for (int i = start; i < end; ++i) {
 
       out[i] = windowVar(i);
 
@@ -188,6 +192,13 @@ public:
     return out;
 
   }
+
+private:
+  NumericVector X;
+  int align;
+  int N;
+  unsigned long K;
+  size_t index;
 
 };
 
