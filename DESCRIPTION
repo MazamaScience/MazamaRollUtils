@@ -17,6 +17,4 @@ BugReports: https://github.com/MazamaScience/MazamaRollUtils/issues
 Imports: 
   Rcpp (>= 1.0.6),
   RcppRoll (>= 0.3.0)
-Depends: 
-  RcppRoll
 LinkingTo: Rcpp
