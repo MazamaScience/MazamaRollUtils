@@ -21,3 +21,11 @@ roll_hampel <- function(x, windowSize = 5L, align = 0L) {
     .Call(`_MazamaRollUtils_roll_hampel`, x, windowSize, align)
 }
 
+roll_max <- function(x, windowSize = 5L, align = 0L) {
+    .Call(`_MazamaRollUtils_roll_max`, x, windowSize, align)
+}
+
+roll_min <- function(x, windowSize = 5L, align = 0L) {
+    .Call(`_MazamaRollUtils_roll_min`, x, windowSize, align)
+}
+

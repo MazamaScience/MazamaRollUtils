@@ -14,9 +14,9 @@ public:
   // Initialize Roller
   void init(NumericVector data, int windowSize, int alignment) {
     X = data;
-    win = windowSize;
+    nwin = windowSize;
     align = alignment;
-    halfWin = windowSize / 2;
+    cenwin = windowSize / 2;
   }
 
   // Roll Mean
@@ -28,14 +28,14 @@ public:
     switch (align) {
       case -1:
         start = 0;
-        end = len - (win - 1);
+        end = len - (nwin - 1);
         break;
       case 0:
-        start = halfWin;
-        end = len - halfWin;
+        start = cenwin;
+        end = len - cenwin;
         break;
       case 1:
-        start = win - 1;
+        start = nwin - 1;
         end = len;
         break;
     }
@@ -49,7 +49,7 @@ public:
   NumericVector median() {
     int len = X.size();
     NumericVector out(len, NA_REAL);
-    for (int ind = halfWin; ind < len - halfWin; ++ind) {
+    for (int ind = cenwin; ind < len - cenwin; ++ind) {
       out[ind] = windowMedian(ind);
     }
     return out;
@@ -64,14 +64,14 @@ public:
     switch (align) {
       case -1:
         start = 0;
-        end = len - (win - 1);
+        end = len - (nwin - 1);
         break;
       case 0:
-        start = halfWin;
-        end = len - halfWin;
+        start = cenwin;
+        end = len - cenwin;
         break;
       case 1:
-        start = win - 1;
+        start = nwin - 1;
         end = len;
         break;
     }
@@ -90,14 +90,14 @@ public:
     switch (align) {
       case -1:
         start = 0;
-        end = len - (win - 1);
+        end = len - (nwin - 1);
         break;
       case 0:
-        start = halfWin;
-        end = len - halfWin;
+        start = cenwin;
+        end = len - cenwin;
         break;
       case 1:
-        start = win - 1;
+        start = nwin - 1;
         end = len;
         break;
     }
@@ -112,8 +112,30 @@ public:
     int len = X.size();
     NumericVector out(len, NA_REAL);
     // For the valid region, calculate the result
-    for( int i = halfWin; i < len - halfWin; ++i ) {
+    for (int i = cenwin; i < len - cenwin; ++i) {
       out[i] = windowHampel(i);
+    }
+    return out;
+  }
+
+  // Roll Maxima
+  NumericVector max() {
+    int len = X.size();
+    NumericVector out(len, NA_REAL);
+    // For the valid region, calculate the result
+    for (int i = cenwin; i < len - cenwin; ++i) {
+      out[i] = windowMax(i);
+    }
+    return out;
+  }
+
+  // Roll Minima
+  NumericVector min() {
+    int len = X.size();
+    NumericVector out(len, NA_REAL);
+    // For the valid region, calculate the result
+    for (int i = cenwin; i < len - cenwin; ++i) {
+      out[i] = windowMin(i);
     }
     return out;
   }
@@ -122,20 +144,20 @@ private:
 
   NumericVector X; // Input Data
   int align; // Alignment
-  int win; // Window Size
-  unsigned long halfWin; // Half-window Size
+  int nwin; // Window Size
+  unsigned long cenwin; // Half-window Size
 
   // Window Mean
   double windowMean(const int &index) {
     double mean = 0;
-    for (size_t i = 0; i < win; ++i) {
+    for (size_t i = 0; i < nwin; ++i) {
       int s;
       switch (align) {
         case -1:
           s = index + i;
           break;
         case 0:
-          s = index - halfWin + i;
+          s = index - cenwin + i;
           break;
         case 1:
           s = index - i;
@@ -143,32 +165,32 @@ private:
       }
       mean += X[s];
     }
-    mean /= win;
+    mean /= nwin;
     return mean;
   }
 
   // Window Median
   double windowMedian(const int &index) {
-    NumericVector tmp(win, NA_REAL);
-    for (int i = 0; i < win; i++) {
-      tmp[i] = X[index - halfWin + i];
+    NumericVector tmp(nwin, NA_REAL);
+    for (int i = 0; i < nwin; i++) {
+      tmp[i] = X[index - cenwin + i];
     }
     std::sort(tmp.begin(), tmp.end());
-    return win % 2 ? tmp[halfWin]:(tmp[halfWin - 1] + tmp[halfWin]) / 2;
+    return nwin % 2 ? tmp[cenwin]:(tmp[cenwin - 1] + tmp[cenwin]) / 2;
   }
 
   // Window Variance
   double windowVar(const int &index) {
     double var = 0;
     double mean = windowMean(index);
-    for (int i = 0; i < win; ++i) {
+    for (int i = 0; i < nwin; ++i) {
       int s;
       switch (align) {
         case -1:
           s = index + i;
           break;
         case 0:
-          s = index - halfWin + i;
+          s = index - cenwin + i;
           break;
         case 1:
           s = index - i;
@@ -176,7 +198,7 @@ private:
       }
       var += (X[s] - mean) * (X[s] - mean);
     }
-    var /= win - 1;
+    var /= nwin - 1;
     return var;
   }
 
@@ -184,16 +206,57 @@ private:
   double windowHampel(const int &index) {
     const double kappa = 1.4826;
     double median_i = windowMedian(index);
-    NumericVector tmp(win, NA_REAL);
-    for (int i = 0; i < win; ++i) { // MAD
-      size_t s = index - halfWin + i;
+    NumericVector tmp(nwin, NA_REAL);
+    for (int i = 0; i < nwin; ++i) { // MAD
+      size_t s = index - cenwin + i;
       tmp[i] = std::fabs(X[s] - median_i);
     }
     std::sort(tmp.begin(), tmp.end());
-    double mad =  win % 2 ? tmp[halfWin]:(tmp[halfWin - 1] + tmp[halfWin]) / 2;
+    double mad =  nwin % 2 ? tmp[cenwin]:(tmp[cenwin - 1] + tmp[cenwin]) / 2;
     return std::fabs(X[index] - median_i) / (kappa * mad);
   }
 
+  // Window Maxima
+  double windowMax(const int &index) {
+    double max = X[index];
+    for (int i = 0; i < nwin; ++i) {
+      int s;
+      switch (align) {
+      case -1:
+        s = index + i;
+        break;
+      case 0:
+        s = index - cenwin + i;
+        break;
+      case 1:
+        s = index - i;
+        break;
+      }
+      if (X[s] > max) max = X[s];
+    }
+    return max;
+  }
+
+  // Window Minima
+  double windowMin(const int &index) {
+    double min = X[index];
+    for (int i = 0; i < nwin; ++i) {
+      int s;
+      switch (align) {
+      case -1:
+        s = index + i;
+        break;
+      case 0:
+        s = index - cenwin + i;
+        break;
+      case 1:
+        s = index - i;
+        break;
+      }
+      if (X[s] < min) min = X[s];
+    }
+    return min;
+  }
 };
 
 /* ----- Rcpp Exported ----- */
@@ -237,6 +300,23 @@ NumericVector roll_hampel (NumericVector x, unsigned int windowSize = 5, int ali
   roll.init(x, windowSize, align);
   return roll.hampel();
 }
+
+// Roll Max
+// [[Rcpp::export]]
+NumericVector roll_max (NumericVector x, unsigned int windowSize = 5, int align = 0) {
+  Roll roll;
+  roll.init(x, windowSize, align);
+  return roll.max();
+}
+
+// Roll Min
+// [[Rcpp::export]]
+NumericVector roll_min (NumericVector x, unsigned int windowSize = 5, int align = 0) {
+  Roll roll;
+  roll.init(x, windowSize, align);
+  return roll.min();
+}
+
 
 
 
