@@ -12,11 +12,12 @@ class Roll {
 public:
 
   // Initialize Roller
-  void init(NumericVector data, int windowSize, int alignment) {
+  void init(NumericVector data, int windowSize, int increment, int alignment) {
     X = data;
     nwin = windowSize;
     align = alignment;
     cenwin = windowSize / 2;
+    inc = increment;
   }
 
   // Roll Mean
@@ -39,8 +40,8 @@ public:
         end = len;
         break;
     }
-    for (int ind = start; ind < end; ++ind) {
-      out[ind] = windowMean(ind);
+    for (int i = start; i < end; i += inc) {
+      out[i] = windowMean(i);
     }
     return out;
   }
@@ -49,8 +50,8 @@ public:
   NumericVector median() {
     int len = X.size();
     NumericVector out(len, NA_REAL);
-    for (int ind = cenwin; ind < len - cenwin; ++ind) {
-      out[ind] = windowMedian(ind);
+    for (int i = cenwin; i < len - cenwin; i += inc) {
+      out[i] = windowMedian(i);
     }
     return out;
   }
@@ -75,7 +76,7 @@ public:
         end = len;
         break;
     }
-    for (int i = start; i < end; ++i) {
+    for (int i = start; i < end; i += inc) {
       out[i] = windowVar(i);
     }
     return out;
@@ -101,7 +102,7 @@ public:
         end = len;
         break;
     }
-    for (int i = start; i < end; ++i) {
+    for (int i = start; i < end; i += inc) {
       out[i] = sqrt(windowVar(i));
     }
     return out;
@@ -112,7 +113,7 @@ public:
     int len = X.size();
     NumericVector out(len, NA_REAL);
     // For the valid region, calculate the result
-    for (int i = cenwin; i < len - cenwin; ++i) {
+    for (int i = cenwin; i < len - cenwin; i += inc) {
       out[i] = windowHampel(i);
     }
     return out;
@@ -123,7 +124,7 @@ public:
     int len = X.size();
     NumericVector out(len, NA_REAL);
     // For the valid region, calculate the result
-    for (int i = cenwin; i < len - cenwin; ++i) {
+    for (int i = cenwin; i < len - cenwin; i += inc) {
       out[i] = windowMax(i);
     }
     return out;
@@ -134,7 +135,7 @@ public:
     int len = X.size();
     NumericVector out(len, NA_REAL);
     // For the valid region, calculate the result
-    for (int i = cenwin; i < len - cenwin; ++i) {
+    for (int i = cenwin; i < len - cenwin; i += inc) {
       out[i] = windowMin(i);
     }
     return out;
@@ -146,6 +147,7 @@ private:
   int align; // Alignment
   int nwin; // Window Size
   unsigned long cenwin; // Half-window Size
+  int inc; // Increment by
 
   // Window Mean
   double windowMean(const int &index) {
@@ -172,7 +174,7 @@ private:
   // Window Median
   double windowMedian(const int &index) {
     NumericVector tmp(nwin, NA_REAL);
-    for (int i = 0; i < nwin; i++) {
+    for (int i = 0; i < nwin; ++i) {
       tmp[i] = X[index - cenwin + i];
     }
     std::sort(tmp.begin(), tmp.end());
@@ -263,57 +265,57 @@ private:
 
 // Roll Median
 // [[Rcpp::export]]
-NumericVector roll_median (NumericVector x, unsigned int windowSize = 5, int align = 0) {
+NumericVector roll_median (NumericVector x, unsigned int windowSize = 5, int by = 1, int align = 0) {
   Roll roll;
-  roll.init(x, windowSize, align);
+  roll.init(x, windowSize, by, align);
   return roll.median();
 }
 
 // Roll Mean
 // [[Rcpp::export]]
-NumericVector roll_mean (NumericVector x, unsigned int windowSize = 5, int align = 0) {
+NumericVector roll_mean (NumericVector x, unsigned int windowSize = 5, int by = 1, int align = 0) {
   Roll roll;
-  roll.init(x, windowSize, align);
+  roll.init(x, windowSize, by, align);
   return roll.mean();
 }
 
 // Roll Variance
 // [[Rcpp::export]]
-NumericVector roll_var (NumericVector x, unsigned int windowSize = 5, int align = 0) {
+NumericVector roll_var (NumericVector x, unsigned int windowSize = 5, int by = 1, int align = 0) {
   Roll roll;
-  roll.init(x, windowSize, align);
+  roll.init(x, windowSize, by, align);
   return roll.var();
 }
 
 // Roll Standard Deviation
 // [[Rcpp::export]]
-NumericVector roll_sd (NumericVector x, unsigned int windowSize = 5, int align = 0) {
+NumericVector roll_sd (NumericVector x, unsigned int windowSize = 5, int by = 1, int align = 0) {
   Roll roll;
-  roll.init(x, windowSize, align);
+  roll.init(x, windowSize, by, align);
   return roll.sd();
 }
 
 // Roll Hampel
 // [[Rcpp::export]]
-NumericVector roll_hampel (NumericVector x, unsigned int windowSize = 5, int align = 0) {
+NumericVector roll_hampel (NumericVector x, unsigned int windowSize = 5, int by = 1, int align = 0) {
   Roll roll;
-  roll.init(x, windowSize, align);
+  roll.init(x, windowSize, by, align);
   return roll.hampel();
 }
 
 // Roll Max
 // [[Rcpp::export]]
-NumericVector roll_max (NumericVector x, unsigned int windowSize = 5, int align = 0) {
+NumericVector roll_max (NumericVector x, unsigned int windowSize = 5, int by = 1, int align = 0) {
   Roll roll;
-  roll.init(x, windowSize, align);
+  roll.init(x, windowSize, by, align);
   return roll.max();
 }
 
 // Roll Min
 // [[Rcpp::export]]
-NumericVector roll_min (NumericVector x, unsigned int windowSize = 5, int align = 0) {
+NumericVector roll_min (NumericVector x, unsigned int windowSize = 5, int by = 1, int align = 0) {
   Roll roll;
-  roll.init(x, windowSize, align);
+  roll.init(x, windowSize, by, align);
   return roll.min();
 }
 
