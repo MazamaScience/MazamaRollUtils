@@ -232,7 +232,7 @@ NumericVector roll_sd (NumericVector x, unsigned int windowSize = 5, int align =
 
 // Roll Hampel
 // [[Rcpp::export]]
-NumericVector roll_hampel (NumericVector x, unsigned int windowSize = 5, double threshold = 1, int align = 0) {
+NumericVector roll_hampel (NumericVector x, unsigned int windowSize = 5, int align = 0) {
   Roll roll;
   roll.init(x, windowSize, align);
   return roll.hampel();
