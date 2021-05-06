@@ -6,72 +6,76 @@
 using namespace Rcpp;
 
 // roll_median
-NumericVector roll_median(NumericVector x, unsigned int windowSize);
-RcppExport SEXP _MazamaRollUtils_roll_median(SEXP xSEXP, SEXP windowSizeSEXP) {
+NumericVector roll_median(NumericVector x, unsigned int windowSize, int align);
+RcppExport SEXP _MazamaRollUtils_roll_median(SEXP xSEXP, SEXP windowSizeSEXP, SEXP alignSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
     Rcpp::traits::input_parameter< unsigned int >::type windowSize(windowSizeSEXP);
-    rcpp_result_gen = Rcpp::wrap(roll_median(x, windowSize));
+    Rcpp::traits::input_parameter< int >::type align(alignSEXP);
+    rcpp_result_gen = Rcpp::wrap(roll_median(x, windowSize, align));
     return rcpp_result_gen;
 END_RCPP
 }
 // roll_mean
-NumericVector roll_mean(NumericVector x, unsigned int windowSize);
-RcppExport SEXP _MazamaRollUtils_roll_mean(SEXP xSEXP, SEXP windowSizeSEXP) {
+NumericVector roll_mean(NumericVector x, unsigned int windowSize, int align);
+RcppExport SEXP _MazamaRollUtils_roll_mean(SEXP xSEXP, SEXP windowSizeSEXP, SEXP alignSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
     Rcpp::traits::input_parameter< unsigned int >::type windowSize(windowSizeSEXP);
-    rcpp_result_gen = Rcpp::wrap(roll_mean(x, windowSize));
+    Rcpp::traits::input_parameter< int >::type align(alignSEXP);
+    rcpp_result_gen = Rcpp::wrap(roll_mean(x, windowSize, align));
     return rcpp_result_gen;
 END_RCPP
 }
 // roll_var
-NumericVector roll_var(NumericVector x, unsigned int windowSize);
-RcppExport SEXP _MazamaRollUtils_roll_var(SEXP xSEXP, SEXP windowSizeSEXP) {
+NumericVector roll_var(NumericVector x, unsigned int windowSize, int align);
+RcppExport SEXP _MazamaRollUtils_roll_var(SEXP xSEXP, SEXP windowSizeSEXP, SEXP alignSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
     Rcpp::traits::input_parameter< unsigned int >::type windowSize(windowSizeSEXP);
-    rcpp_result_gen = Rcpp::wrap(roll_var(x, windowSize));
+    Rcpp::traits::input_parameter< int >::type align(alignSEXP);
+    rcpp_result_gen = Rcpp::wrap(roll_var(x, windowSize, align));
     return rcpp_result_gen;
 END_RCPP
 }
 // roll_sd
-NumericVector roll_sd(NumericVector x, unsigned int windowSize);
-RcppExport SEXP _MazamaRollUtils_roll_sd(SEXP xSEXP, SEXP windowSizeSEXP) {
+NumericVector roll_sd(NumericVector x, unsigned int windowSize, int align);
+RcppExport SEXP _MazamaRollUtils_roll_sd(SEXP xSEXP, SEXP windowSizeSEXP, SEXP alignSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
     Rcpp::traits::input_parameter< unsigned int >::type windowSize(windowSizeSEXP);
-    rcpp_result_gen = Rcpp::wrap(roll_sd(x, windowSize));
+    Rcpp::traits::input_parameter< int >::type align(alignSEXP);
+    rcpp_result_gen = Rcpp::wrap(roll_sd(x, windowSize, align));
     return rcpp_result_gen;
 END_RCPP
 }
 // roll_hampel
-NumericVector roll_hampel(NumericVector x, unsigned int windowSize, double threshold);
-RcppExport SEXP _MazamaRollUtils_roll_hampel(SEXP xSEXP, SEXP windowSizeSEXP, SEXP thresholdSEXP) {
+NumericVector roll_hampel(NumericVector x, unsigned int windowSize, int align);
+RcppExport SEXP _MazamaRollUtils_roll_hampel(SEXP xSEXP, SEXP windowSizeSEXP, SEXP alignSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
     Rcpp::traits::input_parameter< unsigned int >::type windowSize(windowSizeSEXP);
-    Rcpp::traits::input_parameter< double >::type threshold(thresholdSEXP);
-    rcpp_result_gen = Rcpp::wrap(roll_hampel(x, windowSize, threshold));
+    Rcpp::traits::input_parameter< int >::type align(alignSEXP);
+    rcpp_result_gen = Rcpp::wrap(roll_hampel(x, windowSize, align));
     return rcpp_result_gen;
 END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_MazamaRollUtils_roll_median", (DL_FUNC) &_MazamaRollUtils_roll_median, 2},
-    {"_MazamaRollUtils_roll_mean", (DL_FUNC) &_MazamaRollUtils_roll_mean, 2},
-    {"_MazamaRollUtils_roll_var", (DL_FUNC) &_MazamaRollUtils_roll_var, 2},
-    {"_MazamaRollUtils_roll_sd", (DL_FUNC) &_MazamaRollUtils_roll_sd, 2},
+    {"_MazamaRollUtils_roll_median", (DL_FUNC) &_MazamaRollUtils_roll_median, 3},
+    {"_MazamaRollUtils_roll_mean", (DL_FUNC) &_MazamaRollUtils_roll_mean, 3},
+    {"_MazamaRollUtils_roll_var", (DL_FUNC) &_MazamaRollUtils_roll_var, 3},
+    {"_MazamaRollUtils_roll_sd", (DL_FUNC) &_MazamaRollUtils_roll_sd, 3},
     {"_MazamaRollUtils_roll_hampel", (DL_FUNC) &_MazamaRollUtils_roll_hampel, 3},
     {NULL, NULL, 0}
 };
