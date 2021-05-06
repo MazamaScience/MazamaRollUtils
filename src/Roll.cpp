@@ -81,6 +81,33 @@ public:
     return out;
   }
 
+  // Roll Standard Deviation
+  NumericVector sd() {
+    int len = X.size();
+    NumericVector out(len, NA_REAL);
+    int start = 0;
+    int end = len;
+    switch (align) {
+      case -1:
+        start = 0;
+        end = len - (win - 1);
+        break;
+      case 0:
+        start = halfWin;
+        end = len - halfWin;
+        break;
+      case 1:
+        start = win - 1;
+        end = len;
+        break;
+    }
+    for (int i = start; i < end; ++i) {
+      out[i] = sqrt(windowVar(i));
+    }
+    return out;
+  }
+
+  // Roll Hampel
   NumericVector hampel() {
     int len = X.size();
     NumericVector out(len, NA_REAL);
@@ -195,11 +222,19 @@ NumericVector roll_var (NumericVector x, unsigned int windowSize = 5) {
   return roll.var();
 }
 
-// Roll Hampel
+// Roll Standard Deviation
 // [[Rcpp::export]]
-NumericVector roll_hampel (NumericVector x, unsigned int windowSize = 5, double threshold = 1) {
+NumericVector roll_sd (NumericVector x, unsigned int windowSize = 5) {
   Roll roll;
   roll.init(x, windowSize, 0);
+  return roll.sd();
+}
+
+// Roll Hampel
+// [[Rcpp::export]]
+NumericVector roll_hampel (NumericVector x, unsigned int windowSize = 5, double threshold = 1, int align = 0) {
+  Roll roll;
+  roll.init(x, windowSize, align);
   return roll.hampel();
 }
 

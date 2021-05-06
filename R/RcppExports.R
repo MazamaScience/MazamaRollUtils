@@ -13,6 +13,10 @@ roll_var <- function(x, windowSize = 5L) {
     .Call(`_MazamaRollUtils_roll_var`, x, windowSize)
 }
 
+roll_sd <- function(x, windowSize = 5L) {
+    .Call(`_MazamaRollUtils_roll_sd`, x, windowSize)
+}
+
 roll_hampel <- function(x, windowSize = 5L, threshold = 1) {
     .Call(`_MazamaRollUtils_roll_hampel`, x, windowSize, threshold)
 }
