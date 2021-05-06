@@ -200,33 +200,33 @@ private:
 
 // Roll Median
 // [[Rcpp::export]]
-NumericVector roll_median (NumericVector x, unsigned int windowSize = 5) {
+NumericVector roll_median (NumericVector x, unsigned int windowSize = 5, int align = 0) {
   Roll roll;
-  roll.init(x, windowSize, 0);
+  roll.init(x, windowSize, align);
   return roll.median();
 }
 
 // Roll Mean
 // [[Rcpp::export]]
-NumericVector roll_mean (NumericVector x, unsigned int windowSize = 5) {
+NumericVector roll_mean (NumericVector x, unsigned int windowSize = 5, int align = 0) {
   Roll roll;
-  roll.init(x, windowSize, 0);
+  roll.init(x, windowSize, align);
   return roll.mean();
 }
 
 // Roll Variance
 // [[Rcpp::export]]
-NumericVector roll_var (NumericVector x, unsigned int windowSize = 5) {
+NumericVector roll_var (NumericVector x, unsigned int windowSize = 5, int align = 0) {
   Roll roll;
-  roll.init(x, windowSize, 0);
+  roll.init(x, windowSize, align);
   return roll.var();
 }
 
 // Roll Standard Deviation
 // [[Rcpp::export]]
-NumericVector roll_sd (NumericVector x, unsigned int windowSize = 5) {
+NumericVector roll_sd (NumericVector x, unsigned int windowSize = 5, int align = 0) {
   Roll roll;
-  roll.init(x, windowSize, 0);
+  roll.init(x, windowSize, align);
   return roll.sd();
 }
 
