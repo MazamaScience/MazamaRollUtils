@@ -14,7 +14,7 @@
   package, including the most important functions.
 }
 \author{
-Jonathan Callahan
+Jonathan Callahan,
 Hans Martin
 
 Maintainer: Hans Martin <hans@mazamascience.com>

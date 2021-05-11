@@ -4,19 +4,21 @@
 \alias{roll_hampel}
 \title{Roll Hampel Detection}
 \usage{
-roll_hampel(x, n = 5L, by = 1L, align = 0L)
+roll_hampel(x, n = 5L, weights = NULL, by = 1L, align = 0L)
 }
 \arguments{
 \item{x}{A numeric vector}
 
 \item{n}{An integer window size}
 
+\item{weights}{A numeric vector of n-length specifying each \code{n}th weight.}
+
 \item{by}{Integer to shift window by}
 
 \item{align}{Signed Integer window alignment, -1 (left) | 0 (center) | 1 (right)}
 }
 \value{
-numeric vector of length(X)
+numeric vector of length(x)
 }
 \description{
 Roll Hampel Detection
