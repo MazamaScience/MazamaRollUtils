@@ -18,3 +18,4 @@ Imports:
   Rcpp (>= 1.0.6),
   RcppRoll (>= 0.3.0)
 LinkingTo: Rcpp
+RoxygenNote: 7.1.1
