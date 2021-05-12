@@ -110,6 +110,36 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// roll_sum
+Rcpp::NumericVector roll_sum(Rcpp::NumericVector x, unsigned int n, Rcpp::NumericVector weight, int by, int align);
+RcppExport SEXP _MazamaRollUtils_roll_sum(SEXP xSEXP, SEXP nSEXP, SEXP weightSEXP, SEXP bySEXP, SEXP alignSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type x(xSEXP);
+    Rcpp::traits::input_parameter< unsigned int >::type n(nSEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type weight(weightSEXP);
+    Rcpp::traits::input_parameter< int >::type by(bySEXP);
+    Rcpp::traits::input_parameter< int >::type align(alignSEXP);
+    rcpp_result_gen = Rcpp::wrap(roll_sum(x, n, weight, by, align));
+    return rcpp_result_gen;
+END_RCPP
+}
+// roll_prod
+Rcpp::NumericVector roll_prod(Rcpp::NumericVector x, unsigned int n, Rcpp::NumericVector weight, int by, int align);
+RcppExport SEXP _MazamaRollUtils_roll_prod(SEXP xSEXP, SEXP nSEXP, SEXP weightSEXP, SEXP bySEXP, SEXP alignSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type x(xSEXP);
+    Rcpp::traits::input_parameter< unsigned int >::type n(nSEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type weight(weightSEXP);
+    Rcpp::traits::input_parameter< int >::type by(bySEXP);
+    Rcpp::traits::input_parameter< int >::type align(alignSEXP);
+    rcpp_result_gen = Rcpp::wrap(roll_prod(x, n, weight, by, align));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_MazamaRollUtils_roll_median", (DL_FUNC) &_MazamaRollUtils_roll_median, 5},
@@ -119,6 +149,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_MazamaRollUtils_roll_hampel", (DL_FUNC) &_MazamaRollUtils_roll_hampel, 5},
     {"_MazamaRollUtils_roll_max", (DL_FUNC) &_MazamaRollUtils_roll_max, 5},
     {"_MazamaRollUtils_roll_min", (DL_FUNC) &_MazamaRollUtils_roll_min, 5},
+    {"_MazamaRollUtils_roll_sum", (DL_FUNC) &_MazamaRollUtils_roll_sum, 5},
+    {"_MazamaRollUtils_roll_prod", (DL_FUNC) &_MazamaRollUtils_roll_prod, 5},
     {NULL, NULL, 0}
 };
 

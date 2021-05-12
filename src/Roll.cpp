@@ -141,6 +141,24 @@ public:
     return out;
   }
 
+  Rcpp::NumericVector sum() {
+    int len = X.size();
+    Rcpp::NumericVector out(len, NA_REAL);
+    for (int i = kwin; i < len - kwin; i += inc) {
+      out[i] = windowSum(i);
+    }
+    return out;
+  }
+
+  Rcpp::NumericVector prod() {
+    int len = X.size();
+    Rcpp::NumericVector out(len, NA_REAL);
+    for (int i = kwin; i < len - kwin; i += inc) {
+      out[i] = windowProd(i);
+    }
+    return out;
+  }
+
 private:
 
   Rcpp::NumericVector X; // Input Data
@@ -261,6 +279,48 @@ private:
     return min;
   }
 
+  double windowSum(const int &index) {
+    double sum = 0;
+    for (size_t i = 0; i < nwin; ++i) {
+      int s;
+      switch (align) {
+      case -1:
+        s = index + i;
+        break;
+      case 0:
+        s = index - kwin + i;
+        break;
+      case 1:
+        s = index - i;
+        break;
+      }
+      sum += X[s] * weight[i];
+    }
+
+    return sum;
+  }
+
+  double windowProd(const int &index) {
+    double prod = 1;
+    for (size_t i = 0; i < nwin; ++i) {
+      int s;
+      switch (align) {
+      case -1:
+        s = index + i;
+        break;
+      case 0:
+        s = index - kwin + i;
+        break;
+      case 1:
+        s = index - i;
+        break;
+      }
+      prod *= X[s] * weight[i];
+    }
+
+    return prod;
+  }
+
 };
 
 /* ----- Rcpp Exported ----- */
@@ -362,6 +422,53 @@ Rcpp::NumericVector roll_min(
   roll.init(x, n, weight, by, align);
   return roll.min();
 }
+
+// Roll Sum
+// [[Rcpp::export]]
+Rcpp::NumericVector roll_sum(
+    Rcpp::NumericVector x,
+    unsigned int n = 5,
+    Rcpp::NumericVector weight = 1,
+    int by = 1,
+    int align = 0
+) {
+  Roll roll;
+  roll.init(x, n, weight, by, align);
+  return roll.sum();
+}
+
+// Roll Product
+// [[Rcpp::export]]
+Rcpp::NumericVector roll_prod(
+    Rcpp::NumericVector x,
+    unsigned int n = 5,
+    Rcpp::NumericVector weight = 1,
+    int by = 1,
+    int align = 0
+) {
+  Roll roll;
+  roll.init(x, n, weight, by, align);
+  return roll.prod();
+}
+
+// PM2.5 NowCast
+// Rcpp::NumericVector nowcast(Rcpp::NumericVector x) {
+//
+//   Roll roll;
+//
+//   Rcpp::NumericVector min, max;
+//
+//   Rcpp::NumericVector tmp;
+//
+//   roll.init(x, 12, tmp, 1, 0);
+//
+//   min = roll.min();
+//   max = roll.max();
+//
+//
+//   return -1;
+// }
+
 
 
 

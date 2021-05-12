@@ -29,3 +29,11 @@ roll_min <- function(x, n = 5L, weight = 1L, by = 1L, align = 0L) {
     .Call(`_MazamaRollUtils_roll_min`, x, n, weight, by, align)
 }
 
+roll_sum <- function(x, n = 5L, weight = 1L, by = 1L, align = 0L) {
+    .Call(`_MazamaRollUtils_roll_sum`, x, n, weight, by, align)
+}
+
+roll_prod <- function(x, n = 5L, weight = 1L, by = 1L, align = 0L) {
+    .Call(`_MazamaRollUtils_roll_prod`, x, n, weight, by, align)
+}
+
