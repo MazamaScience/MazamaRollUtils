@@ -2,16 +2,17 @@
 % Please edit documentation in R/NowCast.R
 \name{nowcast}
 \alias{nowcast}
-\title{Title}
+\title{Calculate NowCast}
 \usage{
-nowcast(x)
+nowcast(x, n = 12, threshold = 0.5)
 }
 \arguments{
-\item{x}{}
+\item{x}{A numeric vector.}
 }
 \value{
 
 }
 \description{
-Title
+As described
+\href{https://usepa.servicenowservices.com/airnow?id=kb_article_view&sys_id=fed0037b1b62545040a1a7dbe54bcbd4}{here}.
 }
