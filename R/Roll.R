@@ -11,6 +11,7 @@
 #'
 #' @examples
 roll_median <- function(x, n = 5L, weights = NULL, by = 1L, align = 0L) {
+  if (is.null(weights)) weights = rep(1, n)
   .Call(`_MazamaRollUtils_roll_median`, x, n, weights, by, align)
 }
 
