@@ -325,149 +325,221 @@ private:
 
 /* ----- Rcpp Exported ----- */
 
-// Roll Median
+//' Roll Median
+//'
+//' @param x A numeric vector
+//' @param n An integer window size #'
+//' @param weights A numeric vector of n-length specifying each \code{n}th weight.
+//' @param by Integer to shift window by
+//' @param align Signed Integer window alignment, -1 (left) | 0 (center) | 1 (right)
+//'
+//' @return numeric vector of length(x)
+//'
+//' @examples
 // [[Rcpp::export]]
 Rcpp::NumericVector roll_median (
     Rcpp::NumericVector x,
     unsigned int n = 5,
-    Rcpp::NumericVector weight = 1,
+    Rcpp::NumericVector weights = 1,
     int by = 1,
     int align = 0
 ) {
   Roll roll;
-  roll.init(x, n, weight, by, align);
+  roll.init(x, n, weights, by, align);
   return roll.median();
 }
 
-// Roll Mean
+//' Roll Mean
+//'
+//' @param x A numeric vector
+//' @param n An integer window size #'
+//' @param weights A numeric vector of n-length specifying each \code{n}th weight.
+//' @param by Integer to shift window by
+//' @param align Signed Integer window alignment, -1 (left) | 0 (center) | 1 (right)
+//'
+//' @return numeric vector of length(x)
+//'
+//' @examples
 // [[Rcpp::export]]
 Rcpp::NumericVector roll_mean(
     Rcpp::NumericVector x,
     unsigned int n = 5,
-    Rcpp::NumericVector weight = 1,
+    Rcpp::NumericVector weights = 1,
     int by = 1,
     int align = 0
 ) {
   Roll roll;
-  roll.init(x, n, weight, by, align);
+  roll.init(x, n, weights, by, align);
   return roll.mean();
 }
 
-// Roll Variance
+//' Roll Variance
+//'
+//' @param x A numeric vector
+//' @param n An integer window size #'
+//' @param weights A numeric vector of n-length specifying each \code{n}th weight.
+//' @param by Integer to shift window by
+//' @param align Signed Integer window alignment, -1 (left) | 0 (center) | 1 (right)
+//'
+//' @return numeric vector of length(x)
+//'
+//' @examples
 // [[Rcpp::export]]
 Rcpp::NumericVector roll_var(
     Rcpp::NumericVector x,
     unsigned int n = 5,
-    Rcpp::NumericVector weight = 1,
+    Rcpp::NumericVector weights = 1,
     int by = 1,
     int align = 0
 ) {
   Roll roll;
-  roll.init(x, n, weight, by, align);
+  roll.init(x, n, weights, by, align);
   return roll.var();
 }
 
-// Roll Standard Deviation
+//' Roll Standard Deviation
+//'
+//' @param x A numeric vector
+//' @param n An integer window size #'
+//' @param weights A numeric vector of n-length specifying each \code{n}th weight.
+//' @param by Integer to shift window by
+//' @param align Signed Integer window alignment, -1 (left) | 0 (center) | 1 (right)
+//'
+//' @return numeric vector of length(x)
+//'
+//' @examples
 // [[Rcpp::export]]
 Rcpp::NumericVector roll_sd(
     Rcpp::NumericVector x,
     unsigned int n = 5,
-    Rcpp::NumericVector weight = 1,
+    Rcpp::NumericVector weights = 1,
     int by = 1,
     int align = 0
 ) {
   Roll roll;
-  roll.init(x, n, weight, by, align);
+  roll.init(x, n, weights, by, align);
   return roll.sd();
 }
 
-// Roll Hampel
+//' Roll Hampel
+//'
+//' @param x A numeric vector
+//' @param n An integer window size #'
+//' @param weights A numeric vector of n-length specifying each \code{n}th weight.
+//' @param by Integer to shift window by
+//' @param align Signed Integer window alignment, -1 (left) | 0 (center) | 1 (right)
+//'
+//' @return numeric vector of length(x)
+//'
+//' @examples
 // [[Rcpp::export]]
 Rcpp::NumericVector roll_hampel(
     Rcpp::NumericVector x,
     unsigned int n = 5,
-    Rcpp::NumericVector weight = 1,
+    Rcpp::NumericVector weights = 1,
     int by = 1,
     int align = 0
 ) {
   Roll roll;
-  roll.init(x, n, weight, by, align);
+  roll.init(x, n, weights, by, align);
   return roll.hampel();
 }
 
-// Roll Max
+//' Roll Max
+//'
+//' @param x A numeric vector
+//' @param n An integer window size #'
+//' @param weights A numeric vector of n-length specifying each \code{n}th weight.
+//' @param by Integer to shift window by
+//' @param align Signed Integer window alignment, -1 (left) | 0 (center) | 1 (right)
+//'
+//' @return numeric vector of length(x)
+//'
+//' @examples
 // [[Rcpp::export]]
 Rcpp::NumericVector roll_max(
     Rcpp::NumericVector x,
     unsigned int n = 5,
-    Rcpp::NumericVector weight = 1,
+    Rcpp::NumericVector weights = 1,
     int by = 1,
     int align = 0
 ) {
   Roll roll;
-  roll.init(x, n, weight, by, align);
+  roll.init(x, n, weights, by, align);
   return roll.max();
 }
 
-// Roll Min
+//' Roll Min
+//'
+//' @param x A numeric vector
+//' @param n An integer window size #'
+//' @param weights A numeric vector of n-length specifying each \code{n}th weight.
+//' @param by Integer to shift window by
+//' @param align Signed Integer window alignment, -1 (left) | 0 (center) | 1 (right)
+//'
+//' @return numeric vector of length(x)
+//'
+//' @examples
 // [[Rcpp::export]]
 Rcpp::NumericVector roll_min(
     Rcpp::NumericVector x,
     unsigned int n = 5,
-    Rcpp::NumericVector weight = 1,
+    Rcpp::NumericVector weights = 1,
     int by = 1,
     int align = 0
 ) {
   Roll roll;
-  roll.init(x, n, weight, by, align);
+  roll.init(x, n, weights, by, align);
   return roll.min();
 }
 
-// Roll Sum
+//' Roll Sum
+//'
+//' @param x A numeric vector
+//' @param n An integer window size #'
+//' @param weights A numeric vector of n-length specifying each \code{n}th weight.
+//' @param by Integer to shift window by
+//' @param align Signed Integer window alignment, -1 (left) | 0 (center) | 1 (right)
+//'
+//' @return numeric vector of length(x)
+//'
+//' @examples
 // [[Rcpp::export]]
 Rcpp::NumericVector roll_sum(
     Rcpp::NumericVector x,
     unsigned int n = 5,
-    Rcpp::NumericVector weight = 1,
+    Rcpp::NumericVector weights = 1,
     int by = 1,
     int align = 0
 ) {
   Roll roll;
-  roll.init(x, n, weight, by, align);
+  roll.init(x, n, weights, by, align);
   return roll.sum();
 }
 
-// Roll Product
+//' Roll Product
+//'
+//' @param x A numeric vector
+//' @param n An integer window size #'
+//' @param weights A numeric vector of n-length specifying each \code{n}th weight.
+//' @param by Integer to shift window by
+//' @param align Signed Integer window alignment, -1 (left) | 0 (center) | 1 (right)
+//'
+//' @return numeric vector of length(x)
+//'
+//' @examples
 // [[Rcpp::export]]
 Rcpp::NumericVector roll_prod(
     Rcpp::NumericVector x,
     unsigned int n = 5,
-    Rcpp::NumericVector weight = 1,
+    Rcpp::NumericVector weights = 1,
     int by = 1,
     int align = 0
 ) {
   Roll roll;
-  roll.init(x, n, weight, by, align);
+  roll.init(x, n, weights, by, align);
   return roll.prod();
 }
-
-// PM2.5 NowCast
-// Rcpp::NumericVector nowcast(Rcpp::NumericVector x) {
-//
-//   Roll roll;
-//
-//   Rcpp::NumericVector min, max;
-//
-//   Rcpp::NumericVector tmp;
-//
-//   roll.init(x, 12, tmp, 1, 0);
-//
-//   min = roll.min();
-//   max = roll.max();
-//
-//
-//   return -1;
-// }
 
 
 
