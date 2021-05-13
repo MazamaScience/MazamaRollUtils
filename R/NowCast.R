@@ -4,6 +4,8 @@
 #' \href{https://usepa.servicenowservices.com/airnow?id=kb_article_view&sys_id=fed0037b1b62545040a1a7dbe54bcbd4}{here}.
 #'
 #' @param x A numeric vector.
+#' @param n
+#' @param threshold
 #'
 #' @return
 #' @export
@@ -28,10 +30,10 @@ nowcast <- function(x, n = 12, threshold = 0.5) {
         weight_factor
       )
 
-      # Exploit recycling to apply powers
+      # power hour
       powers <- seq(0, n - 1, 1)
 
-      # Compute NowCast
+      # Compute NowCast TODO: Make masked.
       nc <- sum(x * corrected_weight_factor ** powers, na.rm = TRUE) /
           sum(corrected_weight_factor ** powers, na.rm = TRUE)
 
