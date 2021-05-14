@@ -14,9 +14,14 @@ nowcast(x, n = 12, threshold = 0.5)
 \item{threshold}{A weight factor threshold.}
 }
 \value{
-
+A numeric vector of length(x)
 }
 \description{
 As described
 \href{https://usepa.servicenowservices.com/airnow?id=kb_article_view&sys_id=fed0037b1b62545040a1a7dbe54bcbd4}{here}.
+}
+\examples{
+data("airquality")
+
+nowcast(airquality$Ozone)
 }

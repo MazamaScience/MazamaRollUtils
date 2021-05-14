@@ -7,19 +7,28 @@
 roll_mean(x, n = 5L, weights = NULL, by = 1L, align = 0L)
 }
 \arguments{
-\item{x}{A numeric vector}
+\item{x}{A numeric vector.}
 
-\item{n}{An integer window size #'}
+\item{n}{An integer window length.}
 
-\item{weights}{A numeric vector of n-length specifying each \code{n}th weight.}
+\item{weights}{A numeric vector of n-length specifying each \code{n}th
+weight. If `NULL`, unit weights are used.}
 
-\item{by}{Integer to shift window by}
+\item{by}{An integer to shift the window by.}
 
-\item{align}{Signed Integer window alignment, -1 (left) | 0 (center) | 1 (right)}
+\item{align}{A signed integer representing the windows alignment.
+-1 (left) | 0 (center) | 1 (right).}
 }
 \value{
 numeric vector of length(x)
 }
 \description{
 Roll Mean
+}
+\examples{
+# load airquality
+data("airquality")
+
+# calculate moving average of last 6 measurements
+roll_mean(airquality$Temp, n = 6, align = -1)
 }
