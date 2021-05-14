@@ -3,7 +3,7 @@
 
 #' @title Roll Median
 #'
-#' @description Apply a moving-window median function to to a numeric vector.
+#' @description Apply a moving-window median function to a numeric vector.
 #'
 #' @details Each window of \code{n}-length is applied \code{weight} and then
 #' slid/shifted/rolled \code{by} a positive integer amount about the window's
@@ -31,7 +31,7 @@ roll_median <- function(x, n = 5L, weights = NULL, by = 1L, align = 0L) {
 
 #' @title Roll Mean
 #'
-#' @description Apply a moving-window mean function to to a numeric vector.
+#' @description Apply a moving-window mean function to a numeric vector.
 #'
 #' @details Each window of \code{n}-length is applied \code{weight} and then
 #' slid/shifted/rolled \code{by} a positive integer amount about the window's
@@ -59,7 +59,7 @@ roll_mean <- function(x, n = 5L, weights = NULL, by = 1L, align = 0L) {
 
 #' @title Roll Variance
 #'
-#' @description Apply a moving-window variance function to to a numeric vector.
+#' @description Apply a moving-window variance function to a numeric vector.
 #'
 #' @details Each window of \code{n}-length is applied \code{weight} and then
 #' slid/shifted/rolled \code{by} a positive integer amount about the window's
@@ -87,7 +87,7 @@ roll_var <- function(x, n = 5L, weights = NULL, by = 1L, align = 0L) {
 
 #' @title Roll Standard Deviation
 #'
-#' @description Apply a moving-window standard deviation function to to a
+#' @description Apply a moving-window standard deviation function to a
 #' numeric vector.
 #'
 #' @details Each window of \code{n}-length is applied \code{weight} and then
@@ -116,7 +116,7 @@ roll_sd <- function(x, n = 5L, weights = NULL, by = 1L, align = 0L) {
 
 #' @title Roll Hampel
 #'
-#' @description Apply a moving-window hampel value function to to a numeric
+#' @description Apply a moving-window hampel value function to a numeric
 #' vector.
 #'
 #' @details Each window of \code{n}-length is applied \code{weight} and then
@@ -173,7 +173,7 @@ roll_max <- function(x, n = 5L, weights = NULL, by = 1L, align = 0L) {
 
 #' @title Roll Min
 #'
-#' @description Apply a moving-window minimum function to to a numeric vector.
+#' @description Apply a moving-window minimum function to a numeric vector.
 #'
 #' @details Each window of \code{n}-length is applied \code{weight} and then
 #' slid/shifted/rolled \code{by} a positive integer amount about the window's
