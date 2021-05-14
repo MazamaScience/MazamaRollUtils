@@ -12,7 +12,7 @@
 #' @return numeric vector of length(x)
 #'
 #' @examples
-roll_median <- function(x, n = 5L, weights = 1L, by = 1L, align = 0L) {
+roll_median <- function(x, n = 5L, weights = NULL, by = 1L, align = 0L) {
     .Call(`_MazamaRollUtils_roll_median`, x, n, weights, by, align)
 }
 
@@ -27,7 +27,7 @@ roll_median <- function(x, n = 5L, weights = 1L, by = 1L, align = 0L) {
 #' @return numeric vector of length(x)
 #'
 #' @examples
-roll_mean <- function(x, n = 5L, weights = 1L, by = 1L, align = 0L) {
+roll_mean <- function(x, n = 5L, weights = NULL, by = 1L, align = 0L) {
     .Call(`_MazamaRollUtils_roll_mean`, x, n, weights, by, align)
 }
 
@@ -42,7 +42,7 @@ roll_mean <- function(x, n = 5L, weights = 1L, by = 1L, align = 0L) {
 #' @return numeric vector of length(x)
 #'
 #' @examples
-roll_var <- function(x, n = 5L, weights = 1L, by = 1L, align = 0L) {
+roll_var <- function(x, n = 5L, weights = NULL, by = 1L, align = 0L) {
     .Call(`_MazamaRollUtils_roll_var`, x, n, weights, by, align)
 }
 
@@ -57,7 +57,7 @@ roll_var <- function(x, n = 5L, weights = 1L, by = 1L, align = 0L) {
 #' @return numeric vector of length(x)
 #'
 #' @examples
-roll_sd <- function(x, n = 5L, weights = 1L, by = 1L, align = 0L) {
+roll_sd <- function(x, n = 5L, weights = NULL, by = 1L, align = 0L) {
     .Call(`_MazamaRollUtils_roll_sd`, x, n, weights, by, align)
 }
 
@@ -72,7 +72,7 @@ roll_sd <- function(x, n = 5L, weights = 1L, by = 1L, align = 0L) {
 #' @return numeric vector of length(x)
 #'
 #' @examples
-roll_hampel <- function(x, n = 5L, weights = 1L, by = 1L, align = 0L) {
+roll_hampel <- function(x, n = 5L, weights = NULL, by = 1L, align = 0L) {
     .Call(`_MazamaRollUtils_roll_hampel`, x, n, weights, by, align)
 }
 
@@ -87,7 +87,7 @@ roll_hampel <- function(x, n = 5L, weights = 1L, by = 1L, align = 0L) {
 #' @return numeric vector of length(x)
 #'
 #' @examples
-roll_max <- function(x, n = 5L, weights = 1L, by = 1L, align = 0L) {
+roll_max <- function(x, n = 5L, weights = NULL, by = 1L, align = 0L) {
     .Call(`_MazamaRollUtils_roll_max`, x, n, weights, by, align)
 }
 
@@ -102,7 +102,7 @@ roll_max <- function(x, n = 5L, weights = 1L, by = 1L, align = 0L) {
 #' @return numeric vector of length(x)
 #'
 #' @examples
-roll_min <- function(x, n = 5L, weights = 1L, by = 1L, align = 0L) {
+roll_min <- function(x, n = 5L, weights = NULL, by = 1L, align = 0L) {
     .Call(`_MazamaRollUtils_roll_min`, x, n, weights, by, align)
 }
 
@@ -117,7 +117,7 @@ roll_min <- function(x, n = 5L, weights = 1L, by = 1L, align = 0L) {
 #' @return numeric vector of length(x)
 #'
 #' @examples
-roll_sum <- function(x, n = 5L, weights = 1L, by = 1L, align = 0L) {
+roll_sum <- function(x, n = 5L, weights = NULL, by = 1L, align = 0L) {
     .Call(`_MazamaRollUtils_roll_sum`, x, n, weights, by, align)
 }
 
@@ -132,7 +132,7 @@ roll_sum <- function(x, n = 5L, weights = 1L, by = 1L, align = 0L) {
 #' @return numeric vector of length(x)
 #'
 #' @examples
-roll_prod <- function(x, n = 5L, weights = 1L, by = 1L, align = 0L) {
+roll_prod <- function(x, n = 5L, weights = NULL, by = 1L, align = 0L) {
     .Call(`_MazamaRollUtils_roll_prod`, x, n, weights, by, align)
 }
 

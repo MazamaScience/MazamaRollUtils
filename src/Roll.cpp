@@ -11,16 +11,39 @@ public:
   void init(
       Rcpp::NumericVector data,
       int windowSize,
-      Rcpp::NumericVector weights,
+      Rcpp::Nullable<Rcpp::NumericVector> weights,
       int increment,
       int alignment
   ) {
+
+    // Checks
+    if (windowSize > data.size()) {
+      Rcpp::stop("\nWindow 'n' cannot be larger than 'x'");
+    }
+    if (increment > data.size()) {
+      Rcpp::stop("\nIncrement 'by' cannot be larger than 'x'\n");
+    }
+    if (pow(alignment, 2) > 1) {
+      Rcpp::stop("\nWindow alignment must be either -1 (left), 0 (center), or +1 (right)");
+    }
+    if (increment > windowSize) {
+      Rcpp::warning("\nWarning: Increment 'by' is larger than the window 'n'\n");
+    }
+
+    // handle defaults
+    if (weights.isNull()) {
+      weight = Rcpp::rep(1, windowSize);
+    } else {
+      weight = weights;
+    }
+
+    // init private vars
     X = data;
     nwin = windowSize;
     inc = increment;
     align = alignment;
     kwin = windowSize / 2;
-    weight = weights;
+
   }
 
   // Roll Mean
@@ -340,7 +363,7 @@ private:
 Rcpp::NumericVector roll_median (
     Rcpp::NumericVector x,
     unsigned int n = 5,
-    Rcpp::NumericVector weights = 1,
+    Rcpp::Nullable<Rcpp::NumericVector> weights = R_NilValue,
     int by = 1,
     int align = 0
 ) {
@@ -364,7 +387,7 @@ Rcpp::NumericVector roll_median (
 Rcpp::NumericVector roll_mean(
     Rcpp::NumericVector x,
     unsigned int n = 5,
-    Rcpp::NumericVector weights = 1,
+    Rcpp::Nullable<Rcpp::NumericVector> weights = R_NilValue,
     int by = 1,
     int align = 0
 ) {
@@ -388,7 +411,7 @@ Rcpp::NumericVector roll_mean(
 Rcpp::NumericVector roll_var(
     Rcpp::NumericVector x,
     unsigned int n = 5,
-    Rcpp::NumericVector weights = 1,
+    Rcpp::Nullable<Rcpp::NumericVector> weights = R_NilValue,
     int by = 1,
     int align = 0
 ) {
@@ -412,7 +435,7 @@ Rcpp::NumericVector roll_var(
 Rcpp::NumericVector roll_sd(
     Rcpp::NumericVector x,
     unsigned int n = 5,
-    Rcpp::NumericVector weights = 1,
+    Rcpp::Nullable<Rcpp::NumericVector> weights = R_NilValue,
     int by = 1,
     int align = 0
 ) {
@@ -436,7 +459,7 @@ Rcpp::NumericVector roll_sd(
 Rcpp::NumericVector roll_hampel(
     Rcpp::NumericVector x,
     unsigned int n = 5,
-    Rcpp::NumericVector weights = 1,
+    Rcpp::Nullable<Rcpp::NumericVector> weights = R_NilValue,
     int by = 1,
     int align = 0
 ) {
@@ -460,7 +483,7 @@ Rcpp::NumericVector roll_hampel(
 Rcpp::NumericVector roll_max(
     Rcpp::NumericVector x,
     unsigned int n = 5,
-    Rcpp::NumericVector weights = 1,
+    Rcpp::Nullable<Rcpp::NumericVector> weights = R_NilValue,
     int by = 1,
     int align = 0
 ) {
@@ -484,7 +507,7 @@ Rcpp::NumericVector roll_max(
 Rcpp::NumericVector roll_min(
     Rcpp::NumericVector x,
     unsigned int n = 5,
-    Rcpp::NumericVector weights = 1,
+    Rcpp::Nullable<Rcpp::NumericVector> weights = R_NilValue,
     int by = 1,
     int align = 0
 ) {
@@ -508,7 +531,7 @@ Rcpp::NumericVector roll_min(
 Rcpp::NumericVector roll_sum(
     Rcpp::NumericVector x,
     unsigned int n = 5,
-    Rcpp::NumericVector weights = 1,
+    Rcpp::Nullable<Rcpp::NumericVector> weights = R_NilValue,
     int by = 1,
     int align = 0
 ) {
@@ -532,7 +555,7 @@ Rcpp::NumericVector roll_sum(
 Rcpp::NumericVector roll_prod(
     Rcpp::NumericVector x,
     unsigned int n = 5,
-    Rcpp::NumericVector weights = 1,
+    Rcpp::Nullable<Rcpp::NumericVector> weights = R_NilValue,
     int by = 1,
     int align = 0
 ) {
