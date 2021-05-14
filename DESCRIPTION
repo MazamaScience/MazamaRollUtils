@@ -4,11 +4,11 @@ Title: Efficient rolling functions
 Version: 0.1.2
 Date: 2021-05-14
 Authors@R: c(
-    person("Jonathan", "Callahan", email="jonathan.s.callahan@gmail.com", role=c("aut","cre")),
-    person("Hans", "Martin", email="hans@mazamascience.com", role=c("aut", "cre"))
+    person("Jonathan", "Callahan", email="jonathan.s.callahan@gmail.com", role=c("aut", "cre")),
+    person("Hans", "Martin", email="hans@mazamascience.com", role=c("aut"))
     )
 Author: Jonathan Callahan [aut, cre],
-    Hans Martin [aut, cre]
+    Hans Martin [aut]
 Maintainer: Jonathan Callahan <jonathan.s.callahan@gmail.com>
 Description: A suite of utility functions for calculating rolling mins, means, maxes and other functions.
 License: GPL-3
