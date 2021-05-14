@@ -4,8 +4,8 @@
 #' \href{https://usepa.servicenowservices.com/airnow?id=kb_article_view&sys_id=fed0037b1b62545040a1a7dbe54bcbd4}{here}.
 #'
 #' @param x A numeric vector.
-#' @param n
-#' @param threshold
+#' @param n An integer window length.
+#' @param threshold A weight factor threshold.
 #'
 #' @return
 #' @export
