@@ -350,7 +350,6 @@ private:
 
 //' @title Roll Median
 //'
-//' @description
 //'
 //' @param x A numeric vector.
 //' @param n An integer window length.
@@ -358,7 +357,7 @@ private:
 //' weight. If `NULL`, unit weights are used.
 //' @param by An integer to shift the window by.
 //' @param align A signed integer representing the windows alignment.
-// '-1 (left) | 0 (center) | 1 (right).
+//' -1 (left) | 0 (center) | 1 (right).
 //'
 //' @return numeric vector of length(x)
 //'
@@ -381,7 +380,7 @@ Rcpp::NumericVector roll_median (
   return roll.median();
 }
 
-//' Roll Mean
+//' @title Roll Mean
 //'
 //' @param x A numeric vector.
 //' @param n An integer window length.
@@ -389,7 +388,7 @@ Rcpp::NumericVector roll_median (
 //' weight. If `NULL`, unit weights are used.
 //' @param by An integer to shift the window by.
 //' @param align A signed integer representing the windows alignment.
-// '-1 (left) | 0 (center) | 1 (right).
+//' -1 (left) | 0 (center) | 1 (right).
 //'
 //' @return numeric vector of length(x)
 //'
@@ -412,7 +411,7 @@ Rcpp::NumericVector roll_mean(
   return roll.mean();
 }
 
-//' Roll Variance
+//' @title Roll Variance
 //'
 //' @param x A numeric vector.
 //' @param n An integer window length.
@@ -420,11 +419,16 @@ Rcpp::NumericVector roll_mean(
 //' weight. If `NULL`, unit weights are used.
 //' @param by An integer to shift the window by.
 //' @param align A signed integer representing the windows alignment.
-// '-1 (left) | 0 (center) | 1 (right).
+//' -1 (left) | 0 (center) | 1 (right).
 //'
 //' @return numeric vector of length(x)
 //'
 //' @examples
+//' # load airquality
+//' data("airquality")
+//'
+//' # calculate moving variance of adjacent measurements
+//' roll_mean(airquality$Temp, n = 3)
 // [[Rcpp::export]]
 Rcpp::NumericVector roll_var(
     Rcpp::NumericVector x,
@@ -438,7 +442,7 @@ Rcpp::NumericVector roll_var(
   return roll.var();
 }
 
-//' Roll Standard Deviation
+//' @title Roll Standard Deviation
 //'
 //' @param x A numeric vector.
 //' @param n An integer window length.
@@ -446,11 +450,16 @@ Rcpp::NumericVector roll_var(
 //' weight. If `NULL`, unit weights are used.
 //' @param by An integer to shift the window by.
 //' @param align A signed integer representing the windows alignment.
-// '-1 (left) | 0 (center) | 1 (right).
+//' -1 (left) | 0 (center) | 1 (right).
 //'
 //' @return numeric vector of length(x)
 //'
 //' @examples
+//' # load airquality
+//' data("airquality")
+//'
+//' # calculate moving standard deviation of adjacent measurements
+//' roll_mean(airquality$Temp, n = 3)
 // [[Rcpp::export]]
 Rcpp::NumericVector roll_sd(
     Rcpp::NumericVector x,
@@ -464,7 +473,7 @@ Rcpp::NumericVector roll_sd(
   return roll.sd();
 }
 
-//' Roll Hampel
+//' @title Roll Hampel
 //'
 //' @param x A numeric vector.
 //' @param n An integer window length.
@@ -472,11 +481,16 @@ Rcpp::NumericVector roll_sd(
 //' weight. If `NULL`, unit weights are used.
 //' @param by An integer to shift the window by.
 //' @param align A signed integer representing the windows alignment.
-// '-1 (left) | 0 (center) | 1 (right).
+//' -1 (left) | 0 (center) | 1 (right).
 //'
 //' @return numeric vector of length(x)
 //'
 //' @examples
+//' # load airquality
+//' data("airquality")
+//'
+//' # calculate moving hampel value of next 3 measurements
+//' roll_mean(airquality$Temp, n = 3, align = 1)
 // [[Rcpp::export]]
 Rcpp::NumericVector roll_hampel(
     Rcpp::NumericVector x,
@@ -490,7 +504,7 @@ Rcpp::NumericVector roll_hampel(
   return roll.hampel();
 }
 
-//' Roll Max
+//' @title Roll Max
 //'
 //' @param x A numeric vector.
 //' @param n An integer window length.
@@ -498,11 +512,16 @@ Rcpp::NumericVector roll_hampel(
 //' weight. If `NULL`, unit weights are used.
 //' @param by An integer to shift the window by.
 //' @param align A signed integer representing the windows alignment.
-// '-1 (left) | 0 (center) | 1 (right).
+//' -1 (left) | 0 (center) | 1 (right).
 //'
 //' @return numeric vector of length(x)
 //'
 //' @examples
+//' # load airquality
+//' data("airquality")
+//'
+//' # calculate moving maximum of adjacent measurements
+//' roll_mean(airquality$Temp, n = 3)
 // [[Rcpp::export]]
 Rcpp::NumericVector roll_max(
     Rcpp::NumericVector x,
@@ -516,7 +535,7 @@ Rcpp::NumericVector roll_max(
   return roll.max();
 }
 
-//' Roll Min
+//' @title Roll Min
 //'
 //' @param x A numeric vector.
 //' @param n An integer window length.
@@ -524,11 +543,16 @@ Rcpp::NumericVector roll_max(
 //' weight. If `NULL`, unit weights are used.
 //' @param by An integer to shift the window by.
 //' @param align A signed integer representing the windows alignment.
-// '-1 (left) | 0 (center) | 1 (right).
+//' -1 (left) | 0 (center) | 1 (right).
 //'
 //' @return numeric vector of length(x)
 //'
 //' @examples
+//' # load airquality
+//' data("airquality")
+//'
+//' # calculate moving minimum of last 24 measurements
+//' roll_min(airquality$Temp, n = 24, align = -1)
 // [[Rcpp::export]]
 Rcpp::NumericVector roll_min(
     Rcpp::NumericVector x,
@@ -542,7 +566,7 @@ Rcpp::NumericVector roll_min(
   return roll.min();
 }
 
-//' Roll Sum
+//' @title Roll Sum
 //'
 //' @param x A numeric vector.
 //' @param n An integer window length.
@@ -550,11 +574,16 @@ Rcpp::NumericVector roll_min(
 //' weight. If `NULL`, unit weights are used.
 //' @param by An integer to shift the window by.
 //' @param align A signed integer representing the windows alignment.
-// '-1 (left) | 0 (center) | 1 (right).
+//' -1 (left) | 0 (center) | 1 (right).
 //'
 //' @return numeric vector of length(x)
 //'
 //' @examples
+//' # load airquality
+//' data("airquality")
+//'
+//' # calculate moving sum of last 3 measurements
+//' roll_sum(airquality$Temp, n = 3, align = -1)
 // [[Rcpp::export]]
 Rcpp::NumericVector roll_sum(
     Rcpp::NumericVector x,
@@ -568,7 +597,7 @@ Rcpp::NumericVector roll_sum(
   return roll.sum();
 }
 
-//' Roll Product
+//' @title Roll Product
 //'
 //' @param x A numeric vector.
 //' @param n An integer window length.
@@ -576,11 +605,16 @@ Rcpp::NumericVector roll_sum(
 //' weight. If `NULL`, unit weights are used.
 //' @param by An integer to shift the window by.
 //' @param align A signed integer representing the windows alignment.
-// '-1 (left) | 0 (center) | 1 (right).
+//' -1 (left) | 0 (center) | 1 (right).
 //'
 //' @return numeric vector of length(x)
 //'
 //' @examples
+//' # load airquality
+//' data("airquality")
+//'
+//' # calculate moving product of 12 measurements
+//' roll_prod(airquality$Temp, n = 12)
 // [[Rcpp::export]]
 Rcpp::NumericVector roll_prod(
     Rcpp::NumericVector x,

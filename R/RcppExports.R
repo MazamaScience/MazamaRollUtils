@@ -3,7 +3,6 @@
 
 #' @title Roll Median
 #'
-#' @description Yo.
 #'
 #' @param x A numeric vector.
 #' @param n An integer window length.
@@ -11,92 +10,11 @@
 #' weight. If `NULL`, unit weights are used.
 #' @param by An integer to shift the window by.
 #' @param align A signed integer representing the windows alignment.
-NULL
-
-#' Roll Mean
-#'
-#' @param x A numeric vector.
-#' @param n An integer window length.
-#' @param weights A numeric vector of n-length specifying each \code{n}th
-#' weight. If `NULL`, unit weights are used.
-#' @param by An integer to shift the window by.
-#' @param align A signed integer representing the windows alignment.
-NULL
-
-#' Roll Variance
-#'
-#' @param x A numeric vector.
-#' @param n An integer window length.
-#' @param weights A numeric vector of n-length specifying each \code{n}th
-#' weight. If `NULL`, unit weights are used.
-#' @param by An integer to shift the window by.
-#' @param align A signed integer representing the windows alignment.
-NULL
-
-#' Roll Standard Deviation
-#'
-#' @param x A numeric vector.
-#' @param n An integer window length.
-#' @param weights A numeric vector of n-length specifying each \code{n}th
-#' weight. If `NULL`, unit weights are used.
-#' @param by An integer to shift the window by.
-#' @param align A signed integer representing the windows alignment.
-NULL
-
-#' Roll Hampel
-#'
-#' @param x A numeric vector.
-#' @param n An integer window length.
-#' @param weights A numeric vector of n-length specifying each \code{n}th
-#' weight. If `NULL`, unit weights are used.
-#' @param by An integer to shift the window by.
-#' @param align A signed integer representing the windows alignment.
-NULL
-
-#' Roll Max
-#'
-#' @param x A numeric vector.
-#' @param n An integer window length.
-#' @param weights A numeric vector of n-length specifying each \code{n}th
-#' weight. If `NULL`, unit weights are used.
-#' @param by An integer to shift the window by.
-#' @param align A signed integer representing the windows alignment.
-NULL
-
-#' Roll Min
-#'
-#' @param x A numeric vector.
-#' @param n An integer window length.
-#' @param weights A numeric vector of n-length specifying each \code{n}th
-#' weight. If `NULL`, unit weights are used.
-#' @param by An integer to shift the window by.
-#' @param align A signed integer representing the windows alignment.
-NULL
-
-#' Roll Sum
-#'
-#' @param x A numeric vector.
-#' @param n An integer window length.
-#' @param weights A numeric vector of n-length specifying each \code{n}th
-#' weight. If `NULL`, unit weights are used.
-#' @param by An integer to shift the window by.
-#' @param align A signed integer representing the windows alignment.
-NULL
-
-#' Roll Product
-#'
-#' @param x A numeric vector.
-#' @param n An integer window length.
-#' @param weights A numeric vector of n-length specifying each \code{n}th
-#' weight. If `NULL`, unit weights are used.
-#' @param by An integer to shift the window by.
-#' @param align A signed integer representing the windows alignment.
-NULL
-
+#' -1 (left) | 0 (center) | 1 (right).
 #'
 #' @return numeric vector of length(x)
 #'
-#' @example
+#' @examples
 #' # load airquality
 #' data("airquality")
 #'
@@ -106,6 +24,15 @@ roll_median <- function(x, n = 5L, weights = NULL, by = 1L, align = 0L) {
     .Call(`_MazamaRollUtils_roll_median`, x, n, weights, by, align)
 }
 
+#' @title Roll Mean
+#'
+#' @param x A numeric vector.
+#' @param n An integer window length.
+#' @param weights A numeric vector of n-length specifying each \code{n}th
+#' weight. If `NULL`, unit weights are used.
+#' @param by An integer to shift the window by.
+#' @param align A signed integer representing the windows alignment.
+#' -1 (left) | 0 (center) | 1 (right).
 #'
 #' @return numeric vector of length(x)
 #'
@@ -119,58 +46,156 @@ roll_mean <- function(x, n = 5L, weights = NULL, by = 1L, align = 0L) {
     .Call(`_MazamaRollUtils_roll_mean`, x, n, weights, by, align)
 }
 
+#' @title Roll Variance
+#'
+#' @param x A numeric vector.
+#' @param n An integer window length.
+#' @param weights A numeric vector of n-length specifying each \code{n}th
+#' weight. If `NULL`, unit weights are used.
+#' @param by An integer to shift the window by.
+#' @param align A signed integer representing the windows alignment.
+#' -1 (left) | 0 (center) | 1 (right).
 #'
 #' @return numeric vector of length(x)
 #'
 #' @examples
+#' # load airquality
+#' data("airquality")
+#'
+#' # calculate moving variance of adjacent measurements
+#' roll_mean(airquality$Temp, n = 3)
 roll_var <- function(x, n = 5L, weights = NULL, by = 1L, align = 0L) {
     .Call(`_MazamaRollUtils_roll_var`, x, n, weights, by, align)
 }
 
+#' @title Roll Standard Deviation
+#'
+#' @param x A numeric vector.
+#' @param n An integer window length.
+#' @param weights A numeric vector of n-length specifying each \code{n}th
+#' weight. If `NULL`, unit weights are used.
+#' @param by An integer to shift the window by.
+#' @param align A signed integer representing the windows alignment.
+#' -1 (left) | 0 (center) | 1 (right).
 #'
 #' @return numeric vector of length(x)
 #'
 #' @examples
+#' # load airquality
+#' data("airquality")
+#'
+#' # calculate moving standard deviation of adjacent measurements
+#' roll_mean(airquality$Temp, n = 3)
 roll_sd <- function(x, n = 5L, weights = NULL, by = 1L, align = 0L) {
     .Call(`_MazamaRollUtils_roll_sd`, x, n, weights, by, align)
 }
 
+#' @title Roll Hampel
+#'
+#' @param x A numeric vector.
+#' @param n An integer window length.
+#' @param weights A numeric vector of n-length specifying each \code{n}th
+#' weight. If `NULL`, unit weights are used.
+#' @param by An integer to shift the window by.
+#' @param align A signed integer representing the windows alignment.
+#' -1 (left) | 0 (center) | 1 (right).
 #'
 #' @return numeric vector of length(x)
 #'
 #' @examples
+#' # load airquality
+#' data("airquality")
+#'
+#' # calculate moving hampel value of next 3 measurements
+#' roll_mean(airquality$Temp, n = 3, align = 1)
 roll_hampel <- function(x, n = 5L, weights = NULL, by = 1L, align = 0L) {
     .Call(`_MazamaRollUtils_roll_hampel`, x, n, weights, by, align)
 }
 
+#' @title Roll Max
+#'
+#' @param x A numeric vector.
+#' @param n An integer window length.
+#' @param weights A numeric vector of n-length specifying each \code{n}th
+#' weight. If `NULL`, unit weights are used.
+#' @param by An integer to shift the window by.
+#' @param align A signed integer representing the windows alignment.
+#' -1 (left) | 0 (center) | 1 (right).
 #'
 #' @return numeric vector of length(x)
 #'
 #' @examples
+#' # load airquality
+#' data("airquality")
+#'
+#' # calculate moving maximum of adjacent measurements
+#' roll_mean(airquality$Temp, n = 3)
 roll_max <- function(x, n = 5L, weights = NULL, by = 1L, align = 0L) {
     .Call(`_MazamaRollUtils_roll_max`, x, n, weights, by, align)
 }
 
+#' @title Roll Min
+#'
+#' @param x A numeric vector.
+#' @param n An integer window length.
+#' @param weights A numeric vector of n-length specifying each \code{n}th
+#' weight. If `NULL`, unit weights are used.
+#' @param by An integer to shift the window by.
+#' @param align A signed integer representing the windows alignment.
+#' -1 (left) | 0 (center) | 1 (right).
 #'
 #' @return numeric vector of length(x)
 #'
 #' @examples
+#' # load airquality
+#' data("airquality")
+#'
+#' # calculate moving minimum of last 24 measurements
+#' roll_min(airquality$Temp, n = 24, align = -1)
 roll_min <- function(x, n = 5L, weights = NULL, by = 1L, align = 0L) {
     .Call(`_MazamaRollUtils_roll_min`, x, n, weights, by, align)
 }
 
+#' @title Roll Sum
+#'
+#' @param x A numeric vector.
+#' @param n An integer window length.
+#' @param weights A numeric vector of n-length specifying each \code{n}th
+#' weight. If `NULL`, unit weights are used.
+#' @param by An integer to shift the window by.
+#' @param align A signed integer representing the windows alignment.
+#' -1 (left) | 0 (center) | 1 (right).
 #'
 #' @return numeric vector of length(x)
 #'
 #' @examples
+#' # load airquality
+#' data("airquality")
+#'
+#' # calculate moving sum of last 3 measurements
+#' roll_sum(airquality$Temp, n = 3, align = -1)
 roll_sum <- function(x, n = 5L, weights = NULL, by = 1L, align = 0L) {
     .Call(`_MazamaRollUtils_roll_sum`, x, n, weights, by, align)
 }
 
+#' @title Roll Product
+#'
+#' @param x A numeric vector.
+#' @param n An integer window length.
+#' @param weights A numeric vector of n-length specifying each \code{n}th
+#' weight. If `NULL`, unit weights are used.
+#' @param by An integer to shift the window by.
+#' @param align A signed integer representing the windows alignment.
+#' -1 (left) | 0 (center) | 1 (right).
 #'
 #' @return numeric vector of length(x)
 #'
 #' @examples
+#' # load airquality
+#' data("airquality")
+#'
+#' # calculate moving product of 12 measurements
+#' roll_prod(airquality$Temp, n = 12)
 roll_prod <- function(x, n = 5L, weights = NULL, by = 1L, align = 0L) {
     .Call(`_MazamaRollUtils_roll_prod`, x, n, weights, by, align)
 }
