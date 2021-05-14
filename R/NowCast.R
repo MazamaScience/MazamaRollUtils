@@ -40,7 +40,7 @@ nowcast <- function(x, n = 12, threshold = 0.5) {
       # power hour
       powers <- seq(0, n - 1, 1)
 
-      # Compute NowCast TODO: Make masked.
+      # Compute NowCast
       nc <- sum(x * corrected_weight_factor ** powers, na.rm = TRUE) /
           sum(corrected_weight_factor ** powers, na.rm = TRUE)
 
