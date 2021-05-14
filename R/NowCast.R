@@ -7,11 +7,18 @@
 #' @param n An integer window length.
 #' @param threshold A weight factor threshold.
 #'
-#' @return
+#' @return A numeric vector of length(x)
 #' @export
 #'
 #' @examples
+#' data("airquality")
+#'
+#' nowcast(airquality$Ozone)
 nowcast <- function(x, n = 12, threshold = 0.5) {
+
+  if (n > length(x)) {
+    stop("Window size `n` is larger than length(`x`).")
+  }
 
   # Use `zoo's` rollapply generic to apply algorithm to each window of n by 1
   zoo::rollapply(
