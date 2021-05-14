@@ -10,9 +10,11 @@ A suite of utility functions for calculating rolling mins, means,
 maxes and other functions.
 ```
 
-## Background
+## Getting Started
 
-TODO
+```r
+devtools::install_github("MazamaScience/MazamaRollUtils")
+```
 
 ----
 
