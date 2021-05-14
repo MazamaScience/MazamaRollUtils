@@ -23,7 +23,7 @@ index weight. If \code{NULL}, the unit weight is used.}
 numeric vector of length(x)
 }
 \description{
-Apply a moving-window hampel value function to to a numeric
+Apply a moving-window hampel value function to a numeric
 vector.
 }
 \details{

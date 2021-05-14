@@ -23,7 +23,7 @@ index weight. If \code{NULL}, the unit weight is used.}
 numeric vector of length(x)
 }
 \description{
-Apply a moving-window variance function to to a numeric vector.
+Apply a moving-window variance function to a numeric vector.
 }
 \details{
 Each window of \code{n}-length is applied \code{weight} and then

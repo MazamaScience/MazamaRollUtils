@@ -23,7 +23,7 @@ index weight. If \code{NULL}, the unit weight is used.}
 numeric vector of length(x)
 }
 \description{
-Apply a moving-window standard deviation function to to a
+Apply a moving-window standard deviation function to a
 numeric vector.
 }
 \details{
