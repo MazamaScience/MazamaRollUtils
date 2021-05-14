@@ -350,7 +350,7 @@ private:
 
 //' @title Roll Median
 //'
-//' @description Apply a moving-window median function to to a numeric vector.
+//' @description Apply a moving-window median function to a numeric vector.
 //'
 //' @details Each window of \code{n}-length is applied \code{weight} and then
 //' slid/shifted/rolled \code{by} a positive integer amount about the window's
@@ -387,7 +387,7 @@ Rcpp::NumericVector roll_median (
 
 //' @title Roll Mean
 //'
-//' @description Apply a moving-window mean function to to a numeric vector.
+//' @description Apply a moving-window mean function to a numeric vector.
 //'
 //' @details Each window of \code{n}-length is applied \code{weight} and then
 //' slid/shifted/rolled \code{by} a positive integer amount about the window's
@@ -424,7 +424,7 @@ Rcpp::NumericVector roll_mean(
 
 //' @title Roll Variance
 //'
-//' @description Apply a moving-window variance function to to a numeric vector.
+//' @description Apply a moving-window variance function to a numeric vector.
 //'
 //' @details Each window of \code{n}-length is applied \code{weight} and then
 //' slid/shifted/rolled \code{by} a positive integer amount about the window's
@@ -461,7 +461,7 @@ Rcpp::NumericVector roll_var(
 
 //' @title Roll Standard Deviation
 //'
-//' @description Apply a moving-window standard deviation function to to a
+//' @description Apply a moving-window standard deviation function to a
 //' numeric vector.
 //'
 //' @details Each window of \code{n}-length is applied \code{weight} and then
@@ -499,7 +499,7 @@ Rcpp::NumericVector roll_sd(
 
 //' @title Roll Hampel
 //'
-//' @description Apply a moving-window hampel value function to to a numeric
+//' @description Apply a moving-window hampel value function to a numeric
 //' vector.
 //'
 //' @details Each window of \code{n}-length is applied \code{weight} and then
@@ -574,7 +574,7 @@ Rcpp::NumericVector roll_max(
 
 //' @title Roll Min
 //'
-//' @description Apply a moving-window minimum function to to a numeric vector.
+//' @description Apply a moving-window minimum function to a numeric vector.
 //'
 //' @details Each window of \code{n}-length is applied \code{weight} and then
 //' slid/shifted/rolled \code{by} a positive integer amount about the window's
