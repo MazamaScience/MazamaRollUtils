@@ -9,7 +9,9 @@ nowcast(x, n = 12, threshold = 0.5)
 \arguments{
 \item{x}{A numeric vector.}
 
-\item{threshold}{}
+\item{n}{An integer window length.}
+
+\item{threshold}{A weight factor threshold.}
 }
 \value{
 

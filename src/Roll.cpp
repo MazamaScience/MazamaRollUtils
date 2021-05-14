@@ -348,17 +348,26 @@ private:
 
 /* ----- Rcpp Exported ----- */
 
-//' Roll Median
+//' @title Roll Median
 //'
-//' @param x A numeric vector
-//' @param n An integer window size #'
-//' @param weights A numeric vector of n-length specifying each \code{n}th weight.
-//' @param by Integer to shift window by
-//' @param align Signed Integer window alignment, -1 (left) | 0 (center) | 1 (right)
+//' @description
+//'
+//' @param x A numeric vector.
+//' @param n An integer window length.
+//' @param weights A numeric vector of n-length specifying each \code{n}th
+//' weight. If `NULL`, unit weights are used.
+//' @param by An integer to shift the window by.
+//' @param align A signed integer representing the windows alignment.
+// '-1 (left) | 0 (center) | 1 (right).
 //'
 //' @return numeric vector of length(x)
 //'
 //' @examples
+//' # load airquality
+//' data("airquality")
+//'
+//' # calculate moving median of adjacent measurements
+//' roll_mean(airquality$Temp, n = 3)
 // [[Rcpp::export]]
 Rcpp::NumericVector roll_median (
     Rcpp::NumericVector x,
@@ -374,15 +383,22 @@ Rcpp::NumericVector roll_median (
 
 //' Roll Mean
 //'
-//' @param x A numeric vector
-//' @param n An integer window size #'
-//' @param weights A numeric vector of n-length specifying each \code{n}th weight.
-//' @param by Integer to shift window by
-//' @param align Signed Integer window alignment, -1 (left) | 0 (center) | 1 (right)
+//' @param x A numeric vector.
+//' @param n An integer window length.
+//' @param weights A numeric vector of n-length specifying each \code{n}th
+//' weight. If `NULL`, unit weights are used.
+//' @param by An integer to shift the window by.
+//' @param align A signed integer representing the windows alignment.
+// '-1 (left) | 0 (center) | 1 (right).
 //'
 //' @return numeric vector of length(x)
 //'
 //' @examples
+//' # load airquality
+//' data("airquality")
+//'
+//' # calculate moving average of last 6 measurements
+//' roll_mean(airquality$Temp, n = 6, align = -1)
 // [[Rcpp::export]]
 Rcpp::NumericVector roll_mean(
     Rcpp::NumericVector x,
@@ -398,11 +414,13 @@ Rcpp::NumericVector roll_mean(
 
 //' Roll Variance
 //'
-//' @param x A numeric vector
-//' @param n An integer window size #'
-//' @param weights A numeric vector of n-length specifying each \code{n}th weight.
-//' @param by Integer to shift window by
-//' @param align Signed Integer window alignment, -1 (left) | 0 (center) | 1 (right)
+//' @param x A numeric vector.
+//' @param n An integer window length.
+//' @param weights A numeric vector of n-length specifying each \code{n}th
+//' weight. If `NULL`, unit weights are used.
+//' @param by An integer to shift the window by.
+//' @param align A signed integer representing the windows alignment.
+// '-1 (left) | 0 (center) | 1 (right).
 //'
 //' @return numeric vector of length(x)
 //'
@@ -422,11 +440,13 @@ Rcpp::NumericVector roll_var(
 
 //' Roll Standard Deviation
 //'
-//' @param x A numeric vector
-//' @param n An integer window size #'
-//' @param weights A numeric vector of n-length specifying each \code{n}th weight.
-//' @param by Integer to shift window by
-//' @param align Signed Integer window alignment, -1 (left) | 0 (center) | 1 (right)
+//' @param x A numeric vector.
+//' @param n An integer window length.
+//' @param weights A numeric vector of n-length specifying each \code{n}th
+//' weight. If `NULL`, unit weights are used.
+//' @param by An integer to shift the window by.
+//' @param align A signed integer representing the windows alignment.
+// '-1 (left) | 0 (center) | 1 (right).
 //'
 //' @return numeric vector of length(x)
 //'
@@ -446,11 +466,13 @@ Rcpp::NumericVector roll_sd(
 
 //' Roll Hampel
 //'
-//' @param x A numeric vector
-//' @param n An integer window size #'
-//' @param weights A numeric vector of n-length specifying each \code{n}th weight.
-//' @param by Integer to shift window by
-//' @param align Signed Integer window alignment, -1 (left) | 0 (center) | 1 (right)
+//' @param x A numeric vector.
+//' @param n An integer window length.
+//' @param weights A numeric vector of n-length specifying each \code{n}th
+//' weight. If `NULL`, unit weights are used.
+//' @param by An integer to shift the window by.
+//' @param align A signed integer representing the windows alignment.
+// '-1 (left) | 0 (center) | 1 (right).
 //'
 //' @return numeric vector of length(x)
 //'
@@ -470,11 +492,13 @@ Rcpp::NumericVector roll_hampel(
 
 //' Roll Max
 //'
-//' @param x A numeric vector
-//' @param n An integer window size #'
-//' @param weights A numeric vector of n-length specifying each \code{n}th weight.
-//' @param by Integer to shift window by
-//' @param align Signed Integer window alignment, -1 (left) | 0 (center) | 1 (right)
+//' @param x A numeric vector.
+//' @param n An integer window length.
+//' @param weights A numeric vector of n-length specifying each \code{n}th
+//' weight. If `NULL`, unit weights are used.
+//' @param by An integer to shift the window by.
+//' @param align A signed integer representing the windows alignment.
+// '-1 (left) | 0 (center) | 1 (right).
 //'
 //' @return numeric vector of length(x)
 //'
@@ -494,11 +518,13 @@ Rcpp::NumericVector roll_max(
 
 //' Roll Min
 //'
-//' @param x A numeric vector
-//' @param n An integer window size #'
-//' @param weights A numeric vector of n-length specifying each \code{n}th weight.
-//' @param by Integer to shift window by
-//' @param align Signed Integer window alignment, -1 (left) | 0 (center) | 1 (right)
+//' @param x A numeric vector.
+//' @param n An integer window length.
+//' @param weights A numeric vector of n-length specifying each \code{n}th
+//' weight. If `NULL`, unit weights are used.
+//' @param by An integer to shift the window by.
+//' @param align A signed integer representing the windows alignment.
+// '-1 (left) | 0 (center) | 1 (right).
 //'
 //' @return numeric vector of length(x)
 //'
@@ -518,11 +544,13 @@ Rcpp::NumericVector roll_min(
 
 //' Roll Sum
 //'
-//' @param x A numeric vector
-//' @param n An integer window size #'
-//' @param weights A numeric vector of n-length specifying each \code{n}th weight.
-//' @param by Integer to shift window by
-//' @param align Signed Integer window alignment, -1 (left) | 0 (center) | 1 (right)
+//' @param x A numeric vector.
+//' @param n An integer window length.
+//' @param weights A numeric vector of n-length specifying each \code{n}th
+//' weight. If `NULL`, unit weights are used.
+//' @param by An integer to shift the window by.
+//' @param align A signed integer representing the windows alignment.
+// '-1 (left) | 0 (center) | 1 (right).
 //'
 //' @return numeric vector of length(x)
 //'
@@ -542,11 +570,13 @@ Rcpp::NumericVector roll_sum(
 
 //' Roll Product
 //'
-//' @param x A numeric vector
-//' @param n An integer window size #'
-//' @param weights A numeric vector of n-length specifying each \code{n}th weight.
-//' @param by Integer to shift window by
-//' @param align Signed Integer window alignment, -1 (left) | 0 (center) | 1 (right)
+//' @param x A numeric vector.
+//' @param n An integer window length.
+//' @param weights A numeric vector of n-length specifying each \code{n}th
+//' weight. If `NULL`, unit weights are used.
+//' @param by An integer to shift the window by.
+//' @param align A signed integer representing the windows alignment.
+// '-1 (left) | 0 (center) | 1 (right).
 //'
 //' @return numeric vector of length(x)
 //'
