@@ -4,7 +4,7 @@
 \alias{roll_median}
 \title{Roll Median}
 \usage{
-roll_median(x, n = 5L, weights = 1L, by = 1L, align = 0L)
+roll_median(x, n = 5L, weights = NULL, by = 1L, align = 0L)
 }
 \arguments{
 \item{x}{A numeric vector}

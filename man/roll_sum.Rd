@@ -4,7 +4,7 @@
 \alias{roll_sum}
 \title{Roll Sum}
 \usage{
-roll_sum(x, n = 5L, weights = 1L, by = 1L, align = 0L)
+roll_sum(x, n = 5L, weights = NULL, by = 1L, align = 0L)
 }
 \arguments{
 \item{x}{A numeric vector}

@@ -4,7 +4,7 @@
 \alias{roll_hampel}
 \title{Roll Hampel}
 \usage{
-roll_hampel(x, n = 5L, weights = 1L, by = 1L, align = 0L)
+roll_hampel(x, n = 5L, weights = NULL, by = 1L, align = 0L)
 }
 \arguments{
 \item{x}{A numeric vector}

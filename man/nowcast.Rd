@@ -8,6 +8,8 @@ nowcast(x, n = 12, threshold = 0.5)
 }
 \arguments{
 \item{x}{A numeric vector.}
+
+\item{threshold}{}
 }
 \value{
 

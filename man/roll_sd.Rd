@@ -4,7 +4,7 @@
 \alias{roll_sd}
 \title{Roll Standard Deviation}
 \usage{
-roll_sd(x, n = 5L, weights = 1L, by = 1L, align = 0L)
+roll_sd(x, n = 5L, weights = NULL, by = 1L, align = 0L)
 }
 \arguments{
 \item{x}{A numeric vector}
