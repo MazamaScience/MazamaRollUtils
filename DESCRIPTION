@@ -1,14 +1,14 @@
 Package: MazamaRollUtils
 Type: Package
-Title: Fast rolling functions for environmental time series
-Version: 0.1.0
-Date: 2021-04-23
+Title: Efficient rolling functions
+Version: 0.1.2
+Date: 2021-05-14
 Authors@R: c(
     person("Jonathan", "Callahan", email="jonathan.s.callahan@gmail.com", role=c("aut","cre")),
-    person("Hans", "Martin", email="hans@mazamascience.com", role=c("aut"))
+    person("Hans", "Martin", email="hans@mazamascience.com", role=c("aut", "cre"))
     )
 Author: Jonathan Callahan [aut, cre],
-    Hans Martin [aut]
+    Hans Martin [aut, cre]
 Maintainer: Jonathan Callahan <jonathan.s.callahan@gmail.com>
 Description: A suite of utility functions for calculating rolling mins, means, maxes and other functions.
 License: GPL-3
@@ -16,7 +16,6 @@ URL: https://github.com/MazamaScience/MazamaRollUtils
 BugReports: https://github.com/MazamaScience/MazamaRollUtils/issues
 Imports: 
   Rcpp (>= 1.0.6),
-  RcppRoll (>= 0.3.0), 
-  zoo (>= 1.8.9)
+  RcppRoll (>= 0.3.0)
 LinkingTo: Rcpp
 RoxygenNote: 7.1.1

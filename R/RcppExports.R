@@ -3,14 +3,19 @@
 
 #' @title Roll Median
 #'
+#' @description Apply a moving-window median function to to a numeric vector.
+#'
+#' @details Each window of \code{n}-length is applied \code{weight} and then
+#' slid/shifted/rolled \code{by} a positive integer amount about the window's
+#' \code{align}-ment index.
 #'
 #' @param x A numeric vector.
 #' @param n An integer window length.
-#' @param weights A numeric vector of n-length specifying each \code{n}th
-#' weight. If `NULL`, unit weights are used.
+#' @param weights A numeric vector of size \code{n} specifying each window
+#' index weight. If \code{NULL}, the unit weight is used.
 #' @param by An integer to shift the window by.
 #' @param align A signed integer representing the windows alignment.
-#' -1 (left) | 0 (center) | 1 (right).
+#' \code{-1(left)|0(center)|1(right)}.
 #'
 #' @return numeric vector of length(x)
 #'
@@ -26,13 +31,19 @@ roll_median <- function(x, n = 5L, weights = NULL, by = 1L, align = 0L) {
 
 #' @title Roll Mean
 #'
+#' @description Apply a moving-window mean function to to a numeric vector.
+#'
+#' @details Each window of \code{n}-length is applied \code{weight} and then
+#' slid/shifted/rolled \code{by} a positive integer amount about the window's
+#' \code{align}-ment index.
+#'
 #' @param x A numeric vector.
 #' @param n An integer window length.
-#' @param weights A numeric vector of n-length specifying each \code{n}th
-#' weight. If `NULL`, unit weights are used.
+#' @param weights A numeric vector of size \code{n} specifying each window
+#' index weight. If \code{NULL}, the unit weight is used.
 #' @param by An integer to shift the window by.
 #' @param align A signed integer representing the windows alignment.
-#' -1 (left) | 0 (center) | 1 (right).
+#' \code{-1(left)|0(center)|1(right)}.
 #'
 #' @return numeric vector of length(x)
 #'
@@ -48,13 +59,19 @@ roll_mean <- function(x, n = 5L, weights = NULL, by = 1L, align = 0L) {
 
 #' @title Roll Variance
 #'
+#' @description Apply a moving-window variance function to to a numeric vector.
+#'
+#' @details Each window of \code{n}-length is applied \code{weight} and then
+#' slid/shifted/rolled \code{by} a positive integer amount about the window's
+#' \code{align}-ment index.
+#'
 #' @param x A numeric vector.
 #' @param n An integer window length.
-#' @param weights A numeric vector of n-length specifying each \code{n}th
-#' weight. If `NULL`, unit weights are used.
+#' @param weights A numeric vector of size \code{n} specifying each window
+#' index weight. If \code{NULL}, the unit weight is used.
 #' @param by An integer to shift the window by.
 #' @param align A signed integer representing the windows alignment.
-#' -1 (left) | 0 (center) | 1 (right).
+#' \code{-1(left)|0(center)|1(right)}.
 #'
 #' @return numeric vector of length(x)
 #'
@@ -70,13 +87,20 @@ roll_var <- function(x, n = 5L, weights = NULL, by = 1L, align = 0L) {
 
 #' @title Roll Standard Deviation
 #'
+#' @description Apply a moving-window standard deviation function to to a
+#' numeric vector.
+#'
+#' @details Each window of \code{n}-length is applied \code{weight} and then
+#' slid/shifted/rolled \code{by} a positive integer amount about the window's
+#' \code{align}-ment index.
+#'
 #' @param x A numeric vector.
 #' @param n An integer window length.
-#' @param weights A numeric vector of n-length specifying each \code{n}th
-#' weight. If `NULL`, unit weights are used.
+#' @param weights A numeric vector of size \code{n} specifying each window
+#' index weight. If \code{NULL}, the unit weight is used.
 #' @param by An integer to shift the window by.
 #' @param align A signed integer representing the windows alignment.
-#' -1 (left) | 0 (center) | 1 (right).
+#' \code{-1(left)|0(center)|1(right)}.
 #'
 #' @return numeric vector of length(x)
 #'
@@ -92,13 +116,20 @@ roll_sd <- function(x, n = 5L, weights = NULL, by = 1L, align = 0L) {
 
 #' @title Roll Hampel
 #'
+#' @description Apply a moving-window hampel value function to to a numeric
+#' vector.
+#'
+#' @details Each window of \code{n}-length is applied \code{weight} and then
+#' slid/shifted/rolled \code{by} a positive integer amount about the window's
+#' \code{align}-ment index.
+#'
 #' @param x A numeric vector.
 #' @param n An integer window length.
-#' @param weights A numeric vector of n-length specifying each \code{n}th
-#' weight. If `NULL`, unit weights are used.
+#' @param weights A numeric vector of size \code{n} specifying each window
+#' index weight. If \code{NULL}, the unit weight is used.
 #' @param by An integer to shift the window by.
 #' @param align A signed integer representing the windows alignment.
-#' -1 (left) | 0 (center) | 1 (right).
+#' \code{-1(left)|0(center)|1(right)}.
 #'
 #' @return numeric vector of length(x)
 #'
@@ -114,13 +145,19 @@ roll_hampel <- function(x, n = 5L, weights = NULL, by = 1L, align = 0L) {
 
 #' @title Roll Max
 #'
+#' @description Apply a moving-window maximum function to a numeric vector.
+#'
+#' @details Each window of \code{n}-length is applied \code{weight} and then
+#' slid/shifted/rolled \code{by} a positive integer amount about the window's
+#' \code{align}-ment index.
+#'
 #' @param x A numeric vector.
 #' @param n An integer window length.
-#' @param weights A numeric vector of n-length specifying each \code{n}th
-#' weight. If `NULL`, unit weights are used.
+#' @param weights A numeric vector of size \code{n} specifying each window
+#' index weight. If \code{NULL}, the unit weight is used.
 #' @param by An integer to shift the window by.
 #' @param align A signed integer representing the windows alignment.
-#' -1 (left) | 0 (center) | 1 (right).
+#' \code{-1(left)|0(center)|1(right)}.
 #'
 #' @return numeric vector of length(x)
 #'
@@ -136,13 +173,19 @@ roll_max <- function(x, n = 5L, weights = NULL, by = 1L, align = 0L) {
 
 #' @title Roll Min
 #'
+#' @description Apply a moving-window minimum function to to a numeric vector.
+#'
+#' @details Each window of \code{n}-length is applied \code{weight} and then
+#' slid/shifted/rolled \code{by} a positive integer amount about the window's
+#' \code{align}-ment index.
+#'
 #' @param x A numeric vector.
 #' @param n An integer window length.
-#' @param weights A numeric vector of n-length specifying each \code{n}th
-#' weight. If `NULL`, unit weights are used.
+#' @param weights A numeric vector of size \code{n} specifying each window
+#' index weight. If \code{NULL}, the unit weight is used.
 #' @param by An integer to shift the window by.
 #' @param align A signed integer representing the windows alignment.
-#' -1 (left) | 0 (center) | 1 (right).
+#' \code{-1(left)|0(center)|1(right)}.
 #'
 #' @return numeric vector of length(x)
 #'
@@ -158,13 +201,19 @@ roll_min <- function(x, n = 5L, weights = NULL, by = 1L, align = 0L) {
 
 #' @title Roll Sum
 #'
+#' @description Apply a moving-window sum to a numeric vector.
+#'
+#' @details Each window of \code{n}-length is applied \code{weight} and then
+#' slid/shifted/rolled \code{by} a positive integer amount about the window's
+#' \code{align}-ment index.
+#'
 #' @param x A numeric vector.
 #' @param n An integer window length.
-#' @param weights A numeric vector of n-length specifying each \code{n}th
-#' weight. If `NULL`, unit weights are used.
+#' @param weights A numeric vector of size \code{n} specifying each window
+#' index weight. If \code{NULL}, the unit weight is used.
 #' @param by An integer to shift the window by.
 #' @param align A signed integer representing the windows alignment.
-#' -1 (left) | 0 (center) | 1 (right).
+#' \code{-1(left)|0(center)|1(right)}.
 #'
 #' @return numeric vector of length(x)
 #'
@@ -180,13 +229,19 @@ roll_sum <- function(x, n = 5L, weights = NULL, by = 1L, align = 0L) {
 
 #' @title Roll Product
 #'
+#' @description Apply a moving-window product function to a numeric vector.
+#'
+#' @details Each window of \code{n}-length is applied \code{weight} and then
+#' slid/shifted/rolled \code{by} a positive integer amount about the window's
+#' \code{align}-ment index.
+#'
 #' @param x A numeric vector.
 #' @param n An integer window length.
-#' @param weights A numeric vector of n-length specifying each \code{n}th
-#' weight. If `NULL`, unit weights are used.
+#' @param weights A numeric vector of size \code{n} specifying each window
+#' index weight. If \code{NULL}, the unit weight is used.
 #' @param by An integer to shift the window by.
 #' @param align A signed integer representing the windows alignment.
-#' -1 (left) | 0 (center) | 1 (right).
+#' \code{-1(left)|0(center)|1(right)}.
 #'
 #' @return numeric vector of length(x)
 #'

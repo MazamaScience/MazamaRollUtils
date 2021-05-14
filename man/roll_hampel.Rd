@@ -11,19 +11,25 @@ roll_hampel(x, n = 5L, weights = NULL, by = 1L, align = 0L)
 
 \item{n}{An integer window length.}
 
-\item{weights}{A numeric vector of n-length specifying each \code{n}th
-weight. If `NULL`, unit weights are used.}
+\item{weights}{A numeric vector of size \code{n} specifying each window
+index weight. If \code{NULL}, the unit weight is used.}
 
 \item{by}{An integer to shift the window by.}
 
 \item{align}{A signed integer representing the windows alignment.
--1 (left) | 0 (center) | 1 (right).}
+\code{-1(left)|0(center)|1(right)}.}
 }
 \value{
 numeric vector of length(x)
 }
 \description{
-Roll Hampel
+Apply a moving-window hampel value function to to a numeric
+vector.
+}
+\details{
+Each window of \code{n}-length is applied \code{weight} and then
+slid/shifted/rolled \code{by} a positive integer amount about the window's
+\code{align}-ment index.
 }
 \examples{
 # load airquality
