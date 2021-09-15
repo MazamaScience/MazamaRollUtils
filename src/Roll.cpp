@@ -543,12 +543,21 @@ Rcpp::NumericVector roll_hampel(
 //' slid/shifted/rolled \code{by} a positive integer amount about the window's
 //' \code{align}-ment index.
 //'
-//' @param x A numeric vector.
-//' @param n An integer window length.
-//' @param weights A numeric vector of size \code{n} specifying each window
+//' The \code{align} parameter determines the alignment of the current index
+//' within the window. Thus:
+//'
+//' \itemize{
+//'   \item{\code{align = -1 [*------]} will cause the returned vector to have n-1 \code{NA} values at the right end.}
+//'   \item{\code{align = 0 [---*---]} will cause the returned vector to have (n-1)/2 \code{NA} values at either end.}
+//'   \item{\code{align = 1 [------*]} will cause the returned vector to have n-1 \code{NA} values at the left end.}
+//' }
+//'
+//' @param x Numeric vector.
+//' @param n Integer window length.
+//' @param weights Numeric vector of size \code{n} specifying each window
 //' index weight. If \code{NULL}, the unit weight is used.
-//' @param by An integer to shift the window by.
-//' @param align A signed integer representing the windows alignment.
+//' @param by Integer to shift the window by.
+//' @param align Signed integer representing the window alignment.
 //' \code{-1(left)|0(center)|1(right)}.
 //'
 //' @return numeric vector of length(x)

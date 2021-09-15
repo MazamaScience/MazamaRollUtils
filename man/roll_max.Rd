@@ -7,16 +7,16 @@
 roll_max(x, n = 5L, weights = NULL, by = 1L, align = 0L)
 }
 \arguments{
-\item{x}{A numeric vector.}
+\item{x}{Numeric vector.}
 
-\item{n}{An integer window length.}
+\item{n}{Integer window length.}
 
-\item{weights}{A numeric vector of size \code{n} specifying each window
+\item{weights}{Numeric vector of size \code{n} specifying each window
 index weight. If \code{NULL}, the unit weight is used.}
 
-\item{by}{An integer to shift the window by.}
+\item{by}{Integer to shift the window by.}
 
-\item{align}{A signed integer representing the windows alignment.
+\item{align}{Signed integer representing the window alignment.
 \code{-1(left)|0(center)|1(right)}.}
 }
 \value{
@@ -29,6 +29,15 @@ Apply a moving-window maximum function to a numeric vector.
 Each window of \code{n}-length is applied \code{weight} and then
 slid/shifted/rolled \code{by} a positive integer amount about the window's
 \code{align}-ment index.
+
+The \code{align} parameter determines the alignment of the current index
+within the window. Thus:
+
+\itemize{
+  \item{\code{align = -1 [*------]} will cause the returned vector to have n-1 \code{NA} values at the right end.}
+  \item{\code{align = 0 [---*---]} will cause the returned vector to have (n-1)/2 \code{NA} values at either end.}
+  \item{\code{align = 1 [------*]} will cause the returned vector to have n-1 \code{NA} values at the left end.}
+}
 }
 \examples{
 # load airquality
