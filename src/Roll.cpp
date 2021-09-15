@@ -553,20 +553,20 @@ Rcpp::NumericVector roll_hampel(
 //' }
 //'
 //' @param x Numeric vector.
-//' @param n Integer window length.
-//' @param weights Numeric vector of size \code{n} specifying each window
+//' @param n Integer window size.
+//' @param weights Numeric vector of length \code{n} specifying each window
 //' index weight. If \code{NULL}, the unit weight is used.
-//' @param by Integer to shift the window by.
+//' @param by Integer shift to use when sliding the window to the next location
 //' @param align Signed integer representing the window alignment.
 //' \code{-1(left)|0(center)|1(right)}.
 //'
 //' @return numeric vector of length(x)
 //'
 //' @examples
-//' # load airquality
+//' # Load package air quality data
 //' data("airquality")
 //'
-//' # calculate moving maximum of adjacent measurements
+//' # Calculate moving maximum of adjacent measurements
 //' roll_mean(airquality$Temp, n = 3)
 // [[Rcpp::export]]
 Rcpp::NumericVector roll_max(

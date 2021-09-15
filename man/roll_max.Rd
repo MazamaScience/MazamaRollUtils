@@ -9,12 +9,12 @@ roll_max(x, n = 5L, weights = NULL, by = 1L, align = 0L)
 \arguments{
 \item{x}{Numeric vector.}
 
-\item{n}{Integer window length.}
+\item{n}{Integer window size.}
 
-\item{weights}{Numeric vector of size \code{n} specifying each window
+\item{weights}{Numeric vector of length \code{n} specifying each window
 index weight. If \code{NULL}, the unit weight is used.}
 
-\item{by}{Integer to shift the window by.}
+\item{by}{Integer shift to use when sliding the window to the next location}
 
 \item{align}{Signed integer representing the window alignment.
 \code{-1(left)|0(center)|1(right)}.}
@@ -40,9 +40,9 @@ within the window. Thus:
 }
 }
 \examples{
-# load airquality
+# Load package air quality data
 data("airquality")
 
-# calculate moving maximum of adjacent measurements
+# Calculate moving maximum of adjacent measurements
 roll_mean(airquality$Temp, n = 3)
 }
