@@ -41,34 +41,54 @@ public:
       weights_ = weights;
     }
 
-    // init private vars
+    // Initialize private vars
     x_ = x;
     n_ = n;
     by_ = by;
     align_ = align;
-    kwin = n / 2;
+    kwin_ = n / 2;
 
   }
 
-  // Roll Mean
+  // Rolling Hampel
+  Rcpp::NumericVector hampel() {
+    int len = x_.size();
+    Rcpp::NumericVector out(len, NA_REAL);
+    for (int i = kwin_; i < len - kwin_; i += by_) {
+      out[i] = windowHampel(i);
+    }
+    return out;
+  }
+
+  // Rolling Maximum
+  Rcpp::NumericVector max() {
+    int len = x_.size();
+    Rcpp::NumericVector out(len, NA_REAL);
+    for (int i = kwin_; i < len - kwin_; i += by_) {
+      out[i] = windowMax(i);
+    }
+    return out;
+  }
+
+  // Rolling Mean
   Rcpp::NumericVector mean() {
     size_t len = x_.size();
     Rcpp::NumericVector out(len, NA_REAL);
     int start = 0;
     int end = len;
     switch (align_) {
-      case -1:
-        start = 0;
-        end = len - (n_ - 1);
-        break;
-      case 0:
-        start = kwin;
-        end = len - kwin;
-        break;
-      case 1:
-        start = n_ - 1;
-        end = len;
-        break;
+    case -1:
+      start = 0;
+      end = len - (n_ - 1);
+      break;
+    case 0:
+      start = kwin_;
+      end = len - kwin_;
+      break;
+    case 1:
+      start = n_ - 1;
+      end = len;
+      break;
     }
     for (int i = start; i < end; i += by_) {
       out[i] = windowMean(i);
@@ -76,61 +96,55 @@ public:
     return out;
   }
 
-  // Roll Median
+  // Rolling Median
   Rcpp::NumericVector median() {
     int len = x_.size();
     Rcpp::NumericVector out(len, NA_REAL);
-    for (int i = kwin; i < len - kwin; i += by_) {
+    for (int i = kwin_; i < len - kwin_; i += by_) {
       out[i] = windowMedian(i);
     }
     return out;
   }
 
-  // Roll Variance
-  Rcpp::NumericVector var() {
+  // Rolling Minimum
+  Rcpp::NumericVector min() {
     int len = x_.size();
     Rcpp::NumericVector out(len, NA_REAL);
-    int start = 0;
-    int end = len;
-    switch (align_) {
-      case -1:
-        start = 0;
-        end = len - (n_ - 1);
-        break;
-      case 0:
-        start = kwin;
-        end = len - kwin;
-        break;
-      case 1:
-        start = n_ - 1;
-        end = len;
-        break;
-    }
-    for (int i = start; i < end; i += by_) {
-      out[i] = windowVar(i);
+    for (int i = kwin_; i < len - kwin_; i += by_) {
+      out[i] = windowMin(i);
     }
     return out;
   }
 
-  // Roll Standard Deviation
+  // Rolling Product
+  Rcpp::NumericVector prod() {
+    int len = x_.size();
+    Rcpp::NumericVector out(len, NA_REAL);
+    for (int i = kwin_; i < len - kwin_; i += by_) {
+      out[i] = windowProd(i);
+    }
+    return out;
+  }
+
+  // Rolling Standard Deviation
   Rcpp::NumericVector sd() {
     int len = x_.size();
     Rcpp::NumericVector out(len, NA_REAL);
     int start = 0;
     int end = len;
     switch (align_) {
-      case -1:
-        start = 0;
-        end = len - (n_ - 1);
-        break;
-      case 0:
-        start = kwin;
-        end = len - kwin;
-        break;
-      case 1:
-        start = n_ - 1;
-        end = len;
-        break;
+    case -1:
+      start = 0;
+      end = len - (n_ - 1);
+      break;
+    case 0:
+      start = kwin_;
+      end = len - kwin_;
+      break;
+    case 1:
+      start = n_ - 1;
+      end = len;
+      break;
     }
     for (int i = start; i < end; i += by_) {
       out[i] = sqrt(windowVar(i));
@@ -138,50 +152,38 @@ public:
     return out;
   }
 
-  // Roll Hampel
-  Rcpp::NumericVector hampel() {
-    int len = x_.size();
-    Rcpp::NumericVector out(len, NA_REAL);
-    for (int i = kwin; i < len - kwin; i += by_) {
-      out[i] = windowHampel(i);
-    }
-    return out;
-  }
-
-  // Roll Maxima
-  Rcpp::NumericVector max() {
-    int len = x_.size();
-    Rcpp::NumericVector out(len, NA_REAL);
-    for (int i = kwin; i < len - kwin; i += by_) {
-      out[i] = windowMax(i);
-    }
-    return out;
-  }
-
-  // Roll Minima
-  Rcpp::NumericVector min() {
-    int len = x_.size();
-    Rcpp::NumericVector out(len, NA_REAL);
-    for (int i = kwin; i < len - kwin; i += by_) {
-      out[i] = windowMin(i);
-    }
-    return out;
-  }
-
+  // Rolling Sum
   Rcpp::NumericVector sum() {
     int len = x_.size();
     Rcpp::NumericVector out(len, NA_REAL);
-    for (int i = kwin; i < len - kwin; i += by_) {
+    for (int i = kwin_; i < len - kwin_; i += by_) {
       out[i] = windowSum(i);
     }
     return out;
   }
 
-  Rcpp::NumericVector prod() {
+  // Rolling Variance
+  Rcpp::NumericVector var() {
     int len = x_.size();
     Rcpp::NumericVector out(len, NA_REAL);
-    for (int i = kwin; i < len - kwin; i += by_) {
-      out[i] = windowProd(i);
+    int start = 0;
+    int end = len;
+    switch (align_) {
+    case -1:
+      start = 0;
+      end = len - (n_ - 1);
+      break;
+    case 0:
+      start = kwin_;
+      end = len - kwin_;
+      break;
+    case 1:
+      start = n_ - 1;
+      end = len;
+      break;
+    }
+    for (int i = start; i < end; i += by_) {
+      out[i] = windowVar(i);
     }
     return out;
   }
@@ -191,9 +193,44 @@ private:
   Rcpp::NumericVector x_; // Input Data
   int align_; // Alignment
   int n_; // Window Size
-  int kwin; // Half-window Size
+  int kwin_; // Half-window Size
   int by_; // Increment by
   Rcpp::NumericVector weights_;
+
+  // Window Hampel
+  double windowHampel(const int &index) {
+    const double kappa = 1.4826;
+    double median_i = windowMedian(index);
+    Rcpp::NumericVector tmp(n_, NA_REAL);
+    for (int i = 0; i < n_; ++i) { // MAD
+      size_t s = index - kwin_ + i;
+      tmp[i] = std::fabs(x_[s] - median_i) * weights_[i];
+    }
+    std::nth_element(tmp.begin(), tmp.begin() + kwin_, tmp.end());
+    double mad = tmp[kwin_];
+    return std::fabs(x_[index] - median_i) / (kappa * mad);
+  }
+
+  // Window Maximum
+  double windowMax(const int &index) {
+    double max = x_[index];
+    for (int i = 0; i < n_; ++i) {
+      int s;
+      switch (align_) {
+      case -1:
+        s = index + i;
+        break;
+      case 0:
+        s = index - kwin_ + i;
+        break;
+      case 1:
+        s = index - i;
+        break;
+      }
+      if (x_[s] * weights_[i] > max) max = x_[s] * weights_[i];
+    }
+    return max;
+  }
 
   // Window Mean
   double windowMean(const int &index) {
@@ -205,7 +242,7 @@ private:
           s = index + i;
           break;
         case 0:
-          s = index - kwin + i;
+          s = index - kwin_ + i;
           break;
         case 1:
           s = index - i;
@@ -221,71 +258,13 @@ private:
   double windowMedian(const int &index) {
     Rcpp::NumericVector tmp(n_, NA_REAL);
     for (int i = 0; i < n_; ++i) {
-      tmp[i] = x_[index - kwin + i] * weights_[i];
+      tmp[i] = x_[index - kwin_ + i] * weights_[i];
     }
-    std::nth_element(tmp.begin(), tmp.begin() + kwin, tmp.end());
-    return tmp[kwin];
+    std::nth_element(tmp.begin(), tmp.begin() + kwin_, tmp.end());
+    return tmp[kwin_];
   }
 
-  // Window Variance
-  double windowVar(const int &index) {
-    double var = 0;
-    double mean = windowMean(index);
-    for (int i = 0; i < n_; ++i) {
-      int s;
-      switch (align_) {
-        case -1:
-          s = index + i;
-          break;
-        case 0:
-          s = index - kwin + i;
-          break;
-        case 1:
-          s = index - i;
-          break;
-      }
-      var += (x_[s] - mean) * (x_[s] - mean) * weights_[i];
-    }
-    var /= n_ - 1;
-    return var;
-  }
-
-  // Window Hampel
-  double windowHampel(const int &index) {
-    const double kappa = 1.4826;
-    double median_i = windowMedian(index);
-    Rcpp::NumericVector tmp(n_, NA_REAL);
-    for (int i = 0; i < n_; ++i) { // MAD
-      size_t s = index - kwin + i;
-      tmp[i] = std::fabs(x_[s] - median_i) * weights_[i];
-    }
-    std::nth_element(tmp.begin(), tmp.begin() + kwin, tmp.end());
-    double mad = tmp[kwin];
-    return std::fabs(x_[index] - median_i) / (kappa * mad);
-  }
-
-  // Window Maxima
-  double windowMax(const int &index) {
-    double max = x_[index];
-    for (int i = 0; i < n_; ++i) {
-      int s;
-      switch (align_) {
-      case -1:
-        s = index + i;
-        break;
-      case 0:
-        s = index - kwin + i;
-        break;
-      case 1:
-        s = index - i;
-        break;
-      }
-      if (x_[s] * weights_[i] > max) max = x_[s] * weights_[i];
-    }
-    return max;
-  }
-
-  // Window Minima
+  // Window Minimum
   double windowMin(const int &index) {
     double min = x_[index];
     for (int i = 0; i < n_; ++i) {
@@ -295,7 +274,7 @@ private:
         s = index + i;
         break;
       case 0:
-        s = index - kwin + i;
+        s = index - kwin_ + i;
         break;
       case 1:
         s = index - i;
@@ -306,27 +285,7 @@ private:
     return min;
   }
 
-  double windowSum(const int &index) {
-    double sum = 0;
-    for (size_t i = 0; i < n_; ++i) {
-      int s;
-      switch (align_) {
-      case -1:
-        s = index + i;
-        break;
-      case 0:
-        s = index - kwin + i;
-        break;
-      case 1:
-        s = index - i;
-        break;
-      }
-      sum += x_[s] * weights_[i];
-    }
-
-    return sum;
-  }
-
+  // Window Product
   double windowProd(const int &index) {
     double prod = 1;
     for (size_t i = 0; i < n_; ++i) {
@@ -336,7 +295,7 @@ private:
         s = index + i;
         break;
       case 0:
-        s = index - kwin + i;
+        s = index - kwin_ + i;
         break;
       case 1:
         s = index - i;
@@ -348,158 +307,54 @@ private:
     return prod;
   }
 
+  // Window Sum
+  double windowSum(const int &index) {
+    double sum = 0;
+    for (size_t i = 0; i < n_; ++i) {
+      int s;
+      switch (align_) {
+      case -1:
+        s = index + i;
+        break;
+      case 0:
+        s = index - kwin_ + i;
+        break;
+      case 1:
+        s = index - i;
+        break;
+      }
+      sum += x_[s] * weights_[i];
+    }
+
+    return sum;
+  }
+
+  // Window Variance
+  double windowVar(const int &index) {
+    double var = 0;
+    double mean = windowMean(index);
+    for (int i = 0; i < n_; ++i) {
+      int s;
+      switch (align_) {
+      case -1:
+        s = index + i;
+        break;
+      case 0:
+        s = index - kwin_ + i;
+        break;
+      case 1:
+        s = index - i;
+        break;
+      }
+      var += (x_[s] - mean) * (x_[s] - mean) * weights_[i];
+    }
+    var /= n_ - 1;
+    return var;
+  }
+
 };
 
 /* ----- Rcpp Exported ----- */
-
-//' @title Roll Median
-//'
-//' @description Apply a moving-window median function to a numeric vector.
-//'
-//' @details Each window of \code{n}-length is applied \code{weights} and then
-//' slid/shifted/rolled \code{by} a positive integer amount about the window's
-//' \code{align}-ment index.
-//'
-//' @param x A numeric vector.
-//' @param n An integer window length.
-//' @param weights A numeric vector of size \code{n} specifying each window
-//' index weight. If \code{NULL}, the unit weight is used.
-//' @param by An integer to shift the window by.
-//' @param align A signed integer representing the windows alignment.
-//' \code{-1(left)|0(center)|1(right)}.
-//'
-//' @return numeric vector of length(x)
-//'
-//' @examples
-//' # load airquality
-//' data("airquality")
-//'
-//' # calculate moving median of adjacent measurements
-//' roll_mean(airquality$Temp, n = 3)
-// [[Rcpp::export]]
-Rcpp::NumericVector roll_median (
-    Rcpp::NumericVector x,
-    unsigned int n = 5,
-    Rcpp::Nullable<Rcpp::NumericVector> weights = R_NilValue,
-    int by = 1,
-    int align = 0
-) {
-  Roll roll;
-  roll.init(x, n, weights, by, align);
-  return roll.median();
-}
-
-//' @title Roll Mean
-//'
-//' @description Apply a moving-window mean function to a numeric vector.
-//'
-//' @details Each window of \code{n}-length is applied \code{weight} and then
-//' slid/shifted/rolled \code{by} a positive integer amount about the window's
-//' \code{align}-ment index.
-//'
-//' @param x A numeric vector.
-//' @param n An integer window length.
-//' @param weights A numeric vector of size \code{n} specifying each window
-//' index weight. If \code{NULL}, the unit weight is used.
-//' @param by An integer to shift the window by.
-//' @param align A signed integer representing the windows alignment.
-//' \code{-1(left)|0(center)|1(right)}.
-//'
-//' @return numeric vector of length(x)
-//'
-//' @examples
-//' # load airquality
-//' data("airquality")
-//'
-//' # calculate moving average of last 6 measurements
-//' roll_mean(airquality$Temp, n = 6, align = -1)
-// [[Rcpp::export]]
-Rcpp::NumericVector roll_mean(
-    Rcpp::NumericVector x,
-    unsigned int n = 5,
-    Rcpp::Nullable<Rcpp::NumericVector> weights = R_NilValue,
-    int by = 1,
-    int align = 0
-) {
-  Roll roll;
-  roll.init(x, n, weights, by, align);
-  return roll.mean();
-}
-
-//' @title Roll Variance
-//'
-//' @description Apply a moving-window variance function to a numeric vector.
-//'
-//' @details Each window of \code{n}-length is applied \code{weight} and then
-//' slid/shifted/rolled \code{by} a positive integer amount about the window's
-//' \code{align}-ment index.
-//'
-//' @param x A numeric vector.
-//' @param n An integer window length.
-//' @param weights A numeric vector of size \code{n} specifying each window
-//' index weight. If \code{NULL}, the unit weight is used.
-//' @param by An integer to shift the window by.
-//' @param align A signed integer representing the windows alignment.
-//' \code{-1(left)|0(center)|1(right)}.
-//'
-//' @return numeric vector of length(x)
-//'
-//' @examples
-//' # load airquality
-//' data("airquality")
-//'
-//' # calculate moving variance of adjacent measurements
-//' roll_mean(airquality$Temp, n = 3)
-// [[Rcpp::export]]
-Rcpp::NumericVector roll_var(
-    Rcpp::NumericVector x,
-    unsigned int n = 5,
-    Rcpp::Nullable<Rcpp::NumericVector> weights = R_NilValue,
-    int by = 1,
-    int align = 0
-) {
-  Roll roll;
-  roll.init(x, n, weights, by, align);
-  return roll.var();
-}
-
-//' @title Roll Standard Deviation
-//'
-//' @description Apply a moving-window standard deviation function to a
-//' numeric vector.
-//'
-//' @details Each window of \code{n}-length is applied \code{weight} and then
-//' slid/shifted/rolled \code{by} a positive integer amount about the window's
-//' \code{align}-ment index.
-//'
-//' @param x A numeric vector.
-//' @param n An integer window length.
-//' @param weights A numeric vector of size \code{n} specifying each window
-//' index weight. If \code{NULL}, the unit weight is used.
-//' @param by An integer to shift the window by.
-//' @param align A signed integer representing the windows alignment.
-//' \code{-1(left)|0(center)|1(right)}.
-//'
-//' @return numeric vector of length(x)
-//'
-//' @examples
-//' # load airquality
-//' data("airquality")
-//'
-//' # calculate moving standard deviation of adjacent measurements
-//' roll_mean(airquality$Temp, n = 3)
-// [[Rcpp::export]]
-Rcpp::NumericVector roll_sd(
-    Rcpp::NumericVector x,
-    unsigned int n = 5,
-    Rcpp::Nullable<Rcpp::NumericVector> weights = R_NilValue,
-    int by = 1,
-    int align = 0
-) {
-  Roll roll;
-  roll.init(x, n, weights, by, align);
-  return roll.sd();
-}
 
 //' @title Roll Hampel
 //'
@@ -585,6 +440,80 @@ Rcpp::NumericVector roll_max(
   return roll.max();
 }
 
+//' @title Roll Mean
+//'
+//' @description Apply a moving-window mean function to a numeric vector.
+//'
+//' @details Each window of \code{n}-length is applied \code{weight} and then
+//' slid/shifted/rolled \code{by} a positive integer amount about the window's
+//' \code{align}-ment index.
+//'
+//' @param x A numeric vector.
+//' @param n An integer window length.
+//' @param weights A numeric vector of size \code{n} specifying each window
+//' index weight. If \code{NULL}, the unit weight is used.
+//' @param by An integer to shift the window by.
+//' @param align A signed integer representing the windows alignment.
+//' \code{-1(left)|0(center)|1(right)}.
+//'
+//' @return numeric vector of length(x)
+//'
+//' @examples
+//' # load airquality
+//' data("airquality")
+//'
+//' # calculate moving average of last 6 measurements
+//' roll_mean(airquality$Temp, n = 6, align = -1)
+// [[Rcpp::export]]
+Rcpp::NumericVector roll_mean(
+    Rcpp::NumericVector x,
+    unsigned int n = 5,
+    Rcpp::Nullable<Rcpp::NumericVector> weights = R_NilValue,
+    int by = 1,
+    int align = 0
+) {
+  Roll roll;
+  roll.init(x, n, weights, by, align);
+  return roll.mean();
+}
+
+//' @title Roll Median
+//'
+//' @description Apply a moving-window median function to a numeric vector.
+//'
+//' @details Each window of \code{n}-length is applied \code{weights} and then
+//' slid/shifted/rolled \code{by} a positive integer amount about the window's
+//' \code{align}-ment index.
+//'
+//' @param x A numeric vector.
+//' @param n An integer window length.
+//' @param weights A numeric vector of size \code{n} specifying each window
+//' index weight. If \code{NULL}, the unit weight is used.
+//' @param by An integer to shift the window by.
+//' @param align A signed integer representing the windows alignment.
+//' \code{-1(left)|0(center)|1(right)}.
+//'
+//' @return numeric vector of length(x)
+//'
+//' @examples
+//' # load airquality
+//' data("airquality")
+//'
+//' # calculate moving median of adjacent measurements
+//' roll_mean(airquality$Temp, n = 3)
+// [[Rcpp::export]]
+Rcpp::NumericVector roll_median (
+    Rcpp::NumericVector x,
+    unsigned int n = 5,
+    Rcpp::Nullable<Rcpp::NumericVector> weights = R_NilValue,
+    int by = 1,
+    int align = 0
+) {
+  Roll roll;
+  roll.init(x, n, weights, by, align);
+  return roll.median();
+}
+
 //' @title Roll Min
 //'
 //' @description Apply a moving-window minimum function to a numeric vector.
@@ -620,6 +549,81 @@ Rcpp::NumericVector roll_min(
   Roll roll;
   roll.init(x, n, weights, by, align);
   return roll.min();
+}
+
+//' @title Roll Product
+//'
+//' @description Apply a moving-window product function to a numeric vector.
+//'
+//' @details Each window of \code{n}-length is applied \code{weight} and then
+//' slid/shifted/rolled \code{by} a positive integer amount about the window's
+//' \code{align}-ment index.
+//'
+//' @param x A numeric vector.
+//' @param n An integer window length.
+//' @param weights A numeric vector of size \code{n} specifying each window
+//' index weight. If \code{NULL}, the unit weight is used.
+//' @param by An integer to shift the window by.
+//' @param align A signed integer representing the windows alignment.
+//' \code{-1(left)|0(center)|1(right)}.
+//'
+//' @return numeric vector of length(x)
+//'
+//' @examples
+//' # load airquality
+//' data("airquality")
+//'
+//' # calculate moving product of 12 measurements
+//' roll_prod(airquality$Temp, n = 12)
+// [[Rcpp::export]]
+Rcpp::NumericVector roll_prod(
+    Rcpp::NumericVector x,
+    unsigned int n = 5,
+    Rcpp::Nullable<Rcpp::NumericVector> weights = R_NilValue,
+    int by = 1,
+    int align = 0
+) {
+  Roll roll;
+  roll.init(x, n, weights, by, align);
+  return roll.prod();
+}
+
+//' @title Roll Standard Deviation
+//'
+//' @description Apply a moving-window standard deviation function to a
+//' numeric vector.
+//'
+//' @details Each window of \code{n}-length is applied \code{weight} and then
+//' slid/shifted/rolled \code{by} a positive integer amount about the window's
+//' \code{align}-ment index.
+//'
+//' @param x A numeric vector.
+//' @param n An integer window length.
+//' @param weights A numeric vector of size \code{n} specifying each window
+//' index weight. If \code{NULL}, the unit weight is used.
+//' @param by An integer to shift the window by.
+//' @param align A signed integer representing the windows alignment.
+//' \code{-1(left)|0(center)|1(right)}.
+//'
+//' @return numeric vector of length(x)
+//'
+//' @examples
+//' # load airquality
+//' data("airquality")
+//'
+//' # calculate moving standard deviation of adjacent measurements
+//' roll_mean(airquality$Temp, n = 3)
+// [[Rcpp::export]]
+Rcpp::NumericVector roll_sd(
+    Rcpp::NumericVector x,
+    unsigned int n = 5,
+    Rcpp::Nullable<Rcpp::NumericVector> weights = R_NilValue,
+    int by = 1,
+    int align = 0
+) {
+  Roll roll;
+  roll.init(x, n, weights, by, align);
+  return roll.sd();
 }
 
 //' @title Roll Sum
@@ -659,9 +663,9 @@ Rcpp::NumericVector roll_sum(
   return roll.sum();
 }
 
-//' @title Roll Product
+//' @title Roll Variance
 //'
-//' @description Apply a moving-window product function to a numeric vector.
+//' @description Apply a moving-window variance function to a numeric vector.
 //'
 //' @details Each window of \code{n}-length is applied \code{weight} and then
 //' slid/shifted/rolled \code{by} a positive integer amount about the window's
@@ -681,10 +685,10 @@ Rcpp::NumericVector roll_sum(
 //' # load airquality
 //' data("airquality")
 //'
-//' # calculate moving product of 12 measurements
-//' roll_prod(airquality$Temp, n = 12)
+//' # calculate moving variance of adjacent measurements
+//' roll_mean(airquality$Temp, n = 3)
 // [[Rcpp::export]]
-Rcpp::NumericVector roll_prod(
+Rcpp::NumericVector roll_var(
     Rcpp::NumericVector x,
     unsigned int n = 5,
     Rcpp::Nullable<Rcpp::NumericVector> weights = R_NilValue,
@@ -693,7 +697,7 @@ Rcpp::NumericVector roll_prod(
 ) {
   Roll roll;
   roll.init(x, n, weights, by, align);
-  return roll.prod();
+  return roll.var();
 }
 
 
