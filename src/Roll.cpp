@@ -18,23 +18,27 @@ public:
 
     // Checks
     if (windowSize > data.size()) {
-      Rcpp::stop("\nWindow 'n' cannot be larger than 'x'");
+      Rcpp::stop("Window 'n' cannot be larger than 'x'");
     }
     if (increment > data.size()) {
-      Rcpp::stop("\nIncrement 'by' cannot be larger than 'x'\n");
+      Rcpp::stop("Increment 'by' cannot be larger than 'x'");
     }
     if (pow(alignment, 2) > 1) {
-      Rcpp::stop("\nWindow alignment must be either -1 (left), 0 (center), or +1 (right)");
-    }
-    if (increment > windowSize) {
-      Rcpp::warning("\nWarning: Increment 'by' is larger than the window 'n'\n");
+      Rcpp::stop("Window alignment must be either -1 (left), 0 (center), or +1 (right)");
     }
 
-    // handle defaults
+    // Default weights
     if (weights.isNull()) {
-      weight = Rcpp::rep(1, windowSize);
+      weights_ = Rcpp::rep(1, windowSize);
     } else {
-      weight = weights;
+      // See:  https://stackoverflow.com/questions/43388698/rcpp-how-can-i-get-the-size-of-a-rcppnullable-numericvector
+      if (weights.isNotNull()) {
+        Rcpp::NumericVector w(weights.get());
+        if (w.size() != windowSize) {
+          Rcpp::stop("'weights' must be either NULL or a vector of the same length as window size 'n'");
+        }
+      }
+      weights_ = weights;
     }
 
     // init private vars
@@ -189,7 +193,7 @@ private:
   int nwin; // Window Size
   int kwin; // Half-window Size
   int inc; // Increment by
-  Rcpp::NumericVector weight;
+  Rcpp::NumericVector weights_;
 
   // Window Mean
   double windowMean(const int &index) {
@@ -207,7 +211,7 @@ private:
           s = index - i;
           break;
       }
-      mean += X[s] * weight[i];
+      mean += X[s] * weights_[i];
     }
     mean /= nwin;
     return mean;
@@ -217,7 +221,7 @@ private:
   double windowMedian(const int &index) {
     Rcpp::NumericVector tmp(nwin, NA_REAL);
     for (int i = 0; i < nwin; ++i) {
-      tmp[i] = X[index - kwin + i] * weight[i];
+      tmp[i] = X[index - kwin + i] * weights_[i];
     }
     std::nth_element(tmp.begin(), tmp.begin() + kwin, tmp.end());
     return tmp[kwin];
@@ -240,7 +244,7 @@ private:
           s = index - i;
           break;
       }
-      var += (X[s] - mean) * (X[s] - mean) * weight[i];
+      var += (X[s] - mean) * (X[s] - mean) * weights_[i];
     }
     var /= nwin - 1;
     return var;
@@ -253,7 +257,7 @@ private:
     Rcpp::NumericVector tmp(nwin, NA_REAL);
     for (int i = 0; i < nwin; ++i) { // MAD
       size_t s = index - kwin + i;
-      tmp[i] = std::fabs(X[s] - median_i) * weight[i];
+      tmp[i] = std::fabs(X[s] - median_i) * weights_[i];
     }
     std::nth_element(tmp.begin(), tmp.begin() + kwin, tmp.end());
     double mad = tmp[kwin];
@@ -276,7 +280,7 @@ private:
         s = index - i;
         break;
       }
-      if (X[s] * weight[i] > max) max = X[s] * weight[i];
+      if (X[s] * weights_[i] > max) max = X[s] * weights_[i];
     }
     return max;
   }
@@ -317,7 +321,7 @@ private:
         s = index - i;
         break;
       }
-      sum += X[s] * weight[i];
+      sum += X[s] * weights_[i];
     }
 
     return sum;
@@ -338,7 +342,7 @@ private:
         s = index - i;
         break;
       }
-      prod *= X[s] * weight[i];
+      prod *= X[s] * weights_[i];
     }
 
     return prod;
@@ -352,7 +356,7 @@ private:
 //'
 //' @description Apply a moving-window median function to a numeric vector.
 //'
-//' @details Each window of \code{n}-length is applied \code{weight} and then
+//' @details Each window of \code{n}-length is applied \code{weights} and then
 //' slid/shifted/rolled \code{by} a positive integer amount about the window's
 //' \code{align}-ment index.
 //'

@@ -5,7 +5,7 @@
 #'
 #' @description Apply a moving-window median function to a numeric vector.
 #'
-#' @details Each window of \code{n}-length is applied \code{weight} and then
+#' @details Each window of \code{n}-length is applied \code{weights} and then
 #' slid/shifted/rolled \code{by} a positive integer amount about the window's
 #' \code{align}-ment index.
 #'
