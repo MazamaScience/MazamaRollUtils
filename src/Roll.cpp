@@ -48,6 +48,22 @@ public:
     align_ = align;
     kwin_ = n / 2;
 
+    // Initialize start and end
+    switch (align) {
+      case -1:
+        start_ = 0;
+        end_ = x.size() - (n - 1);
+        break;
+      case 0:
+        start_ = kwin_;
+        end_ = x.size() - n/2;
+        break;
+      case 1:
+        start_ = n - 1;
+        end_ = x.size();
+        break;
+    }
+
   }
 
   // Rolling Hampel
@@ -74,23 +90,7 @@ public:
   Rcpp::NumericVector mean() {
     size_t len = x_.size();
     Rcpp::NumericVector out(len, NA_REAL);
-    int start = 0;
-    int end = len;
-    switch (align_) {
-    case -1:
-      start = 0;
-      end = len - (n_ - 1);
-      break;
-    case 0:
-      start = kwin_;
-      end = len - kwin_;
-      break;
-    case 1:
-      start = n_ - 1;
-      end = len;
-      break;
-    }
-    for (int i = start; i < end; i += by_) {
+    for (int i = start_; i < end_; i += by_) {
       out[i] = windowMean(i);
     }
     return out;
@@ -130,23 +130,7 @@ public:
   Rcpp::NumericVector sd() {
     int len = x_.size();
     Rcpp::NumericVector out(len, NA_REAL);
-    int start = 0;
-    int end = len;
-    switch (align_) {
-    case -1:
-      start = 0;
-      end = len - (n_ - 1);
-      break;
-    case 0:
-      start = kwin_;
-      end = len - kwin_;
-      break;
-    case 1:
-      start = n_ - 1;
-      end = len;
-      break;
-    }
-    for (int i = start; i < end; i += by_) {
+    for (int i = start_; i < end_; i += by_) {
       out[i] = sqrt(windowVar(i));
     }
     return out;
@@ -166,23 +150,7 @@ public:
   Rcpp::NumericVector var() {
     int len = x_.size();
     Rcpp::NumericVector out(len, NA_REAL);
-    int start = 0;
-    int end = len;
-    switch (align_) {
-    case -1:
-      start = 0;
-      end = len - (n_ - 1);
-      break;
-    case 0:
-      start = kwin_;
-      end = len - kwin_;
-      break;
-    case 1:
-      start = n_ - 1;
-      end = len;
-      break;
-    }
-    for (int i = start; i < end; i += by_) {
+    for (int i = start_; i < end_; i += by_) {
       out[i] = windowVar(i);
     }
     return out;
@@ -191,11 +159,13 @@ public:
 private:
 
   Rcpp::NumericVector x_; // Input Data
-  int align_; // Alignment
   int n_; // Window Size
-  int kwin_; // Half-window Size
-  int by_; // Increment by
   Rcpp::NumericVector weights_;
+  int by_; // Increment by
+  int align_; // Alignment
+  int kwin_; // Half-window Size
+  int start_;
+  int end_;
 
   // Window Hampel
   double windowHampel(const int &index) {
