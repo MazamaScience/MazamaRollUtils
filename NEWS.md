@@ -1,7 +1,10 @@
+# MazamaRollUtils 0.1.3
+
+* Release candidate for testing.
+
 # MazamaRollUtils 0.1.2
 
-* Release Candidate.
-
+* Work toward release candidate.
 
 # MazamaRollUtils 0.0.1
 

@@ -43,24 +43,27 @@ public:
 
     // Initialize private vars
     x_ = x;
-    n_ = n;
+    width_ = n;
     by_ = by;
     align_ = align;
-    kwin_ = n / 2;
+
+    // Additional private vars
+    length_ = x.size();
+    half_width_ = n / 2;   // truncated division rounds down
 
     // Initialize start and end
     switch (align) {
       case -1:
         start_ = 0;
-        end_ = x.size() - (n - 1);
+        end_ = length_ - (n - 1);
         break;
       case 0:
-        start_ = kwin_;
-        end_ = x.size() - n/2;
+        start_ = half_width_;
+        end_ = length_ - half_width_;
         break;
       case 1:
         start_ = n - 1;
-        end_ = x.size();
+        end_ = length_;
         break;
     }
 
@@ -68,9 +71,8 @@ public:
 
   // Rolling Hampel
   Rcpp::NumericVector hampel() {
-    int len = x_.size();
-    Rcpp::NumericVector out(len, NA_REAL);
-    for (int i = kwin_; i < len - kwin_; i += by_) {
+    Rcpp::NumericVector out(length_, NA_REAL);
+    for (int i = start_; i < end_; i += by_) {
       out[i] = windowHampel(i);
     }
     return out;
@@ -78,9 +80,8 @@ public:
 
   // Rolling Maximum
   Rcpp::NumericVector max() {
-    int len = x_.size();
-    Rcpp::NumericVector out(len, NA_REAL);
-    for (int i = kwin_; i < len - kwin_; i += by_) {
+    Rcpp::NumericVector out(length_, NA_REAL);
+    for (int i = start_; i < end_; i += by_) {
       out[i] = windowMax(i);
     }
     return out;
@@ -88,8 +89,7 @@ public:
 
   // Rolling Mean
   Rcpp::NumericVector mean() {
-    size_t len = x_.size();
-    Rcpp::NumericVector out(len, NA_REAL);
+    Rcpp::NumericVector out(length_, NA_REAL);
     for (int i = start_; i < end_; i += by_) {
       out[i] = windowMean(i);
     }
@@ -98,9 +98,8 @@ public:
 
   // Rolling Median
   Rcpp::NumericVector median() {
-    int len = x_.size();
-    Rcpp::NumericVector out(len, NA_REAL);
-    for (int i = kwin_; i < len - kwin_; i += by_) {
+    Rcpp::NumericVector out(length_, NA_REAL);
+    for (int i = start_; i < end_; i += by_) {
       out[i] = windowMedian(i);
     }
     return out;
@@ -108,9 +107,8 @@ public:
 
   // Rolling Minimum
   Rcpp::NumericVector min() {
-    int len = x_.size();
-    Rcpp::NumericVector out(len, NA_REAL);
-    for (int i = kwin_; i < len - kwin_; i += by_) {
+    Rcpp::NumericVector out(length_, NA_REAL);
+    for (int i = start_; i < end_; i += by_) {
       out[i] = windowMin(i);
     }
     return out;
@@ -118,9 +116,8 @@ public:
 
   // Rolling Product
   Rcpp::NumericVector prod() {
-    int len = x_.size();
-    Rcpp::NumericVector out(len, NA_REAL);
-    for (int i = kwin_; i < len - kwin_; i += by_) {
+    Rcpp::NumericVector out(length_, NA_REAL);
+    for (int i = start_; i < end_; i += by_) {
       out[i] = windowProd(i);
     }
     return out;
@@ -128,8 +125,7 @@ public:
 
   // Rolling Standard Deviation
   Rcpp::NumericVector sd() {
-    int len = x_.size();
-    Rcpp::NumericVector out(len, NA_REAL);
+    Rcpp::NumericVector out(length_, NA_REAL);
     for (int i = start_; i < end_; i += by_) {
       out[i] = sqrt(windowVar(i));
     }
@@ -138,9 +134,8 @@ public:
 
   // Rolling Sum
   Rcpp::NumericVector sum() {
-    int len = x_.size();
-    Rcpp::NumericVector out(len, NA_REAL);
-    for (int i = kwin_; i < len - kwin_; i += by_) {
+    Rcpp::NumericVector out(length_, NA_REAL);
+    for (int i = start_; i < end_; i += by_) {
       out[i] = windowSum(i);
     }
     return out;
@@ -148,8 +143,7 @@ public:
 
   // Rolling Variance
   Rcpp::NumericVector var() {
-    int len = x_.size();
-    Rcpp::NumericVector out(len, NA_REAL);
+    Rcpp::NumericVector out(length_, NA_REAL);
     for (int i = start_; i < end_; i += by_) {
       out[i] = windowVar(i);
     }
@@ -158,46 +152,51 @@ public:
 
 private:
 
-  Rcpp::NumericVector x_; // Input Data
-  int n_; // Window Size
-  Rcpp::NumericVector weights_;
-  int by_; // Increment by
-  int align_; // Alignment
-  int kwin_; // Half-window Size
-  int start_;
-  int end_;
+  Rcpp::NumericVector x_;        // data
+  int width_;                    // window width
+  Rcpp::NumericVector weights_;  // window weights
+  int by_;                       // increment
+  int align_;                    // alignment
+  int length_;                   // data length
+  int half_width_;               // window half-width
+  int start_;                    // start index
+  int end_;                      // end index
 
   // Window Hampel
   double windowHampel(const int &index) {
     const double kappa = 1.4826;
-    double median_i = windowMedian(index);
-    Rcpp::NumericVector tmp(n_, NA_REAL);
-    for (int i = 0; i < n_; ++i) { // MAD
-      size_t s = index - kwin_ + i;
-      tmp[i] = std::fabs(x_[s] - median_i) * weights_[i];
+    double mediawidth_i = windowMedian(index);
+    Rcpp::NumericVector tmp(width_, NA_REAL);
+    for (int i = 0; i < width_; ++i) { // MAD
+      int s = index - half_width_ + i;
+      tmp[i] = std::fabs(x_[s] - mediawidth_i) * weights_[i];
     }
-    std::nth_element(tmp.begin(), tmp.begin() + kwin_, tmp.end());
-    double mad = tmp[kwin_];
-    return std::fabs(x_[index] - median_i) / (kappa * mad);
+    std::nth_element(tmp.begin(), tmp.begin() + half_width_, tmp.end());
+    double mad = tmp[half_width_];
+    return std::fabs(x_[index] - mediawidth_i) / (kappa * mad);
   }
 
   // Window Maximum
   double windowMax(const int &index) {
     double max = x_[index];
-    for (int i = 0; i < n_; ++i) {
+    for (int i = 0; i < width_; ++i) {
       int s;
       switch (align_) {
-      case -1:
-        s = index + i;
-        break;
-      case 0:
-        s = index - kwin_ + i;
-        break;
-      case 1:
-        s = index - i;
-        break;
+        case -1:
+          s = index + i;
+          break;
+        case 0:
+          s = index - half_width_ + i;
+          break;
+        case 1:
+          s = index - i;
+          break;
       }
-      if (x_[s] * weights_[i] > max) max = x_[s] * weights_[i];
+      if (ISNAN(x_[s])) {
+        return NA_REAL;
+      } else {
+        if (x_[s] > max) max = x_[s];
+      }
     }
     return max;
   }
@@ -205,14 +204,14 @@ private:
   // Window Mean
   double windowMean(const int &index) {
     double mean = 0;
-    for (size_t i = 0; i < n_; ++i) {
+    for (int i = 0; i < width_; ++i) {
       int s;
       switch (align_) {
         case -1:
           s = index + i;
           break;
         case 0:
-          s = index - kwin_ + i;
+          s = index - half_width_ + i;
           break;
         case 1:
           s = index - i;
@@ -220,37 +219,57 @@ private:
       }
       mean += x_[s] * weights_[i];
     }
-    mean /= n_;
+    mean /= width_;
     return mean;
   }
 
   // Window Median
   double windowMedian(const int &index) {
-    Rcpp::NumericVector tmp(n_, NA_REAL);
-    for (int i = 0; i < n_; ++i) {
-      tmp[i] = x_[index - kwin_ + i] * weights_[i];
-    }
-    std::nth_element(tmp.begin(), tmp.begin() + kwin_, tmp.end());
-    return tmp[kwin_];
-  }
-
-  // Window Minimum
-  double windowMin(const int &index) {
-    double min = x_[index];
-    for (int i = 0; i < n_; ++i) {
+    Rcpp::NumericVector tmp(width_, NA_REAL);
+    for (int i = 0; i < width_; ++i) {
       int s;
       switch (align_) {
       case -1:
         s = index + i;
         break;
       case 0:
-        s = index - kwin_ + i;
+        s = index - half_width_ + i;
         break;
       case 1:
         s = index - i;
         break;
       }
-      if (x_[s] < min) min = x_[s];
+      if (ISNAN(x_[s])) {
+        return NA_REAL;
+      } else {
+        tmp[i] = x_[s];
+      }
+    }
+    std::nth_element(tmp.begin(), tmp.begin() + half_width_, tmp.end());
+    return tmp[half_width_];
+  }
+
+  // Window Minimum
+  double windowMin(const int &index) {
+    double min = x_[index];
+    for (int i = 0; i < width_; ++i) {
+      int s;
+      switch (align_) {
+        case -1:
+          s = index + i;
+          break;
+        case 0:
+          s = index - half_width_ + i;
+          break;
+        case 1:
+          s = index - i;
+          break;
+      }
+      if (ISNAN(x_[s])) {
+        return NA_REAL;
+      } else {
+        if (x_[s] < min) min = x_[s];
+      }
     }
     return min;
   }
@@ -258,44 +277,42 @@ private:
   // Window Product
   double windowProd(const int &index) {
     double prod = 1;
-    for (size_t i = 0; i < n_; ++i) {
+    for (int i = 0; i < width_; ++i) {
       int s;
       switch (align_) {
-      case -1:
-        s = index + i;
-        break;
-      case 0:
-        s = index - kwin_ + i;
-        break;
-      case 1:
-        s = index - i;
-        break;
+        case -1:
+          s = index + i;
+          break;
+        case 0:
+          s = index - half_width_ + i;
+          break;
+        case 1:
+          s = index - i;
+          break;
       }
       prod *= x_[s] * weights_[i];
     }
-
     return prod;
   }
 
   // Window Sum
   double windowSum(const int &index) {
     double sum = 0;
-    for (size_t i = 0; i < n_; ++i) {
+    for (int i = 0; i < width_; ++i) {
       int s;
       switch (align_) {
-      case -1:
-        s = index + i;
-        break;
-      case 0:
-        s = index - kwin_ + i;
-        break;
-      case 1:
-        s = index - i;
-        break;
+        case -1:
+          s = index + i;
+          break;
+        case 0:
+          s = index - half_width_ + i;
+          break;
+        case 1:
+          s = index - i;
+          break;
       }
       sum += x_[s] * weights_[i];
     }
-
     return sum;
   }
 
@@ -303,22 +320,22 @@ private:
   double windowVar(const int &index) {
     double var = 0;
     double mean = windowMean(index);
-    for (int i = 0; i < n_; ++i) {
+    for (int i = 0; i < width_; ++i) {
       int s;
-      switch (align_) {
-      case -1:
-        s = index + i;
-        break;
-      case 0:
-        s = index - kwin_ + i;
-        break;
-      case 1:
-        s = index - i;
-        break;
+        switch (align_) {
+        case -1:
+          s = index + i;
+          break;
+        case 0:
+          s = index - half_width_ + i;
+          break;
+        case 1:
+          s = index - i;
+          break;
       }
       var += (x_[s] - mean) * (x_[s] - mean) * weights_[i];
     }
-    var /= n_ - 1;
+    var /= width_ - 1;
     return var;
   }
 
