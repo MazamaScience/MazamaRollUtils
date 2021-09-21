@@ -16,29 +16,14 @@ public:
       Rcpp::Nullable<Rcpp::NumericVector> weights
   ) {
 
-    // Checks
     if (width > x.size()) {
-      Rcpp::stop("Window 'n' cannot be larger than 'x'");
+      Rcpp::stop("Window 'width' cannot be larger than 'x'");
     }
     if (by > x.size()) {
       Rcpp::stop("Increment 'by' cannot be larger than 'x'");
     }
     if (pow(align, 2) > 1) {
-      Rcpp::stop("Window align must be either -1 (left), 0 (center), or +1 (right)");
-    }
-
-    // Default weights
-    if (weights.isNull()) {
-      weights_ = Rcpp::rep(1, width);
-    } else {
-      // See:  https://stackoverflow.com/questions/43388698/rcpp-how-can-i-get-the-size-of-a-rcppnullable-numericvector
-      if (weights.isNotNull()) {
-        Rcpp::NumericVector w(weights.get());
-        if (w.size() != width) {
-          Rcpp::stop("'weights' must be either NULL or a vector of the same length as window size 'n'");
-        }
-      }
-      weights_ = weights;
+      Rcpp::stop("Window alignment 'align' must be either -1 (left), 0 (center), or +1 (right)");
     }
 
     // Initialize private vars
@@ -46,6 +31,22 @@ public:
     width_ = width;
     by_ = by;
     align_ = align;
+    weights_ = Rcpp::rep(1.0, width);
+
+    // Default weights
+    if (!weights.isNull()) {
+      // See:  https://stackoverflow.com/questions/43388698/rcpp-how-can-i-get-the-size-of-a-rcppnullable-numericvector
+      Rcpp::NumericVector w(weights.get());
+      if (w.size() != width) {
+        Rcpp::stop("'weights' must be either NULL or a vector of the same length as the window 'width'");
+      }
+      // See:  https://en.cppreference.com/w/cpp/algorithm/accumulate
+      double normalization = (double)width_ / std::accumulate(w.begin(), w.end(), (double)0);
+      //double normalization = 1.0;
+      for (int i = 0; i < width_; ++i) {
+        weights_[i] = w[i] * normalization;
+      }
+    }
 
     // Additional private vars
     length_ = x.size();
@@ -53,18 +54,18 @@ public:
 
     // Initialize start and end
     switch (align) {
-      case -1:
-        start_ = 0;
-        end_ = length_ - (width - 1);
-        break;
-      case 0:
-        start_ = half_width_;
-        end_ = length_ - half_width_;
-        break;
-      case 1:
-        start_ = width - 1;
-        end_ = length_;
-        break;
+    case -1:
+      start_ = 0;
+      end_ = length_ - (width - 1);
+      break;
+    case 0:
+      start_ = half_width_;
+      end_ = length_ - half_width_;
+      break;
+    case 1:
+      start_ = width - 1;
+      end_ = length_;
+      break;
     }
 
   }
@@ -154,9 +155,9 @@ private:
 
   Rcpp::NumericVector x_;        // data
   int width_;                    // window width
-  Rcpp::NumericVector weights_;  // window weights
   int by_;                       // increment
   int align_;                    // alignment
+  Rcpp::NumericVector weights_;  // window weights
   int length_;                   // data length
   int half_width_;               // window half-width
   int start_;                    // start index
@@ -169,7 +170,7 @@ private:
     Rcpp::NumericVector tmp(width_, NA_REAL);
     for (int i = 0; i < width_; ++i) { // MAD
       int s = index - half_width_ + i;
-      tmp[i] = std::fabs(x_[s] - mediawidth_i) * weights_[i];
+      tmp[i] = std::fabs(x_[s] - mediawidth_i);
     }
     std::nth_element(tmp.begin(), tmp.begin() + half_width_, tmp.end());
     double mad = tmp[half_width_];
@@ -182,17 +183,19 @@ private:
     for (int i = 0; i < width_; ++i) {
       int s;
       switch (align_) {
-        case -1:
-          s = index + i;
-          break;
-        case 0:
-          s = index - half_width_ + i;
-          break;
-        case 1:
-          s = index - i;
-          break;
+      case -1:
+        s = index + i;
+        break;
+      case 0:
+        s = index - half_width_ + i;
+        break;
+      case 1:
+        s = index - (width_ - 1) + i;
+        break;
       }
-      if (ISNAN(x_[s])) {
+      if ( s < 0 ) {
+        return NA_REAL;
+      } else if (ISNAN(x_[s])) {
         return NA_REAL;
       } else {
         if (x_[s] > max) max = x_[s];
@@ -207,19 +210,25 @@ private:
     for (int i = 0; i < width_; ++i) {
       int s;
       switch (align_) {
-        case -1:
-          s = index + i;
-          break;
-        case 0:
-          s = index - half_width_ + i;
-          break;
-        case 1:
-          s = index - i;
-          break;
+      case -1:
+        s = index + i;
+        break;
+      case 0:
+        s = index - half_width_ + i;
+        break;
+      case 1:
+        s = index - (width_ - 1) + i;
+        break;
       }
-      mean += x_[s] * weights_[i];
+      if ( s < 0 ) {
+        return NA_REAL;
+      } else if (ISNAN(x_[s])) {
+        return NA_REAL;
+      } else {
+        mean += x_[s] * weights_[i];
+      }
     }
-    mean /= width_;
+    mean /= (double)width_;
     return mean;
   }
 
@@ -236,10 +245,12 @@ private:
         s = index - half_width_ + i;
         break;
       case 1:
-        s = index - i;
+        s = index - (width_ - 1) + i;
         break;
       }
-      if (ISNAN(x_[s])) {
+      if ( s < 0 ) {
+        return NA_REAL;
+      } else if (ISNAN(x_[s])) {
         return NA_REAL;
       } else {
         tmp[i] = x_[s];
@@ -255,17 +266,19 @@ private:
     for (int i = 0; i < width_; ++i) {
       int s;
       switch (align_) {
-        case -1:
-          s = index + i;
-          break;
-        case 0:
-          s = index - half_width_ + i;
-          break;
-        case 1:
-          s = index - i;
-          break;
+      case -1:
+        s = index + i;
+        break;
+      case 0:
+        s = index - half_width_ + i;
+        break;
+      case 1:
+        s = index - (width_ - 1) + i;
+        break;
       }
-      if (ISNAN(x_[s])) {
+      if ( s < 0 ) {
+        return NA_REAL;
+      } else if (ISNAN(x_[s])) {
         return NA_REAL;
       } else {
         if (x_[s] < min) min = x_[s];
@@ -280,17 +293,23 @@ private:
     for (int i = 0; i < width_; ++i) {
       int s;
       switch (align_) {
-        case -1:
-          s = index + i;
-          break;
-        case 0:
-          s = index - half_width_ + i;
-          break;
-        case 1:
-          s = index - i;
-          break;
+      case -1:
+        s = index + i;
+        break;
+      case 0:
+        s = index - half_width_ + i;
+        break;
+      case 1:
+        s = index - (width_ - 1) + i;
+        break;
       }
-      prod *= x_[s] * weights_[i];
+      if ( s < 0 ) {
+        return NA_REAL;
+      } else if (ISNAN(x_[s])) {
+        return NA_REAL;
+      } else {
+        prod *= x_[s];
+      }
     }
     return prod;
   }
@@ -301,17 +320,23 @@ private:
     for (int i = 0; i < width_; ++i) {
       int s;
       switch (align_) {
-        case -1:
-          s = index + i;
-          break;
-        case 0:
-          s = index - half_width_ + i;
-          break;
-        case 1:
-          s = index - i;
-          break;
+      case -1:
+        s = index + i;
+        break;
+      case 0:
+        s = index - half_width_ + i;
+        break;
+      case 1:
+        s = index - (width_ - 1) + i;
+        break;
       }
-      sum += x_[s] * weights_[i];
+      if ( s < 0 ) {
+        return NA_REAL;
+      } else if (ISNAN(x_[s])) {
+        return NA_REAL;
+      } else {
+        sum += x_[s];
+      }
     }
     return sum;
   }
@@ -322,20 +347,26 @@ private:
     double mean = windowMean(index);
     for (int i = 0; i < width_; ++i) {
       int s;
-        switch (align_) {
-        case -1:
-          s = index + i;
-          break;
-        case 0:
-          s = index - half_width_ + i;
-          break;
-        case 1:
-          s = index - i;
-          break;
+      switch (align_) {
+      case -1:
+        s = index + i;
+        break;
+      case 0:
+        s = index - half_width_ + i;
+        break;
+      case 1:
+        s = index - (width_ - 1) + i;
+        break;
       }
-      var += (x_[s] - mean) * (x_[s] - mean);
+      if ( s < 0 ) {
+        return NA_REAL;
+      } else if (ISNAN(x_[s])) {
+        return NA_REAL;
+      } else {
+        var += (x_[s] - mean) * (x_[s] - mean);
+      }
     }
-    var /= width_ - 1;
+    var /= ((double)width_ - (double)1);
     return var;
   }
 
@@ -364,10 +395,10 @@ private:
 //' @param x Numeric vector.
 //' @param width Integer width of the rolling window.
 //' @param by An integer to shift the window by.
-//' @param align A signed integer representing the windows alignment.
+//' @param align A signed integer representing the position of the return value within each window.
 //' \code{-1(left)|0(center)|1(right)}.
 //'
-//' @return numeric vector of length(x)
+//' @return Numeric vector of the same length as \code{x}.
 //'
 //' @examples
 //' # load airquality
@@ -408,10 +439,10 @@ Rcpp::NumericVector roll_hampel(
 //' @param x Numeric vector.
 //' @param width Integer width of the rolling window.
 //' @param by Integer shift to use when sliding the window to the next location
-//' @param align Signed integer representing the window alignment.
+//' @param align Signed integer representing the position of the return value within each window.
 //' \code{-1(left)|0(center)|1(right)}.
 //'
-//' @return numeric vector of length(x)
+//' @return Numeric vector of the same length as \code{x}.
 //'
 //' @examples
 //' # Load package air quality data
@@ -454,10 +485,10 @@ Rcpp::NumericVector roll_max(
 //' @param weights A numeric vector of size \code{n} specifying each window
 //' index weight. If \code{NULL}, the unit weight is used.
 //' @param by An integer to shift the window by.
-//' @param align A signed integer representing the windows alignment.
+//' @param align A signed integer representing the position of the return value within each window.
 //' \code{-1(left)|0(center)|1(right)}.
 //'
-//' @return numeric vector of length(x)
+//' @return Numeric vector of the same length as \code{x}.
 //'
 //' @examples
 //' # load airquality
@@ -498,10 +529,10 @@ Rcpp::NumericVector roll_mean(
 //' @param x Numeric vector.
 //' @param width Integer width of the rolling window.
 //' @param by An integer to shift the window by.
-//' @param align A signed integer representing the windows alignment.
+//' @param align A signed integer representing the position of the return value within each window.
 //' \code{-1(left)|0(center)|1(right)}.
 //'
-//' @return numeric vector of length(x)
+//' @return Numeric vector of the same length as \code{x}.
 //'
 //' @examples
 //' # load airquality
@@ -542,10 +573,10 @@ Rcpp::NumericVector roll_median (
 //' @param x Numeric vector.
 //' @param width Integer width of the rolling window.
 //' @param by An integer to shift the window by.
-//' @param align A signed integer representing the windows alignment.
+//' @param align A signed integer representing the position of the return value within each window.
 //' \code{-1(left)|0(center)|1(right)}.
 //'
-//' @return numeric vector of length(x)
+//' @return Numeric vector of the same length as \code{x}.
 //'
 //' @examples
 //' # load airquality
@@ -585,13 +616,11 @@ Rcpp::NumericVector roll_min(
 //'
 //' @param x Numeric vector.
 //' @param width Integer width of the rolling window.
-//' @param weights A numeric vector of size \code{n} specifying each window
-//' index weight. If \code{NULL}, the unit weight is used.
 //' @param by An integer to shift the window by.
-//' @param align A signed integer representing the windows alignment.
+//' @param align A signed integer representing the position of the return value within each window.
 //' \code{-1(left)|0(center)|1(right)}.
 //'
-//' @return numeric vector of length(x)
+//' @return Numeric vector of the same length as \code{x}.
 //'
 //' @examples
 //' # load airquality
@@ -604,10 +633,10 @@ Rcpp::NumericVector roll_prod(
     Rcpp::NumericVector x,
     unsigned int width = 5,
     int by = 1,
-    int align = 0,
-    Rcpp::Nullable<Rcpp::NumericVector> weights = R_NilValue
+    int align = 0
 ) {
   Roll roll;
+  Rcpp::Nullable<Rcpp::NumericVector> weights = R_NilValue;
   roll.init(x, width, by, align, weights);
   return roll.prod();
 }
@@ -633,10 +662,10 @@ Rcpp::NumericVector roll_prod(
 //' @param x Numeric vector.
 //' @param width Integer width of the rolling window.
 //' @param by An integer to shift the window by.
-//' @param align A signed integer representing the windows alignment.
+//' @param align A signed integer representing the position of the return value within each window.
 //' \code{-1(left)|0(center)|1(right)}.
 //'
-//' @return numeric vector of length(x)
+//' @return Numeric vector of the same length as \code{x}.
 //'
 //' @examples
 //' # load airquality
@@ -676,13 +705,11 @@ Rcpp::NumericVector roll_sd(
 //'
 //' @param x Numeric vector.
 //' @param width Integer width of the rolling window.
-//' @param weights A numeric vector of size \code{n} specifying each window
-//' index weight. If \code{NULL}, the unit weight is used.
 //' @param by An integer to shift the window by.
-//' @param align A signed integer representing the windows alignment.
+//' @param align A signed integer representing the position of the return value within each window.
 //' \code{-1(left)|0(center)|1(right)}.
 //'
-//' @return numeric vector of length(x)
+//' @return Numeric vector of the same length as \code{x}.
 //'
 //' @examples
 //' # load airquality
@@ -695,10 +722,10 @@ Rcpp::NumericVector roll_sum(
     Rcpp::NumericVector x,
     unsigned int width = 5,
     int by = 1,
-    int align = 0,
-    Rcpp::Nullable<Rcpp::NumericVector> weights = R_NilValue
+    int align = 0
 ) {
   Roll roll;
+  Rcpp::Nullable<Rcpp::NumericVector> weights = R_NilValue;
   roll.init(x, width, by, align, weights);
   return roll.sum();
 }
@@ -723,10 +750,10 @@ Rcpp::NumericVector roll_sum(
 //' @param x Numeric vector.
 //' @param width Integer width of the rolling window.
 //' @param by An integer to shift the window by.
-//' @param align A signed integer representing the windows alignment.
+//' @param align A signed integer representing the position of the return value within each window.
 //' \code{-1(left)|0(center)|1(right)}.
 //'
-//' @return numeric vector of length(x)
+//' @return Numeric vector of the same length as \code{x}.
 //'
 //' @examples
 //' # load airquality

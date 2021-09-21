@@ -82,8 +82,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // roll_prod
-Rcpp::NumericVector roll_prod(Rcpp::NumericVector x, unsigned int width, int by, int align, Rcpp::Nullable<Rcpp::NumericVector> weights);
-RcppExport SEXP _MazamaRollUtils_roll_prod(SEXP xSEXP, SEXP widthSEXP, SEXP bySEXP, SEXP alignSEXP, SEXP weightsSEXP) {
+Rcpp::NumericVector roll_prod(Rcpp::NumericVector x, unsigned int width, int by, int align);
+RcppExport SEXP _MazamaRollUtils_roll_prod(SEXP xSEXP, SEXP widthSEXP, SEXP bySEXP, SEXP alignSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -91,8 +91,7 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< unsigned int >::type width(widthSEXP);
     Rcpp::traits::input_parameter< int >::type by(bySEXP);
     Rcpp::traits::input_parameter< int >::type align(alignSEXP);
-    Rcpp::traits::input_parameter< Rcpp::Nullable<Rcpp::NumericVector> >::type weights(weightsSEXP);
-    rcpp_result_gen = Rcpp::wrap(roll_prod(x, width, by, align, weights));
+    rcpp_result_gen = Rcpp::wrap(roll_prod(x, width, by, align));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -111,8 +110,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // roll_sum
-Rcpp::NumericVector roll_sum(Rcpp::NumericVector x, unsigned int width, int by, int align, Rcpp::Nullable<Rcpp::NumericVector> weights);
-RcppExport SEXP _MazamaRollUtils_roll_sum(SEXP xSEXP, SEXP widthSEXP, SEXP bySEXP, SEXP alignSEXP, SEXP weightsSEXP) {
+Rcpp::NumericVector roll_sum(Rcpp::NumericVector x, unsigned int width, int by, int align);
+RcppExport SEXP _MazamaRollUtils_roll_sum(SEXP xSEXP, SEXP widthSEXP, SEXP bySEXP, SEXP alignSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -120,8 +119,7 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< unsigned int >::type width(widthSEXP);
     Rcpp::traits::input_parameter< int >::type by(bySEXP);
     Rcpp::traits::input_parameter< int >::type align(alignSEXP);
-    Rcpp::traits::input_parameter< Rcpp::Nullable<Rcpp::NumericVector> >::type weights(weightsSEXP);
-    rcpp_result_gen = Rcpp::wrap(roll_sum(x, width, by, align, weights));
+    rcpp_result_gen = Rcpp::wrap(roll_sum(x, width, by, align));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -146,9 +144,9 @@ static const R_CallMethodDef CallEntries[] = {
     {"_MazamaRollUtils_roll_mean", (DL_FUNC) &_MazamaRollUtils_roll_mean, 5},
     {"_MazamaRollUtils_roll_median", (DL_FUNC) &_MazamaRollUtils_roll_median, 4},
     {"_MazamaRollUtils_roll_min", (DL_FUNC) &_MazamaRollUtils_roll_min, 4},
-    {"_MazamaRollUtils_roll_prod", (DL_FUNC) &_MazamaRollUtils_roll_prod, 5},
+    {"_MazamaRollUtils_roll_prod", (DL_FUNC) &_MazamaRollUtils_roll_prod, 4},
     {"_MazamaRollUtils_roll_sd", (DL_FUNC) &_MazamaRollUtils_roll_sd, 4},
-    {"_MazamaRollUtils_roll_sum", (DL_FUNC) &_MazamaRollUtils_roll_sum, 5},
+    {"_MazamaRollUtils_roll_sum", (DL_FUNC) &_MazamaRollUtils_roll_sum, 4},
     {"_MazamaRollUtils_roll_var", (DL_FUNC) &_MazamaRollUtils_roll_var, 4},
     {NULL, NULL, 0}
 };

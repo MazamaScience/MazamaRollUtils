@@ -4,7 +4,7 @@
 \alias{roll_prod}
 \title{Roll Product}
 \usage{
-roll_prod(x, width = 5L, by = 1L, align = 0L, weights = NULL)
+roll_prod(x, width = 5L, by = 1L, align = 0L)
 }
 \arguments{
 \item{x}{Numeric vector.}
@@ -13,14 +13,11 @@ roll_prod(x, width = 5L, by = 1L, align = 0L, weights = NULL)
 
 \item{by}{An integer to shift the window by.}
 
-\item{align}{A signed integer representing the windows alignment.
+\item{align}{A signed integer representing the position of the return value within each window.
 \code{-1(left)|0(center)|1(right)}.}
-
-\item{weights}{A numeric vector of size \code{n} specifying each window
-index weight. If \code{NULL}, the unit weight is used.}
 }
 \value{
-numeric vector of length(x)
+Numeric vector of the same length as \code{x}.
 }
 \description{
 Apply a moving-window product function to a numeric vector.

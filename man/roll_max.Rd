@@ -13,11 +13,11 @@ roll_max(x, width = 5L, by = 1L, align = 0L)
 
 \item{by}{Integer shift to use when sliding the window to the next location}
 
-\item{align}{Signed integer representing the window alignment.
+\item{align}{Signed integer representing the position of the return value within each window.
 \code{-1(left)|0(center)|1(right)}.}
 }
 \value{
-numeric vector of length(x)
+Numeric vector of the same length as \code{x}.
 }
 \description{
 Apply a moving-window maximum function to a numeric vector.

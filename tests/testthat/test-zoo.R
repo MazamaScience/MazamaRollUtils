@@ -15,18 +15,15 @@ test_that("we match results from zoo::rollapply", {
     n = 5,
     by = 1,
     align = 0,
-    functions,
-    gctorture = FALSE
+    functions
   ) {
     for (f in functions) {
       if ( align == -1 ) zalign <- "left"
-      else if ( align ) zalign <- "right"
       else if ( align == 0 ) zalign <- "center"
+      else if ( align == 1) zalign <- "right"
       zoo_result <- zoo::rollapply(x, n, FUN = get(f), by = by, fill = NA, align = zalign)
-      if (gctorture) gctorture(TRUE)
       MRU_FUN <- get(paste("roll", f, sep = "_"), envir = asNamespace("MazamaRollUtils"))
       MRU_result <- MRU_FUN(x, n, by , align)
-      if (gctorture) gctorture(FALSE)
       expect_equal(MRU_result, zoo_result)
     }
   }

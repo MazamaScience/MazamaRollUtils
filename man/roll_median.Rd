@@ -13,11 +13,11 @@ roll_median(x, width = 5L, by = 1L, align = 0L)
 
 \item{by}{An integer to shift the window by.}
 
-\item{align}{A signed integer representing the windows alignment.
+\item{align}{A signed integer representing the position of the return value within each window.
 \code{-1(left)|0(center)|1(right)}.}
 }
 \value{
-numeric vector of length(x)
+Numeric vector of the same length as \code{x}.
 }
 \description{
 Apply a moving-window median function to a numeric vector.

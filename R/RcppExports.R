@@ -22,10 +22,10 @@
 #' @param x Numeric vector.
 #' @param width Integer width of the rolling window.
 #' @param by An integer to shift the window by.
-#' @param align A signed integer representing the windows alignment.
+#' @param align A signed integer representing the position of the return value within each window.
 #' \code{-1(left)|0(center)|1(right)}.
 #'
-#' @return numeric vector of length(x)
+#' @return Numeric vector of the same length as \code{x}.
 #'
 #' @examples
 #' # load airquality
@@ -57,10 +57,10 @@ roll_hampel <- function(x, width = 5L, by = 1L, align = 0L) {
 #' @param x Numeric vector.
 #' @param width Integer width of the rolling window.
 #' @param by Integer shift to use when sliding the window to the next location
-#' @param align Signed integer representing the window alignment.
+#' @param align Signed integer representing the position of the return value within each window.
 #' \code{-1(left)|0(center)|1(right)}.
 #'
-#' @return numeric vector of length(x)
+#' @return Numeric vector of the same length as \code{x}.
 #'
 #' @examples
 #' # Load package air quality data
@@ -94,10 +94,10 @@ roll_max <- function(x, width = 5L, by = 1L, align = 0L) {
 #' @param weights A numeric vector of size \code{n} specifying each window
 #' index weight. If \code{NULL}, the unit weight is used.
 #' @param by An integer to shift the window by.
-#' @param align A signed integer representing the windows alignment.
+#' @param align A signed integer representing the position of the return value within each window.
 #' \code{-1(left)|0(center)|1(right)}.
 #'
-#' @return numeric vector of length(x)
+#' @return Numeric vector of the same length as \code{x}.
 #'
 #' @examples
 #' # load airquality
@@ -129,10 +129,10 @@ roll_mean <- function(x, width = 5L, by = 1L, align = 0L, weights = NULL) {
 #' @param x Numeric vector.
 #' @param width Integer width of the rolling window.
 #' @param by An integer to shift the window by.
-#' @param align A signed integer representing the windows alignment.
+#' @param align A signed integer representing the position of the return value within each window.
 #' \code{-1(left)|0(center)|1(right)}.
 #'
-#' @return numeric vector of length(x)
+#' @return Numeric vector of the same length as \code{x}.
 #'
 #' @examples
 #' # load airquality
@@ -164,10 +164,10 @@ roll_median <- function(x, width = 5L, by = 1L, align = 0L) {
 #' @param x Numeric vector.
 #' @param width Integer width of the rolling window.
 #' @param by An integer to shift the window by.
-#' @param align A signed integer representing the windows alignment.
+#' @param align A signed integer representing the position of the return value within each window.
 #' \code{-1(left)|0(center)|1(right)}.
 #'
-#' @return numeric vector of length(x)
+#' @return Numeric vector of the same length as \code{x}.
 #'
 #' @examples
 #' # load airquality
@@ -198,13 +198,11 @@ roll_min <- function(x, width = 5L, by = 1L, align = 0L) {
 #'
 #' @param x Numeric vector.
 #' @param width Integer width of the rolling window.
-#' @param weights A numeric vector of size \code{n} specifying each window
-#' index weight. If \code{NULL}, the unit weight is used.
 #' @param by An integer to shift the window by.
-#' @param align A signed integer representing the windows alignment.
+#' @param align A signed integer representing the position of the return value within each window.
 #' \code{-1(left)|0(center)|1(right)}.
 #'
-#' @return numeric vector of length(x)
+#' @return Numeric vector of the same length as \code{x}.
 #'
 #' @examples
 #' # load airquality
@@ -212,8 +210,8 @@ roll_min <- function(x, width = 5L, by = 1L, align = 0L) {
 #'
 #' # calculate moving product of 12 measurements
 #' roll_prod(airquality$Temp, width = 12)
-roll_prod <- function(x, width = 5L, by = 1L, align = 0L, weights = NULL) {
-    .Call(`_MazamaRollUtils_roll_prod`, x, width, by, align, weights)
+roll_prod <- function(x, width = 5L, by = 1L, align = 0L) {
+    .Call(`_MazamaRollUtils_roll_prod`, x, width, by, align)
 }
 
 #' @title Roll Standard Deviation
@@ -237,10 +235,10 @@ roll_prod <- function(x, width = 5L, by = 1L, align = 0L, weights = NULL) {
 #' @param x Numeric vector.
 #' @param width Integer width of the rolling window.
 #' @param by An integer to shift the window by.
-#' @param align A signed integer representing the windows alignment.
+#' @param align A signed integer representing the position of the return value within each window.
 #' \code{-1(left)|0(center)|1(right)}.
 #'
-#' @return numeric vector of length(x)
+#' @return Numeric vector of the same length as \code{x}.
 #'
 #' @examples
 #' # load airquality
@@ -271,13 +269,11 @@ roll_sd <- function(x, width = 5L, by = 1L, align = 0L) {
 #'
 #' @param x Numeric vector.
 #' @param width Integer width of the rolling window.
-#' @param weights A numeric vector of size \code{n} specifying each window
-#' index weight. If \code{NULL}, the unit weight is used.
 #' @param by An integer to shift the window by.
-#' @param align A signed integer representing the windows alignment.
+#' @param align A signed integer representing the position of the return value within each window.
 #' \code{-1(left)|0(center)|1(right)}.
 #'
-#' @return numeric vector of length(x)
+#' @return Numeric vector of the same length as \code{x}.
 #'
 #' @examples
 #' # load airquality
@@ -285,8 +281,8 @@ roll_sd <- function(x, width = 5L, by = 1L, align = 0L) {
 #'
 #' # calculate moving sum of last 3 measurements
 #' roll_sum(airquality$Temp, width = 3, align = -1)
-roll_sum <- function(x, width = 5L, by = 1L, align = 0L, weights = NULL) {
-    .Call(`_MazamaRollUtils_roll_sum`, x, width, by, align, weights)
+roll_sum <- function(x, width = 5L, by = 1L, align = 0L) {
+    .Call(`_MazamaRollUtils_roll_sum`, x, width, by, align)
 }
 
 #' @title Roll Variance
@@ -309,10 +305,10 @@ roll_sum <- function(x, width = 5L, by = 1L, align = 0L, weights = NULL) {
 #' @param x Numeric vector.
 #' @param width Integer width of the rolling window.
 #' @param by An integer to shift the window by.
-#' @param align A signed integer representing the windows alignment.
+#' @param align A signed integer representing the position of the return value within each window.
 #' \code{-1(left)|0(center)|1(right)}.
 #'
-#' @return numeric vector of length(x)
+#' @return Numeric vector of the same length as \code{x}.
 #'
 #' @examples
 #' # load airquality
