@@ -4,15 +4,14 @@
 \alias{roll_max}
 \title{Roll Max}
 \usage{
-roll_max(x, n = 5L, weights = NULL, by = 1L, align = 0L)
+roll_max(x, width = 5L, weights = NULL, by = 1L, align = 0L)
 }
 \arguments{
 \item{x}{Numeric vector.}
 
-\item{n}{Integer window size.}
+\item{width}{Integer width of the rolling window.}
 
-\item{weights}{Numeric vector of length \code{n} specifying each window
-index weight. If \code{NULL}, the unit weight is used.}
+\item{weights}{\emph{Not used in \code{roll_meax()}}.}
 
 \item{by}{Integer shift to use when sliding the window to the next location}
 
@@ -34,9 +33,9 @@ The \code{align} parameter determines the alignment of the current index
 within the window. Thus:
 
 \itemize{
-  \item{\code{align = -1 [*------]} will cause the returned vector to have n-1 \code{NA} values at the right end.}
-  \item{\code{align = 0 [---*---]} will cause the returned vector to have (n-1)/2 \code{NA} values at either end.}
-  \item{\code{align = 1 [------*]} will cause the returned vector to have n-1 \code{NA} values at the left end.}
+  \item{\code{align = -1 [*------]} will cause the returned vector to have width-1 \code{NA} values at the right end.}
+  \item{\code{align = 0  [---*---]} will cause the returned vector to have width/2 \code{NA} values at either end.}
+  \item{\code{align = 1  [------*]} will cause the returned vector to have width-1 \code{NA} values at the left end.}
 }
 }
 \examples{
@@ -44,5 +43,5 @@ within the window. Thus:
 data("airquality")
 
 # Calculate moving maximum of adjacent measurements
-roll_mean(airquality$Temp, n = 3)
+roll_mean(airquality$Temp, width = 3)
 }

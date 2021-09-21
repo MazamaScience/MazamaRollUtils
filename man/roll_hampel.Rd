@@ -4,12 +4,12 @@
 \alias{roll_hampel}
 \title{Roll Hampel}
 \usage{
-roll_hampel(x, n = 5L, weights = NULL, by = 1L, align = 0L)
+roll_hampel(x, width = 5L, weights = NULL, by = 1L, align = 0L)
 }
 \arguments{
-\item{x}{A numeric vector.}
+\item{x}{Numeric vector.}
 
-\item{n}{An integer window length.}
+\item{width}{Integer width of the rolling window.}
 
 \item{weights}{A numeric vector of size \code{n} specifying each window
 index weight. If \code{NULL}, the unit weight is used.}
@@ -30,11 +30,20 @@ vector.
 Each window of \code{n}-length is applied \code{weight} and then
 slid/shifted/rolled \code{by} a positive integer amount about the window's
 \code{align}-ment index.
+
+The \code{align} parameter determines the alignment of the current index
+within the window. Thus:
+
+\itemize{
+  \item{\code{align = -1 [*------]} will cause the returned vector to have width-1 \code{NA} values at the right end.}
+  \item{\code{align = 0  [---*---]} will cause the returned vector to have width/2 \code{NA} values at either end.}
+  \item{\code{align = 1  [------*]} will cause the returned vector to have width-1 \code{NA} values at the left end.}
+}
 }
 \examples{
 # load airquality
 data("airquality")
 
 # calculate moving hampel value of next 3 measurements
-roll_mean(airquality$Temp, n = 3, align = 1)
+roll_mean(airquality$Temp, width = 3, align = 1)
 }

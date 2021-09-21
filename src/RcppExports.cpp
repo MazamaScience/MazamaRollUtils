@@ -11,137 +11,137 @@ Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
 // roll_hampel
-Rcpp::NumericVector roll_hampel(Rcpp::NumericVector x, unsigned int n, Rcpp::Nullable<Rcpp::NumericVector> weights, int by, int align);
-RcppExport SEXP _MazamaRollUtils_roll_hampel(SEXP xSEXP, SEXP nSEXP, SEXP weightsSEXP, SEXP bySEXP, SEXP alignSEXP) {
+Rcpp::NumericVector roll_hampel(Rcpp::NumericVector x, unsigned int width, Rcpp::Nullable<Rcpp::NumericVector> weights, int by, int align);
+RcppExport SEXP _MazamaRollUtils_roll_hampel(SEXP xSEXP, SEXP widthSEXP, SEXP weightsSEXP, SEXP bySEXP, SEXP alignSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< Rcpp::NumericVector >::type x(xSEXP);
-    Rcpp::traits::input_parameter< unsigned int >::type n(nSEXP);
+    Rcpp::traits::input_parameter< unsigned int >::type width(widthSEXP);
     Rcpp::traits::input_parameter< Rcpp::Nullable<Rcpp::NumericVector> >::type weights(weightsSEXP);
     Rcpp::traits::input_parameter< int >::type by(bySEXP);
     Rcpp::traits::input_parameter< int >::type align(alignSEXP);
-    rcpp_result_gen = Rcpp::wrap(roll_hampel(x, n, weights, by, align));
+    rcpp_result_gen = Rcpp::wrap(roll_hampel(x, width, weights, by, align));
     return rcpp_result_gen;
 END_RCPP
 }
 // roll_max
-Rcpp::NumericVector roll_max(Rcpp::NumericVector x, unsigned int n, Rcpp::Nullable<Rcpp::NumericVector> weights, int by, int align);
-RcppExport SEXP _MazamaRollUtils_roll_max(SEXP xSEXP, SEXP nSEXP, SEXP weightsSEXP, SEXP bySEXP, SEXP alignSEXP) {
+Rcpp::NumericVector roll_max(Rcpp::NumericVector x, unsigned int width, Rcpp::Nullable<Rcpp::NumericVector> weights, int by, int align);
+RcppExport SEXP _MazamaRollUtils_roll_max(SEXP xSEXP, SEXP widthSEXP, SEXP weightsSEXP, SEXP bySEXP, SEXP alignSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< Rcpp::NumericVector >::type x(xSEXP);
-    Rcpp::traits::input_parameter< unsigned int >::type n(nSEXP);
+    Rcpp::traits::input_parameter< unsigned int >::type width(widthSEXP);
     Rcpp::traits::input_parameter< Rcpp::Nullable<Rcpp::NumericVector> >::type weights(weightsSEXP);
     Rcpp::traits::input_parameter< int >::type by(bySEXP);
     Rcpp::traits::input_parameter< int >::type align(alignSEXP);
-    rcpp_result_gen = Rcpp::wrap(roll_max(x, n, weights, by, align));
+    rcpp_result_gen = Rcpp::wrap(roll_max(x, width, weights, by, align));
     return rcpp_result_gen;
 END_RCPP
 }
 // roll_mean
-Rcpp::NumericVector roll_mean(Rcpp::NumericVector x, unsigned int n, Rcpp::Nullable<Rcpp::NumericVector> weights, int by, int align);
-RcppExport SEXP _MazamaRollUtils_roll_mean(SEXP xSEXP, SEXP nSEXP, SEXP weightsSEXP, SEXP bySEXP, SEXP alignSEXP) {
+Rcpp::NumericVector roll_mean(Rcpp::NumericVector x, unsigned int width, Rcpp::Nullable<Rcpp::NumericVector> weights, int by, int align);
+RcppExport SEXP _MazamaRollUtils_roll_mean(SEXP xSEXP, SEXP widthSEXP, SEXP weightsSEXP, SEXP bySEXP, SEXP alignSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< Rcpp::NumericVector >::type x(xSEXP);
-    Rcpp::traits::input_parameter< unsigned int >::type n(nSEXP);
+    Rcpp::traits::input_parameter< unsigned int >::type width(widthSEXP);
     Rcpp::traits::input_parameter< Rcpp::Nullable<Rcpp::NumericVector> >::type weights(weightsSEXP);
     Rcpp::traits::input_parameter< int >::type by(bySEXP);
     Rcpp::traits::input_parameter< int >::type align(alignSEXP);
-    rcpp_result_gen = Rcpp::wrap(roll_mean(x, n, weights, by, align));
+    rcpp_result_gen = Rcpp::wrap(roll_mean(x, width, weights, by, align));
     return rcpp_result_gen;
 END_RCPP
 }
 // roll_median
-Rcpp::NumericVector roll_median(Rcpp::NumericVector x, unsigned int n, Rcpp::Nullable<Rcpp::NumericVector> weights, int by, int align);
-RcppExport SEXP _MazamaRollUtils_roll_median(SEXP xSEXP, SEXP nSEXP, SEXP weightsSEXP, SEXP bySEXP, SEXP alignSEXP) {
+Rcpp::NumericVector roll_median(Rcpp::NumericVector x, unsigned int width, Rcpp::Nullable<Rcpp::NumericVector> weights, int by, int align);
+RcppExport SEXP _MazamaRollUtils_roll_median(SEXP xSEXP, SEXP widthSEXP, SEXP weightsSEXP, SEXP bySEXP, SEXP alignSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< Rcpp::NumericVector >::type x(xSEXP);
-    Rcpp::traits::input_parameter< unsigned int >::type n(nSEXP);
+    Rcpp::traits::input_parameter< unsigned int >::type width(widthSEXP);
     Rcpp::traits::input_parameter< Rcpp::Nullable<Rcpp::NumericVector> >::type weights(weightsSEXP);
     Rcpp::traits::input_parameter< int >::type by(bySEXP);
     Rcpp::traits::input_parameter< int >::type align(alignSEXP);
-    rcpp_result_gen = Rcpp::wrap(roll_median(x, n, weights, by, align));
+    rcpp_result_gen = Rcpp::wrap(roll_median(x, width, weights, by, align));
     return rcpp_result_gen;
 END_RCPP
 }
 // roll_min
-Rcpp::NumericVector roll_min(Rcpp::NumericVector x, unsigned int n, Rcpp::Nullable<Rcpp::NumericVector> weights, int by, int align);
-RcppExport SEXP _MazamaRollUtils_roll_min(SEXP xSEXP, SEXP nSEXP, SEXP weightsSEXP, SEXP bySEXP, SEXP alignSEXP) {
+Rcpp::NumericVector roll_min(Rcpp::NumericVector x, unsigned int width, Rcpp::Nullable<Rcpp::NumericVector> weights, int by, int align);
+RcppExport SEXP _MazamaRollUtils_roll_min(SEXP xSEXP, SEXP widthSEXP, SEXP weightsSEXP, SEXP bySEXP, SEXP alignSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< Rcpp::NumericVector >::type x(xSEXP);
-    Rcpp::traits::input_parameter< unsigned int >::type n(nSEXP);
+    Rcpp::traits::input_parameter< unsigned int >::type width(widthSEXP);
     Rcpp::traits::input_parameter< Rcpp::Nullable<Rcpp::NumericVector> >::type weights(weightsSEXP);
     Rcpp::traits::input_parameter< int >::type by(bySEXP);
     Rcpp::traits::input_parameter< int >::type align(alignSEXP);
-    rcpp_result_gen = Rcpp::wrap(roll_min(x, n, weights, by, align));
+    rcpp_result_gen = Rcpp::wrap(roll_min(x, width, weights, by, align));
     return rcpp_result_gen;
 END_RCPP
 }
 // roll_prod
-Rcpp::NumericVector roll_prod(Rcpp::NumericVector x, unsigned int n, Rcpp::Nullable<Rcpp::NumericVector> weights, int by, int align);
-RcppExport SEXP _MazamaRollUtils_roll_prod(SEXP xSEXP, SEXP nSEXP, SEXP weightsSEXP, SEXP bySEXP, SEXP alignSEXP) {
+Rcpp::NumericVector roll_prod(Rcpp::NumericVector x, unsigned int width, Rcpp::Nullable<Rcpp::NumericVector> weights, int by, int align);
+RcppExport SEXP _MazamaRollUtils_roll_prod(SEXP xSEXP, SEXP widthSEXP, SEXP weightsSEXP, SEXP bySEXP, SEXP alignSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< Rcpp::NumericVector >::type x(xSEXP);
-    Rcpp::traits::input_parameter< unsigned int >::type n(nSEXP);
+    Rcpp::traits::input_parameter< unsigned int >::type width(widthSEXP);
     Rcpp::traits::input_parameter< Rcpp::Nullable<Rcpp::NumericVector> >::type weights(weightsSEXP);
     Rcpp::traits::input_parameter< int >::type by(bySEXP);
     Rcpp::traits::input_parameter< int >::type align(alignSEXP);
-    rcpp_result_gen = Rcpp::wrap(roll_prod(x, n, weights, by, align));
+    rcpp_result_gen = Rcpp::wrap(roll_prod(x, width, weights, by, align));
     return rcpp_result_gen;
 END_RCPP
 }
 // roll_sd
-Rcpp::NumericVector roll_sd(Rcpp::NumericVector x, unsigned int n, Rcpp::Nullable<Rcpp::NumericVector> weights, int by, int align);
-RcppExport SEXP _MazamaRollUtils_roll_sd(SEXP xSEXP, SEXP nSEXP, SEXP weightsSEXP, SEXP bySEXP, SEXP alignSEXP) {
+Rcpp::NumericVector roll_sd(Rcpp::NumericVector x, unsigned int width, Rcpp::Nullable<Rcpp::NumericVector> weights, int by, int align);
+RcppExport SEXP _MazamaRollUtils_roll_sd(SEXP xSEXP, SEXP widthSEXP, SEXP weightsSEXP, SEXP bySEXP, SEXP alignSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< Rcpp::NumericVector >::type x(xSEXP);
-    Rcpp::traits::input_parameter< unsigned int >::type n(nSEXP);
+    Rcpp::traits::input_parameter< unsigned int >::type width(widthSEXP);
     Rcpp::traits::input_parameter< Rcpp::Nullable<Rcpp::NumericVector> >::type weights(weightsSEXP);
     Rcpp::traits::input_parameter< int >::type by(bySEXP);
     Rcpp::traits::input_parameter< int >::type align(alignSEXP);
-    rcpp_result_gen = Rcpp::wrap(roll_sd(x, n, weights, by, align));
+    rcpp_result_gen = Rcpp::wrap(roll_sd(x, width, weights, by, align));
     return rcpp_result_gen;
 END_RCPP
 }
 // roll_sum
-Rcpp::NumericVector roll_sum(Rcpp::NumericVector x, unsigned int n, Rcpp::Nullable<Rcpp::NumericVector> weights, int by, int align);
-RcppExport SEXP _MazamaRollUtils_roll_sum(SEXP xSEXP, SEXP nSEXP, SEXP weightsSEXP, SEXP bySEXP, SEXP alignSEXP) {
+Rcpp::NumericVector roll_sum(Rcpp::NumericVector x, unsigned int width, Rcpp::Nullable<Rcpp::NumericVector> weights, int by, int align);
+RcppExport SEXP _MazamaRollUtils_roll_sum(SEXP xSEXP, SEXP widthSEXP, SEXP weightsSEXP, SEXP bySEXP, SEXP alignSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< Rcpp::NumericVector >::type x(xSEXP);
-    Rcpp::traits::input_parameter< unsigned int >::type n(nSEXP);
+    Rcpp::traits::input_parameter< unsigned int >::type width(widthSEXP);
     Rcpp::traits::input_parameter< Rcpp::Nullable<Rcpp::NumericVector> >::type weights(weightsSEXP);
     Rcpp::traits::input_parameter< int >::type by(bySEXP);
     Rcpp::traits::input_parameter< int >::type align(alignSEXP);
-    rcpp_result_gen = Rcpp::wrap(roll_sum(x, n, weights, by, align));
+    rcpp_result_gen = Rcpp::wrap(roll_sum(x, width, weights, by, align));
     return rcpp_result_gen;
 END_RCPP
 }
 // roll_var
-Rcpp::NumericVector roll_var(Rcpp::NumericVector x, unsigned int n, Rcpp::Nullable<Rcpp::NumericVector> weights, int by, int align);
-RcppExport SEXP _MazamaRollUtils_roll_var(SEXP xSEXP, SEXP nSEXP, SEXP weightsSEXP, SEXP bySEXP, SEXP alignSEXP) {
+Rcpp::NumericVector roll_var(Rcpp::NumericVector x, unsigned int width, Rcpp::Nullable<Rcpp::NumericVector> weights, int by, int align);
+RcppExport SEXP _MazamaRollUtils_roll_var(SEXP xSEXP, SEXP widthSEXP, SEXP weightsSEXP, SEXP bySEXP, SEXP alignSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< Rcpp::NumericVector >::type x(xSEXP);
-    Rcpp::traits::input_parameter< unsigned int >::type n(nSEXP);
+    Rcpp::traits::input_parameter< unsigned int >::type width(widthSEXP);
     Rcpp::traits::input_parameter< Rcpp::Nullable<Rcpp::NumericVector> >::type weights(weightsSEXP);
     Rcpp::traits::input_parameter< int >::type by(bySEXP);
     Rcpp::traits::input_parameter< int >::type align(alignSEXP);
-    rcpp_result_gen = Rcpp::wrap(roll_var(x, n, weights, by, align));
+    rcpp_result_gen = Rcpp::wrap(roll_var(x, width, weights, by, align));
     return rcpp_result_gen;
 END_RCPP
 }

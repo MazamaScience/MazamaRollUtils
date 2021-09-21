@@ -10,14 +10,14 @@ public:
   // Initialize Roller
   void init(
       Rcpp::NumericVector x,
-      int n,
+      int width,
       Rcpp::Nullable<Rcpp::NumericVector> weights,
       int by,
       int align
   ) {
 
     // Checks
-    if (n > x.size()) {
+    if (width > x.size()) {
       Rcpp::stop("Window 'n' cannot be larger than 'x'");
     }
     if (by > x.size()) {
@@ -29,12 +29,12 @@ public:
 
     // Default weights
     if (weights.isNull()) {
-      weights_ = Rcpp::rep(1, n);
+      weights_ = Rcpp::rep(1, width);
     } else {
       // See:  https://stackoverflow.com/questions/43388698/rcpp-how-can-i-get-the-size-of-a-rcppnullable-numericvector
       if (weights.isNotNull()) {
         Rcpp::NumericVector w(weights.get());
-        if (w.size() != n) {
+        if (w.size() != width) {
           Rcpp::stop("'weights' must be either NULL or a vector of the same length as window size 'n'");
         }
       }
@@ -43,26 +43,26 @@ public:
 
     // Initialize private vars
     x_ = x;
-    width_ = n;
+    width_ = width;
     by_ = by;
     align_ = align;
 
     // Additional private vars
     length_ = x.size();
-    half_width_ = n / 2;   // truncated division rounds down
+    half_width_ = width / 2;   // truncated division rounds down
 
     // Initialize start and end
     switch (align) {
       case -1:
         start_ = 0;
-        end_ = length_ - (n - 1);
+        end_ = length_ - (width - 1);
         break;
       case 0:
         start_ = half_width_;
         end_ = length_ - half_width_;
         break;
       case 1:
-        start_ = n - 1;
+        start_ = width - 1;
         end_ = length_;
         break;
     }
@@ -333,7 +333,7 @@ private:
           s = index - i;
           break;
       }
-      var += (x_[s] - mean) * (x_[s] - mean) * weights_[i];
+      var += (x_[s] - mean) * (x_[s] - mean);
     }
     var /= width_ - 1;
     return var;
@@ -352,8 +352,17 @@ private:
 //' slid/shifted/rolled \code{by} a positive integer amount about the window's
 //' \code{align}-ment index.
 //'
-//' @param x A numeric vector.
-//' @param n An integer window length.
+//' The \code{align} parameter determines the alignment of the current index
+//' within the window. Thus:
+//'
+//' \itemize{
+//'   \item{\code{align = -1 [*------]} will cause the returned vector to have width-1 \code{NA} values at the right end.}
+//'   \item{\code{align = 0  [---*---]} will cause the returned vector to have width/2 \code{NA} values at either end.}
+//'   \item{\code{align = 1  [------*]} will cause the returned vector to have width-1 \code{NA} values at the left end.}
+//' }
+//'
+//' @param x Numeric vector.
+//' @param width Integer width of the rolling window.
 //' @param weights A numeric vector of size \code{n} specifying each window
 //' index weight. If \code{NULL}, the unit weight is used.
 //' @param by An integer to shift the window by.
@@ -367,17 +376,17 @@ private:
 //' data("airquality")
 //'
 //' # calculate moving hampel value of next 3 measurements
-//' roll_mean(airquality$Temp, n = 3, align = 1)
+//' roll_mean(airquality$Temp, width = 3, align = 1)
 // [[Rcpp::export]]
 Rcpp::NumericVector roll_hampel(
     Rcpp::NumericVector x,
-    unsigned int n = 5,
+    unsigned int width = 5,
     Rcpp::Nullable<Rcpp::NumericVector> weights = R_NilValue,
     int by = 1,
     int align = 0
 ) {
   Roll roll;
-  roll.init(x, n, weights, by, align);
+  roll.init(x, width, weights, by, align);
   return roll.hampel();
 }
 
@@ -393,15 +402,14 @@ Rcpp::NumericVector roll_hampel(
 //' within the window. Thus:
 //'
 //' \itemize{
-//'   \item{\code{align = -1 [*------]} will cause the returned vector to have n-1 \code{NA} values at the right end.}
-//'   \item{\code{align = 0 [---*---]} will cause the returned vector to have (n-1)/2 \code{NA} values at either end.}
-//'   \item{\code{align = 1 [------*]} will cause the returned vector to have n-1 \code{NA} values at the left end.}
+//'   \item{\code{align = -1 [*------]} will cause the returned vector to have width-1 \code{NA} values at the right end.}
+//'   \item{\code{align = 0  [---*---]} will cause the returned vector to have width/2 \code{NA} values at either end.}
+//'   \item{\code{align = 1  [------*]} will cause the returned vector to have width-1 \code{NA} values at the left end.}
 //' }
 //'
 //' @param x Numeric vector.
-//' @param n Integer window size.
-//' @param weights Numeric vector of length \code{n} specifying each window
-//' index weight. If \code{NULL}, the unit weight is used.
+//' @param width Integer width of the rolling window.
+//' @param weights \emph{Not used in \code{roll_meax()}}.
 //' @param by Integer shift to use when sliding the window to the next location
 //' @param align Signed integer representing the window alignment.
 //' \code{-1(left)|0(center)|1(right)}.
@@ -413,17 +421,17 @@ Rcpp::NumericVector roll_hampel(
 //' data("airquality")
 //'
 //' # Calculate moving maximum of adjacent measurements
-//' roll_mean(airquality$Temp, n = 3)
+//' roll_mean(airquality$Temp, width = 3)
 // [[Rcpp::export]]
 Rcpp::NumericVector roll_max(
     Rcpp::NumericVector x,
-    unsigned int n = 5,
+    unsigned int width = 5,
     Rcpp::Nullable<Rcpp::NumericVector> weights = R_NilValue,
     int by = 1,
     int align = 0
 ) {
   Roll roll;
-  roll.init(x, n, weights, by, align);
+  roll.init(x, width, weights, by, align);
   return roll.max();
 }
 
@@ -435,8 +443,17 @@ Rcpp::NumericVector roll_max(
 //' slid/shifted/rolled \code{by} a positive integer amount about the window's
 //' \code{align}-ment index.
 //'
-//' @param x A numeric vector.
-//' @param n An integer window length.
+//' The \code{align} parameter determines the alignment of the current index
+//' within the window. Thus:
+//'
+//' \itemize{
+//'   \item{\code{align = -1 [*------]} will cause the returned vector to have width-1 \code{NA} values at the right end.}
+//'   \item{\code{align = 0  [---*---]} will cause the returned vector to have width/2 \code{NA} values at either end.}
+//'   \item{\code{align = 1  [------*]} will cause the returned vector to have width-1 \code{NA} values at the left end.}
+//' }
+//'
+//' @param x Numeric vector.
+//' @param width Integer width of the rolling window.
 //' @param weights A numeric vector of size \code{n} specifying each window
 //' index weight. If \code{NULL}, the unit weight is used.
 //' @param by An integer to shift the window by.
@@ -450,17 +467,17 @@ Rcpp::NumericVector roll_max(
 //' data("airquality")
 //'
 //' # calculate moving average of last 6 measurements
-//' roll_mean(airquality$Temp, n = 6, align = -1)
+//' roll_mean(airquality$Temp, width = 6, align = -1)
 // [[Rcpp::export]]
 Rcpp::NumericVector roll_mean(
     Rcpp::NumericVector x,
-    unsigned int n = 5,
+    unsigned int width = 5,
     Rcpp::Nullable<Rcpp::NumericVector> weights = R_NilValue,
     int by = 1,
     int align = 0
 ) {
   Roll roll;
-  roll.init(x, n, weights, by, align);
+  roll.init(x, width, weights, by, align);
   return roll.mean();
 }
 
@@ -472,10 +489,18 @@ Rcpp::NumericVector roll_mean(
 //' slid/shifted/rolled \code{by} a positive integer amount about the window's
 //' \code{align}-ment index.
 //'
-//' @param x A numeric vector.
-//' @param n An integer window length.
-//' @param weights A numeric vector of size \code{n} specifying each window
-//' index weight. If \code{NULL}, the unit weight is used.
+//' The \code{align} parameter determines the alignment of the current index
+//' within the window. Thus:
+//'
+//' \itemize{
+//'   \item{\code{align = -1 [*------]} will cause the returned vector to have width-1 \code{NA} values at the right end.}
+//'   \item{\code{align = 0  [---*---]} will cause the returned vector to have width/2 \code{NA} values at either end.}
+//'   \item{\code{align = 1  [------*]} will cause the returned vector to have width-1 \code{NA} values at the left end.}
+//' }
+//'
+//' @param x Numeric vector.
+//' @param width Integer width of the rolling window.
+//' @param weights \emph{Not used in \code{roll_median()}}.
 //' @param by An integer to shift the window by.
 //' @param align A signed integer representing the windows alignment.
 //' \code{-1(left)|0(center)|1(right)}.
@@ -487,17 +512,17 @@ Rcpp::NumericVector roll_mean(
 //' data("airquality")
 //'
 //' # calculate moving median of adjacent measurements
-//' roll_mean(airquality$Temp, n = 3)
+//' roll_mean(airquality$Temp, width = 3)
 // [[Rcpp::export]]
 Rcpp::NumericVector roll_median (
     Rcpp::NumericVector x,
-    unsigned int n = 5,
+    unsigned int width = 5,
     Rcpp::Nullable<Rcpp::NumericVector> weights = R_NilValue,
     int by = 1,
     int align = 0
 ) {
   Roll roll;
-  roll.init(x, n, weights, by, align);
+  roll.init(x, width, weights, by, align);
   return roll.median();
 }
 
@@ -509,10 +534,18 @@ Rcpp::NumericVector roll_median (
 //' slid/shifted/rolled \code{by} a positive integer amount about the window's
 //' \code{align}-ment index.
 //'
-//' @param x A numeric vector.
-//' @param n An integer window length.
-//' @param weights A numeric vector of size \code{n} specifying each window
-//' index weight. If \code{NULL}, the unit weight is used.
+//' The \code{align} parameter determines the alignment of the current index
+//' within the window. Thus:
+//'
+//' \itemize{
+//'   \item{\code{align = -1 [*------]} will cause the returned vector to have width-1 \code{NA} values at the right end.}
+//'   \item{\code{align = 0  [---*---]} will cause the returned vector to have width/2 \code{NA} values at either end.}
+//'   \item{\code{align = 1  [------*]} will cause the returned vector to have width-1 \code{NA} values at the left end.}
+//' }
+//'
+//' @param x Numeric vector.
+//' @param width Integer width of the rolling window.
+//' @param weights \emph{Not used in \code{roll_median()}}.
 //' @param by An integer to shift the window by.
 //' @param align A signed integer representing the windows alignment.
 //' \code{-1(left)|0(center)|1(right)}.
@@ -524,17 +557,17 @@ Rcpp::NumericVector roll_median (
 //' data("airquality")
 //'
 //' # calculate moving minimum of last 24 measurements
-//' roll_min(airquality$Temp, n = 24, align = -1)
+//' roll_min(airquality$Temp, width = 24, align = -1)
 // [[Rcpp::export]]
 Rcpp::NumericVector roll_min(
     Rcpp::NumericVector x,
-    unsigned int n = 5,
+    unsigned int width = 5,
     Rcpp::Nullable<Rcpp::NumericVector> weights = R_NilValue,
     int by = 1,
     int align = 0
 ) {
   Roll roll;
-  roll.init(x, n, weights, by, align);
+  roll.init(x, width, weights, by, align);
   return roll.min();
 }
 
@@ -546,8 +579,17 @@ Rcpp::NumericVector roll_min(
 //' slid/shifted/rolled \code{by} a positive integer amount about the window's
 //' \code{align}-ment index.
 //'
-//' @param x A numeric vector.
-//' @param n An integer window length.
+//' The \code{align} parameter determines the alignment of the current index
+//' within the window. Thus:
+//'
+//' \itemize{
+//'   \item{\code{align = -1 [*------]} will cause the returned vector to have width-1 \code{NA} values at the right end.}
+//'   \item{\code{align = 0  [---*---]} will cause the returned vector to have width/2 \code{NA} values at either end.}
+//'   \item{\code{align = 1  [------*]} will cause the returned vector to have width-1 \code{NA} values at the left end.}
+//' }
+//'
+//' @param x Numeric vector.
+//' @param width Integer width of the rolling window.
 //' @param weights A numeric vector of size \code{n} specifying each window
 //' index weight. If \code{NULL}, the unit weight is used.
 //' @param by An integer to shift the window by.
@@ -561,17 +603,17 @@ Rcpp::NumericVector roll_min(
 //' data("airquality")
 //'
 //' # calculate moving product of 12 measurements
-//' roll_prod(airquality$Temp, n = 12)
+//' roll_prod(airquality$Temp, width = 12)
 // [[Rcpp::export]]
 Rcpp::NumericVector roll_prod(
     Rcpp::NumericVector x,
-    unsigned int n = 5,
+    unsigned int width = 5,
     Rcpp::Nullable<Rcpp::NumericVector> weights = R_NilValue,
     int by = 1,
     int align = 0
 ) {
   Roll roll;
-  roll.init(x, n, weights, by, align);
+  roll.init(x, width, weights, by, align);
   return roll.prod();
 }
 
@@ -584,10 +626,18 @@ Rcpp::NumericVector roll_prod(
 //' slid/shifted/rolled \code{by} a positive integer amount about the window's
 //' \code{align}-ment index.
 //'
-//' @param x A numeric vector.
-//' @param n An integer window length.
-//' @param weights A numeric vector of size \code{n} specifying each window
-//' index weight. If \code{NULL}, the unit weight is used.
+//' The \code{align} parameter determines the alignment of the current index
+//' within the window. Thus:
+//'
+//' \itemize{
+//'   \item{\code{align = -1 [*------]} will cause the returned vector to have width-1 \code{NA} values at the right end.}
+//'   \item{\code{align = 0  [---*---]} will cause the returned vector to have width/2 \code{NA} values at either end.}
+//'   \item{\code{align = 1  [------*]} will cause the returned vector to have width-1 \code{NA} values at the left end.}
+//' }
+//'
+//' @param x Numeric vector.
+//' @param width Integer width of the rolling window.
+//' @param weights \emph{Not used in \code{roll_sd()}}.
 //' @param by An integer to shift the window by.
 //' @param align A signed integer representing the windows alignment.
 //' \code{-1(left)|0(center)|1(right)}.
@@ -599,17 +649,17 @@ Rcpp::NumericVector roll_prod(
 //' data("airquality")
 //'
 //' # calculate moving standard deviation of adjacent measurements
-//' roll_mean(airquality$Temp, n = 3)
+//' roll_mean(airquality$Temp, width = 3)
 // [[Rcpp::export]]
 Rcpp::NumericVector roll_sd(
     Rcpp::NumericVector x,
-    unsigned int n = 5,
+    unsigned int width = 5,
     Rcpp::Nullable<Rcpp::NumericVector> weights = R_NilValue,
     int by = 1,
     int align = 0
 ) {
   Roll roll;
-  roll.init(x, n, weights, by, align);
+  roll.init(x, width, weights, by, align);
   return roll.sd();
 }
 
@@ -621,8 +671,17 @@ Rcpp::NumericVector roll_sd(
 //' slid/shifted/rolled \code{by} a positive integer amount about the window's
 //' \code{align}-ment index.
 //'
-//' @param x A numeric vector.
-//' @param n An integer window length.
+//' The \code{align} parameter determines the alignment of the current index
+//' within the window. Thus:
+//'
+//' \itemize{
+//'   \item{\code{align = -1 [*------]} will cause the returned vector to have width-1 \code{NA} values at the right end.}
+//'   \item{\code{align = 0  [---*---]} will cause the returned vector to have width/2 \code{NA} values at either end.}
+//'   \item{\code{align = 1  [------*]} will cause the returned vector to have width-1 \code{NA} values at the left end.}
+//' }
+//'
+//' @param x Numeric vector.
+//' @param width Integer width of the rolling window.
 //' @param weights A numeric vector of size \code{n} specifying each window
 //' index weight. If \code{NULL}, the unit weight is used.
 //' @param by An integer to shift the window by.
@@ -636,17 +695,17 @@ Rcpp::NumericVector roll_sd(
 //' data("airquality")
 //'
 //' # calculate moving sum of last 3 measurements
-//' roll_sum(airquality$Temp, n = 3, align = -1)
+//' roll_sum(airquality$Temp, width = 3, align = -1)
 // [[Rcpp::export]]
 Rcpp::NumericVector roll_sum(
     Rcpp::NumericVector x,
-    unsigned int n = 5,
+    unsigned int width = 5,
     Rcpp::Nullable<Rcpp::NumericVector> weights = R_NilValue,
     int by = 1,
     int align = 0
 ) {
   Roll roll;
-  roll.init(x, n, weights, by, align);
+  roll.init(x, width, weights, by, align);
   return roll.sum();
 }
 
@@ -658,10 +717,18 @@ Rcpp::NumericVector roll_sum(
 //' slid/shifted/rolled \code{by} a positive integer amount about the window's
 //' \code{align}-ment index.
 //'
-//' @param x A numeric vector.
-//' @param n An integer window length.
-//' @param weights A numeric vector of size \code{n} specifying each window
-//' index weight. If \code{NULL}, the unit weight is used.
+//' The \code{align} parameter determines the alignment of the current index
+//' within the window. Thus:
+//'
+//' \itemize{
+//'   \item{\code{align = -1 [*------]} will cause the returned vector to have width-1 \code{NA} values at the right end.}
+//'   \item{\code{align = 0  [---*---]} will cause the returned vector to have width/2 \code{NA} values at either end.}
+//'   \item{\code{align = 1  [------*]} will cause the returned vector to have width-1 \code{NA} values at the left end.}
+//' }
+//'
+//' @param x Numeric vector.
+//' @param width Integer width of the rolling window.
+//' @param weights \emph{Not used in \code{roll_var()}}.
 //' @param by An integer to shift the window by.
 //' @param align A signed integer representing the windows alignment.
 //' \code{-1(left)|0(center)|1(right)}.
@@ -673,17 +740,17 @@ Rcpp::NumericVector roll_sum(
 //' data("airquality")
 //'
 //' # calculate moving variance of adjacent measurements
-//' roll_mean(airquality$Temp, n = 3)
+//' roll_mean(airquality$Temp, width = 3)
 // [[Rcpp::export]]
 Rcpp::NumericVector roll_var(
     Rcpp::NumericVector x,
-    unsigned int n = 5,
+    unsigned int width = 5,
     Rcpp::Nullable<Rcpp::NumericVector> weights = R_NilValue,
     int by = 1,
     int align = 0
 ) {
   Roll roll;
-  roll.init(x, n, weights, by, align);
+  roll.init(x, width, weights, by, align);
   return roll.var();
 }
 

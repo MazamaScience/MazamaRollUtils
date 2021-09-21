@@ -4,15 +4,14 @@
 \alias{roll_var}
 \title{Roll Variance}
 \usage{
-roll_var(x, n = 5L, weights = NULL, by = 1L, align = 0L)
+roll_var(x, width = 5L, weights = NULL, by = 1L, align = 0L)
 }
 \arguments{
-\item{x}{A numeric vector.}
+\item{x}{Numeric vector.}
 
-\item{n}{An integer window length.}
+\item{width}{Integer width of the rolling window.}
 
-\item{weights}{A numeric vector of size \code{n} specifying each window
-index weight. If \code{NULL}, the unit weight is used.}
+\item{weights}{\emph{Not used in \code{roll_var()}}.}
 
 \item{by}{An integer to shift the window by.}
 
@@ -29,11 +28,20 @@ Apply a moving-window variance function to a numeric vector.
 Each window of \code{n}-length is applied \code{weight} and then
 slid/shifted/rolled \code{by} a positive integer amount about the window's
 \code{align}-ment index.
+
+The \code{align} parameter determines the alignment of the current index
+within the window. Thus:
+
+\itemize{
+  \item{\code{align = -1 [*------]} will cause the returned vector to have width-1 \code{NA} values at the right end.}
+  \item{\code{align = 0  [---*---]} will cause the returned vector to have width/2 \code{NA} values at either end.}
+  \item{\code{align = 1  [------*]} will cause the returned vector to have width-1 \code{NA} values at the left end.}
+}
 }
 \examples{
 # load airquality
 data("airquality")
 
 # calculate moving variance of adjacent measurements
-roll_mean(airquality$Temp, n = 3)
+roll_mean(airquality$Temp, width = 3)
 }

@@ -8,7 +8,7 @@ test_that("we match results from zoo::rollapply", {
   if (!requireNamespace("zoo", quietly = TRUE))
     skip("zoo not installed")
 
-  functions <- c("max", "median", "mean", "min", "prod", "sum")
+  functions <- c("max", "median", "mean", "min", "prod", "sd", "sum", "var")
 
   run_tests <- function(
     x,
@@ -23,12 +23,12 @@ test_that("we match results from zoo::rollapply", {
       if ( align == -1 ) zalign <- "left"
       else if ( align ) zalign <- "right"
       else if ( align == 0 ) zalign <- "center"
-      zoo <- zoo::rollapply(x, n, FUN = get(f), by = by, fill = NA, align = zalign)
+      zoo_result <- zoo::rollapply(x, n, FUN = get(f), by = by, fill = NA, align = zalign)
       if (gctorture) gctorture(TRUE)
       MRU_FUN <- get(paste("roll", f, sep = "_"), envir = asNamespace("MazamaRollUtils"))
       MRU_result <- MRU_FUN(x, n, weights, by , align)
       if (gctorture) gctorture(FALSE)
-      expect_equal(MRU_result, zoo)
+      expect_equal(MRU_result, zoo_result)
     }
   }
 

@@ -10,8 +10,17 @@
 #' slid/shifted/rolled \code{by} a positive integer amount about the window's
 #' \code{align}-ment index.
 #'
-#' @param x A numeric vector.
-#' @param n An integer window length.
+#' The \code{align} parameter determines the alignment of the current index
+#' within the window. Thus:
+#'
+#' \itemize{
+#'   \item{\code{align = -1 [*------]} will cause the returned vector to have width-1 \code{NA} values at the right end.}
+#'   \item{\code{align = 0  [---*---]} will cause the returned vector to have width/2 \code{NA} values at either end.}
+#'   \item{\code{align = 1  [------*]} will cause the returned vector to have width-1 \code{NA} values at the left end.}
+#' }
+#'
+#' @param x Numeric vector.
+#' @param width Integer width of the rolling window.
 #' @param weights A numeric vector of size \code{n} specifying each window
 #' index weight. If \code{NULL}, the unit weight is used.
 #' @param by An integer to shift the window by.
@@ -25,9 +34,9 @@
 #' data("airquality")
 #'
 #' # calculate moving hampel value of next 3 measurements
-#' roll_mean(airquality$Temp, n = 3, align = 1)
-roll_hampel <- function(x, n = 5L, weights = NULL, by = 1L, align = 0L) {
-    .Call(`_MazamaRollUtils_roll_hampel`, x, n, weights, by, align)
+#' roll_mean(airquality$Temp, width = 3, align = 1)
+roll_hampel <- function(x, width = 5L, weights = NULL, by = 1L, align = 0L) {
+    .Call(`_MazamaRollUtils_roll_hampel`, x, width, weights, by, align)
 }
 
 #' @title Roll Max
@@ -42,15 +51,14 @@ roll_hampel <- function(x, n = 5L, weights = NULL, by = 1L, align = 0L) {
 #' within the window. Thus:
 #'
 #' \itemize{
-#'   \item{\code{align = -1 [*------]} will cause the returned vector to have n-1 \code{NA} values at the right end.}
-#'   \item{\code{align = 0 [---*---]} will cause the returned vector to have (n-1)/2 \code{NA} values at either end.}
-#'   \item{\code{align = 1 [------*]} will cause the returned vector to have n-1 \code{NA} values at the left end.}
+#'   \item{\code{align = -1 [*------]} will cause the returned vector to have width-1 \code{NA} values at the right end.}
+#'   \item{\code{align = 0  [---*---]} will cause the returned vector to have width/2 \code{NA} values at either end.}
+#'   \item{\code{align = 1  [------*]} will cause the returned vector to have width-1 \code{NA} values at the left end.}
 #' }
 #'
 #' @param x Numeric vector.
-#' @param n Integer window size.
-#' @param weights Numeric vector of length \code{n} specifying each window
-#' index weight. If \code{NULL}, the unit weight is used.
+#' @param width Integer width of the rolling window.
+#' @param weights \emph{Not used in \code{roll_meax()}}.
 #' @param by Integer shift to use when sliding the window to the next location
 #' @param align Signed integer representing the window alignment.
 #' \code{-1(left)|0(center)|1(right)}.
@@ -62,9 +70,9 @@ roll_hampel <- function(x, n = 5L, weights = NULL, by = 1L, align = 0L) {
 #' data("airquality")
 #'
 #' # Calculate moving maximum of adjacent measurements
-#' roll_mean(airquality$Temp, n = 3)
-roll_max <- function(x, n = 5L, weights = NULL, by = 1L, align = 0L) {
-    .Call(`_MazamaRollUtils_roll_max`, x, n, weights, by, align)
+#' roll_mean(airquality$Temp, width = 3)
+roll_max <- function(x, width = 5L, weights = NULL, by = 1L, align = 0L) {
+    .Call(`_MazamaRollUtils_roll_max`, x, width, weights, by, align)
 }
 
 #' @title Roll Mean
@@ -75,8 +83,17 @@ roll_max <- function(x, n = 5L, weights = NULL, by = 1L, align = 0L) {
 #' slid/shifted/rolled \code{by} a positive integer amount about the window's
 #' \code{align}-ment index.
 #'
-#' @param x A numeric vector.
-#' @param n An integer window length.
+#' The \code{align} parameter determines the alignment of the current index
+#' within the window. Thus:
+#'
+#' \itemize{
+#'   \item{\code{align = -1 [*------]} will cause the returned vector to have width-1 \code{NA} values at the right end.}
+#'   \item{\code{align = 0  [---*---]} will cause the returned vector to have width/2 \code{NA} values at either end.}
+#'   \item{\code{align = 1  [------*]} will cause the returned vector to have width-1 \code{NA} values at the left end.}
+#' }
+#'
+#' @param x Numeric vector.
+#' @param width Integer width of the rolling window.
 #' @param weights A numeric vector of size \code{n} specifying each window
 #' index weight. If \code{NULL}, the unit weight is used.
 #' @param by An integer to shift the window by.
@@ -90,9 +107,9 @@ roll_max <- function(x, n = 5L, weights = NULL, by = 1L, align = 0L) {
 #' data("airquality")
 #'
 #' # calculate moving average of last 6 measurements
-#' roll_mean(airquality$Temp, n = 6, align = -1)
-roll_mean <- function(x, n = 5L, weights = NULL, by = 1L, align = 0L) {
-    .Call(`_MazamaRollUtils_roll_mean`, x, n, weights, by, align)
+#' roll_mean(airquality$Temp, width = 6, align = -1)
+roll_mean <- function(x, width = 5L, weights = NULL, by = 1L, align = 0L) {
+    .Call(`_MazamaRollUtils_roll_mean`, x, width, weights, by, align)
 }
 
 #' @title Roll Median
@@ -103,10 +120,18 @@ roll_mean <- function(x, n = 5L, weights = NULL, by = 1L, align = 0L) {
 #' slid/shifted/rolled \code{by} a positive integer amount about the window's
 #' \code{align}-ment index.
 #'
-#' @param x A numeric vector.
-#' @param n An integer window length.
-#' @param weights A numeric vector of size \code{n} specifying each window
-#' index weight. If \code{NULL}, the unit weight is used.
+#' The \code{align} parameter determines the alignment of the current index
+#' within the window. Thus:
+#'
+#' \itemize{
+#'   \item{\code{align = -1 [*------]} will cause the returned vector to have width-1 \code{NA} values at the right end.}
+#'   \item{\code{align = 0  [---*---]} will cause the returned vector to have width/2 \code{NA} values at either end.}
+#'   \item{\code{align = 1  [------*]} will cause the returned vector to have width-1 \code{NA} values at the left end.}
+#' }
+#'
+#' @param x Numeric vector.
+#' @param width Integer width of the rolling window.
+#' @param weights \emph{Not used in \code{roll_median()}}.
 #' @param by An integer to shift the window by.
 #' @param align A signed integer representing the windows alignment.
 #' \code{-1(left)|0(center)|1(right)}.
@@ -118,9 +143,9 @@ roll_mean <- function(x, n = 5L, weights = NULL, by = 1L, align = 0L) {
 #' data("airquality")
 #'
 #' # calculate moving median of adjacent measurements
-#' roll_mean(airquality$Temp, n = 3)
-roll_median <- function(x, n = 5L, weights = NULL, by = 1L, align = 0L) {
-    .Call(`_MazamaRollUtils_roll_median`, x, n, weights, by, align)
+#' roll_mean(airquality$Temp, width = 3)
+roll_median <- function(x, width = 5L, weights = NULL, by = 1L, align = 0L) {
+    .Call(`_MazamaRollUtils_roll_median`, x, width, weights, by, align)
 }
 
 #' @title Roll Min
@@ -131,10 +156,18 @@ roll_median <- function(x, n = 5L, weights = NULL, by = 1L, align = 0L) {
 #' slid/shifted/rolled \code{by} a positive integer amount about the window's
 #' \code{align}-ment index.
 #'
-#' @param x A numeric vector.
-#' @param n An integer window length.
-#' @param weights A numeric vector of size \code{n} specifying each window
-#' index weight. If \code{NULL}, the unit weight is used.
+#' The \code{align} parameter determines the alignment of the current index
+#' within the window. Thus:
+#'
+#' \itemize{
+#'   \item{\code{align = -1 [*------]} will cause the returned vector to have width-1 \code{NA} values at the right end.}
+#'   \item{\code{align = 0  [---*---]} will cause the returned vector to have width/2 \code{NA} values at either end.}
+#'   \item{\code{align = 1  [------*]} will cause the returned vector to have width-1 \code{NA} values at the left end.}
+#' }
+#'
+#' @param x Numeric vector.
+#' @param width Integer width of the rolling window.
+#' @param weights \emph{Not used in \code{roll_median()}}.
 #' @param by An integer to shift the window by.
 #' @param align A signed integer representing the windows alignment.
 #' \code{-1(left)|0(center)|1(right)}.
@@ -146,9 +179,9 @@ roll_median <- function(x, n = 5L, weights = NULL, by = 1L, align = 0L) {
 #' data("airquality")
 #'
 #' # calculate moving minimum of last 24 measurements
-#' roll_min(airquality$Temp, n = 24, align = -1)
-roll_min <- function(x, n = 5L, weights = NULL, by = 1L, align = 0L) {
-    .Call(`_MazamaRollUtils_roll_min`, x, n, weights, by, align)
+#' roll_min(airquality$Temp, width = 24, align = -1)
+roll_min <- function(x, width = 5L, weights = NULL, by = 1L, align = 0L) {
+    .Call(`_MazamaRollUtils_roll_min`, x, width, weights, by, align)
 }
 
 #' @title Roll Product
@@ -159,8 +192,17 @@ roll_min <- function(x, n = 5L, weights = NULL, by = 1L, align = 0L) {
 #' slid/shifted/rolled \code{by} a positive integer amount about the window's
 #' \code{align}-ment index.
 #'
-#' @param x A numeric vector.
-#' @param n An integer window length.
+#' The \code{align} parameter determines the alignment of the current index
+#' within the window. Thus:
+#'
+#' \itemize{
+#'   \item{\code{align = -1 [*------]} will cause the returned vector to have width-1 \code{NA} values at the right end.}
+#'   \item{\code{align = 0  [---*---]} will cause the returned vector to have width/2 \code{NA} values at either end.}
+#'   \item{\code{align = 1  [------*]} will cause the returned vector to have width-1 \code{NA} values at the left end.}
+#' }
+#'
+#' @param x Numeric vector.
+#' @param width Integer width of the rolling window.
 #' @param weights A numeric vector of size \code{n} specifying each window
 #' index weight. If \code{NULL}, the unit weight is used.
 #' @param by An integer to shift the window by.
@@ -174,9 +216,9 @@ roll_min <- function(x, n = 5L, weights = NULL, by = 1L, align = 0L) {
 #' data("airquality")
 #'
 #' # calculate moving product of 12 measurements
-#' roll_prod(airquality$Temp, n = 12)
-roll_prod <- function(x, n = 5L, weights = NULL, by = 1L, align = 0L) {
-    .Call(`_MazamaRollUtils_roll_prod`, x, n, weights, by, align)
+#' roll_prod(airquality$Temp, width = 12)
+roll_prod <- function(x, width = 5L, weights = NULL, by = 1L, align = 0L) {
+    .Call(`_MazamaRollUtils_roll_prod`, x, width, weights, by, align)
 }
 
 #' @title Roll Standard Deviation
@@ -188,10 +230,18 @@ roll_prod <- function(x, n = 5L, weights = NULL, by = 1L, align = 0L) {
 #' slid/shifted/rolled \code{by} a positive integer amount about the window's
 #' \code{align}-ment index.
 #'
-#' @param x A numeric vector.
-#' @param n An integer window length.
-#' @param weights A numeric vector of size \code{n} specifying each window
-#' index weight. If \code{NULL}, the unit weight is used.
+#' The \code{align} parameter determines the alignment of the current index
+#' within the window. Thus:
+#'
+#' \itemize{
+#'   \item{\code{align = -1 [*------]} will cause the returned vector to have width-1 \code{NA} values at the right end.}
+#'   \item{\code{align = 0  [---*---]} will cause the returned vector to have width/2 \code{NA} values at either end.}
+#'   \item{\code{align = 1  [------*]} will cause the returned vector to have width-1 \code{NA} values at the left end.}
+#' }
+#'
+#' @param x Numeric vector.
+#' @param width Integer width of the rolling window.
+#' @param weights \emph{Not used in \code{roll_sd()}}.
 #' @param by An integer to shift the window by.
 #' @param align A signed integer representing the windows alignment.
 #' \code{-1(left)|0(center)|1(right)}.
@@ -203,9 +253,9 @@ roll_prod <- function(x, n = 5L, weights = NULL, by = 1L, align = 0L) {
 #' data("airquality")
 #'
 #' # calculate moving standard deviation of adjacent measurements
-#' roll_mean(airquality$Temp, n = 3)
-roll_sd <- function(x, n = 5L, weights = NULL, by = 1L, align = 0L) {
-    .Call(`_MazamaRollUtils_roll_sd`, x, n, weights, by, align)
+#' roll_mean(airquality$Temp, width = 3)
+roll_sd <- function(x, width = 5L, weights = NULL, by = 1L, align = 0L) {
+    .Call(`_MazamaRollUtils_roll_sd`, x, width, weights, by, align)
 }
 
 #' @title Roll Sum
@@ -216,8 +266,17 @@ roll_sd <- function(x, n = 5L, weights = NULL, by = 1L, align = 0L) {
 #' slid/shifted/rolled \code{by} a positive integer amount about the window's
 #' \code{align}-ment index.
 #'
-#' @param x A numeric vector.
-#' @param n An integer window length.
+#' The \code{align} parameter determines the alignment of the current index
+#' within the window. Thus:
+#'
+#' \itemize{
+#'   \item{\code{align = -1 [*------]} will cause the returned vector to have width-1 \code{NA} values at the right end.}
+#'   \item{\code{align = 0  [---*---]} will cause the returned vector to have width/2 \code{NA} values at either end.}
+#'   \item{\code{align = 1  [------*]} will cause the returned vector to have width-1 \code{NA} values at the left end.}
+#' }
+#'
+#' @param x Numeric vector.
+#' @param width Integer width of the rolling window.
 #' @param weights A numeric vector of size \code{n} specifying each window
 #' index weight. If \code{NULL}, the unit weight is used.
 #' @param by An integer to shift the window by.
@@ -231,9 +290,9 @@ roll_sd <- function(x, n = 5L, weights = NULL, by = 1L, align = 0L) {
 #' data("airquality")
 #'
 #' # calculate moving sum of last 3 measurements
-#' roll_sum(airquality$Temp, n = 3, align = -1)
-roll_sum <- function(x, n = 5L, weights = NULL, by = 1L, align = 0L) {
-    .Call(`_MazamaRollUtils_roll_sum`, x, n, weights, by, align)
+#' roll_sum(airquality$Temp, width = 3, align = -1)
+roll_sum <- function(x, width = 5L, weights = NULL, by = 1L, align = 0L) {
+    .Call(`_MazamaRollUtils_roll_sum`, x, width, weights, by, align)
 }
 
 #' @title Roll Variance
@@ -244,10 +303,18 @@ roll_sum <- function(x, n = 5L, weights = NULL, by = 1L, align = 0L) {
 #' slid/shifted/rolled \code{by} a positive integer amount about the window's
 #' \code{align}-ment index.
 #'
-#' @param x A numeric vector.
-#' @param n An integer window length.
-#' @param weights A numeric vector of size \code{n} specifying each window
-#' index weight. If \code{NULL}, the unit weight is used.
+#' The \code{align} parameter determines the alignment of the current index
+#' within the window. Thus:
+#'
+#' \itemize{
+#'   \item{\code{align = -1 [*------]} will cause the returned vector to have width-1 \code{NA} values at the right end.}
+#'   \item{\code{align = 0  [---*---]} will cause the returned vector to have width/2 \code{NA} values at either end.}
+#'   \item{\code{align = 1  [------*]} will cause the returned vector to have width-1 \code{NA} values at the left end.}
+#' }
+#'
+#' @param x Numeric vector.
+#' @param width Integer width of the rolling window.
+#' @param weights \emph{Not used in \code{roll_var()}}.
 #' @param by An integer to shift the window by.
 #' @param align A signed integer representing the windows alignment.
 #' \code{-1(left)|0(center)|1(right)}.
@@ -259,8 +326,8 @@ roll_sum <- function(x, n = 5L, weights = NULL, by = 1L, align = 0L) {
 #' data("airquality")
 #'
 #' # calculate moving variance of adjacent measurements
-#' roll_mean(airquality$Temp, n = 3)
-roll_var <- function(x, n = 5L, weights = NULL, by = 1L, align = 0L) {
-    .Call(`_MazamaRollUtils_roll_var`, x, n, weights, by, align)
+#' roll_mean(airquality$Temp, width = 3)
+roll_var <- function(x, width = 5L, weights = NULL, by = 1L, align = 0L) {
+    .Call(`_MazamaRollUtils_roll_var`, x, width, weights, by, align)
 }
 
