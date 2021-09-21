@@ -10,20 +10,6 @@ Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
 Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
-// roll_hampel
-Rcpp::NumericVector roll_hampel(Rcpp::NumericVector x, unsigned int width, int by, int align);
-RcppExport SEXP _MazamaRollUtils_roll_hampel(SEXP xSEXP, SEXP widthSEXP, SEXP bySEXP, SEXP alignSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type x(xSEXP);
-    Rcpp::traits::input_parameter< unsigned int >::type width(widthSEXP);
-    Rcpp::traits::input_parameter< int >::type by(bySEXP);
-    Rcpp::traits::input_parameter< int >::type align(alignSEXP);
-    rcpp_result_gen = Rcpp::wrap(roll_hampel(x, width, by, align));
-    return rcpp_result_gen;
-END_RCPP
-}
 // roll_max
 Rcpp::NumericVector roll_max(Rcpp::NumericVector x, unsigned int width, int by, int align);
 RcppExport SEXP _MazamaRollUtils_roll_max(SEXP xSEXP, SEXP widthSEXP, SEXP bySEXP, SEXP alignSEXP) {
@@ -139,7 +125,6 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_MazamaRollUtils_roll_hampel", (DL_FUNC) &_MazamaRollUtils_roll_hampel, 4},
     {"_MazamaRollUtils_roll_max", (DL_FUNC) &_MazamaRollUtils_roll_max, 4},
     {"_MazamaRollUtils_roll_mean", (DL_FUNC) &_MazamaRollUtils_roll_mean, 5},
     {"_MazamaRollUtils_roll_median", (DL_FUNC) &_MazamaRollUtils_roll_median, 4},

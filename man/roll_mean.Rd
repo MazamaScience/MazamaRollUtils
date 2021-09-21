@@ -14,10 +14,10 @@ roll_mean(x, width = 5L, by = 1L, align = 0L, weights = NULL)
 \item{by}{An integer to shift the window by.}
 
 \item{align}{A signed integer representing the position of the return value within each window.
-\code{-1(left)|0(center)|1(right)}.}
+\code{-1(left) | 0(center) | 1(right)}.}
 
-\item{weights}{A numeric vector of size \code{n} specifying each window
-index weight. If \code{NULL}, the unit weight is used.}
+\item{weights}{A numeric vector of size \code{width} specifying each window
+index weight. If \code{NULL}, unit weights are used.}
 }
 \value{
 Numeric vector of the same length as \code{x}.
@@ -26,9 +26,9 @@ Numeric vector of the same length as \code{x}.
 Apply a moving-window mean function to a numeric vector.
 }
 \details{
-Each window of \code{n}-length is applied \code{weight} and then
-slid/shifted/rolled \code{by} a positive integer amount about the window's
-\code{align}-ment index.
+For every index in the incoming vector \code{x}, a value is returned that
+is the mean of all values in \code{x} that fall within a window of width
+\code{width}.
 
 The \code{align} parameter determines the alignment of the current index
 within the window. Thus:
@@ -38,11 +38,24 @@ within the window. Thus:
   \item{\code{align = 0  [---*---]} will cause the returned vector to have width/2 \code{NA} values at either end.}
   \item{\code{align = 1  [------*]} will cause the returned vector to have width-1 \code{NA} values at the left end.}
 }
+
+For large vectors, the\code{by} parameter can be used to force the window
+to jump ahead \code{by} indices for the next calculation. Indices that are
+skipped over will be assigned \code{NA} values so that the return vector still has
+the same length as the incoming vector. This can dramatically speed up
+calculations for high resolution time series data.
+
+The \code{roll_mean()} function supports an additional \code{weights}
+argument that can be used to calculate a "weighted moving average" --
+a convolution of the incoming data with the \emph{kernel} (weighting function)
+provided in \code{weights}.
 }
 \examples{
-# load airquality
-data("airquality")
+library(MazamaRollUtils)
 
-# calculate moving average of last 6 measurements
-roll_mean(airquality$Temp, width = 6, align = -1)
+# R default air quality time series
+t <- datasets::airquality$Temp
+
+plot(t)
+lines(roll_mean(t, width = 5), col = 'salmon')
 }

@@ -42,7 +42,6 @@ public:
       }
       // See:  https://en.cppreference.com/w/cpp/algorithm/accumulate
       double normalization = (double)width_ / std::accumulate(w.begin(), w.end(), (double)0);
-      //double normalization = 1.0;
       for (int i = 0; i < width_; ++i) {
         weights_[i] = w[i] * normalization;
       }
@@ -70,14 +69,14 @@ public:
 
   }
 
-  // Rolling Hampel
-  Rcpp::NumericVector hampel() {
-    Rcpp::NumericVector out(length_, NA_REAL);
-    for (int i = start_; i < end_; i += by_) {
-      out[i] = windowHampel(i);
-    }
-    return out;
-  }
+  // // Rolling Hampel
+  // Rcpp::NumericVector hampel() {
+  //   Rcpp::NumericVector out(length_, NA_REAL);
+  //   for (int i = start_; i < end_; i += by_) {
+  //     out[i] = windowHampel(i);
+  //   }
+  //   return out;
+  // }
 
   // Rolling Maximum
   Rcpp::NumericVector max() {
@@ -163,19 +162,19 @@ private:
   int start_;                    // start index
   int end_;                      // end index
 
-  // Window Hampel
-  double windowHampel(const int &index) {
-    const double kappa = 1.4826;
-    double mediawidth_i = windowMedian(index);
-    Rcpp::NumericVector tmp(width_, NA_REAL);
-    for (int i = 0; i < width_; ++i) { // MAD
-      int s = index - half_width_ + i;
-      tmp[i] = std::fabs(x_[s] - mediawidth_i);
-    }
-    std::nth_element(tmp.begin(), tmp.begin() + half_width_, tmp.end());
-    double mad = tmp[half_width_];
-    return std::fabs(x_[index] - mediawidth_i) / (kappa * mad);
-  }
+  // // Window Hampel
+  // double windowHampel(const int &index) {
+  //   const double kappa = 1.4826;
+  //   double mediawidth_i = windowMedian(index);
+  //   Rcpp::NumericVector tmp(width_, NA_REAL);
+  //   for (int i = 0; i < width_; ++i) { // MAD
+  //     int s = index - half_width_ + i;
+  //     tmp[i] = std::fabs(x_[s] - mediawidth_i);
+  //   }
+  //   std::nth_element(tmp.begin(), tmp.begin() + half_width_, tmp.end());
+  //   double mad = tmp[half_width_];
+  //   return std::fabs(x_[index] - mediawidth_i) / (kappa * mad);
+  // }
 
   // Window Maximum
   double windowMax(const int &index) {
@@ -374,58 +373,60 @@ private:
 
 /* ----- Rcpp Exported ----- */
 
-//' @title Roll Hampel
-//'
-//' @description Apply a moving-window hampel value function to a numeric
-//' vector.
-//'
-//' @details Each window of \code{n}-length is applied \code{weight} and then
-//' slid/shifted/rolled \code{by} a positive integer amount about the window's
-//' \code{align}-ment index.
-//'
-//' The \code{align} parameter determines the alignment of the current index
-//' within the window. Thus:
-//'
-//' \itemize{
-//'   \item{\code{align = -1 [*------]} will cause the returned vector to have width-1 \code{NA} values at the right end.}
-//'   \item{\code{align = 0  [---*---]} will cause the returned vector to have width/2 \code{NA} values at either end.}
-//'   \item{\code{align = 1  [------*]} will cause the returned vector to have width-1 \code{NA} values at the left end.}
-//' }
-//'
-//' @param x Numeric vector.
-//' @param width Integer width of the rolling window.
-//' @param by An integer to shift the window by.
-//' @param align A signed integer representing the position of the return value within each window.
-//' \code{-1(left)|0(center)|1(right)}.
-//'
-//' @return Numeric vector of the same length as \code{x}.
-//'
-//' @examples
-//' # load airquality
-//' data("airquality")
-//'
-//' # calculate moving hampel value of next 3 measurements
-//' roll_mean(airquality$Temp, width = 3, align = 1)
-// [[Rcpp::export]]
-Rcpp::NumericVector roll_hampel(
-    Rcpp::NumericVector x,
-    unsigned int width = 5,
-    int by = 1,
-    int align = 0
-) {
-  Roll roll;
-  Rcpp::Nullable<Rcpp::NumericVector> weights = R_NilValue;
-  roll.init(x, width, by, align, weights);
-  return roll.hampel();
-}
+// //' @title Roll Hampel
+// //'
+// //' @description Apply a moving-window hampel value function to a numeric
+// //' vector.
+// //'
+// //' @details Each window of \code{n}-length is applied \code{weight} and then
+// //' slid/shifted/rolled \code{by} a positive integer amount about the window's
+// //' \code{align}-ment index.
+// //'
+// //' The \code{align} parameter determines the alignment of the current index
+// //' within the window. Thus:
+// //'
+// //' \itemize{
+// //'   \item{\code{align = -1 [*------]} will cause the returned vector to have width-1 \code{NA} values at the right end.}
+// //'   \item{\code{align = 0  [---*---]} will cause the returned vector to have width/2 \code{NA} values at either end.}
+// //'   \item{\code{align = 1  [------*]} will cause the returned vector to have width-1 \code{NA} values at the left end.}
+// //' }
+// //'
+// //' @param x Numeric vector.
+// //' @param width Integer width of the rolling window.
+// //' @param by An integer to shift the window by.
+// //' @param align A signed integer representing the position of the return value within each window.
+// //' \code{-1(left) | 0(center) | 1(right)}.
+// //'
+// //' @return Numeric vector of the same length as \code{x}.
+// //'
+// //' @examples
+// //' # load airquality
+// //' data("airquality")
+// //'
+// //' # calculate moving hampel value of next 3 measurements
+// //' roll_mean(airquality$Temp, width = 3, align = 1)
+// // [[Rcpp::export]]
+// Rcpp::NumericVector roll_hampel(
+//     Rcpp::NumericVector x,
+//     unsigned int width = 5,
+//     int by = 1,
+//     int align = 0
+// ) {
+//   Roll roll;
+//   Rcpp::Nullable<Rcpp::NumericVector> weights = R_NilValue;
+//   roll.init(x, width, by, align, weights);
+//   return roll.hampel();
+// }
 
 //' @title Roll Max
 //'
 //' @description Apply a moving-window maximum function to a numeric vector.
 //'
-//' @details Each window of \code{n}-length is applied \code{weight} and then
-//' slid/shifted/rolled \code{by} a positive integer amount about the window's
-//' \code{align}-ment index.
+//' @details
+//'
+//' For every index in the incoming vector \code{x}, a value is returned that
+//' is the maximum of all values in \code{x} that fall within a window of width
+//' \code{width}.
 //'
 //' The \code{align} parameter determines the alignment of the current index
 //' within the window. Thus:
@@ -436,20 +437,29 @@ Rcpp::NumericVector roll_hampel(
 //'   \item{\code{align = 1  [------*]} will cause the returned vector to have width-1 \code{NA} values at the left end.}
 //' }
 //'
+//' For large vectors, the\code{by} parameter can be used to force the window
+//' to jump ahead \code{by} indices for the next calculation. Indices that are
+//' skipped over will be assigned \code{NA} values so that the return vector still has
+//' the same length as the incoming vector. This can dramatically speed up
+//' calculations for high resolution time series data.
+//'
+//'
 //' @param x Numeric vector.
 //' @param width Integer width of the rolling window.
 //' @param by Integer shift to use when sliding the window to the next location
 //' @param align Signed integer representing the position of the return value within each window.
-//' \code{-1(left)|0(center)|1(right)}.
+//' \code{-1(left) | 0(center) | 1(right)}.
 //'
 //' @return Numeric vector of the same length as \code{x}.
 //'
 //' @examples
-//' # Load package air quality data
-//' data("airquality")
+//' library(MazamaRollUtils)
 //'
-//' # Calculate moving maximum of adjacent measurements
-//' roll_mean(airquality$Temp, width = 3)
+//' # R default air quality time series
+//' t <- datasets::airquality$Temp
+//'
+//' plot(t)
+//' lines(roll_max(t, width = 5), col = 'salmon')
 // [[Rcpp::export]]
 Rcpp::NumericVector roll_max(
     Rcpp::NumericVector x,
@@ -467,9 +477,11 @@ Rcpp::NumericVector roll_max(
 //'
 //' @description Apply a moving-window mean function to a numeric vector.
 //'
-//' @details Each window of \code{n}-length is applied \code{weight} and then
-//' slid/shifted/rolled \code{by} a positive integer amount about the window's
-//' \code{align}-ment index.
+//' @details
+//'
+//' For every index in the incoming vector \code{x}, a value is returned that
+//' is the mean of all values in \code{x} that fall within a window of width
+//' \code{width}.
 //'
 //' The \code{align} parameter determines the alignment of the current index
 //' within the window. Thus:
@@ -480,22 +492,35 @@ Rcpp::NumericVector roll_max(
 //'   \item{\code{align = 1  [------*]} will cause the returned vector to have width-1 \code{NA} values at the left end.}
 //' }
 //'
+//' For large vectors, the\code{by} parameter can be used to force the window
+//' to jump ahead \code{by} indices for the next calculation. Indices that are
+//' skipped over will be assigned \code{NA} values so that the return vector still has
+//' the same length as the incoming vector. This can dramatically speed up
+//' calculations for high resolution time series data.
+//'
+//' The \code{roll_mean()} function supports an additional \code{weights}
+//' argument that can be used to calculate a "weighted moving average" --
+//' a convolution of the incoming data with the \emph{kernel} (weighting function)
+//' provided in \code{weights}.
+//'
 //' @param x Numeric vector.
 //' @param width Integer width of the rolling window.
-//' @param weights A numeric vector of size \code{n} specifying each window
-//' index weight. If \code{NULL}, the unit weight is used.
 //' @param by An integer to shift the window by.
 //' @param align A signed integer representing the position of the return value within each window.
-//' \code{-1(left)|0(center)|1(right)}.
+//' \code{-1(left) | 0(center) | 1(right)}.
+//' @param weights A numeric vector of size \code{width} specifying each window
+//' index weight. If \code{NULL}, unit weights are used.
 //'
 //' @return Numeric vector of the same length as \code{x}.
 //'
 //' @examples
-//' # load airquality
-//' data("airquality")
+//' library(MazamaRollUtils)
 //'
-//' # calculate moving average of last 6 measurements
-//' roll_mean(airquality$Temp, width = 6, align = -1)
+//' # R default air quality time series
+//' t <- datasets::airquality$Temp
+//'
+//' plot(t)
+//' lines(roll_mean(t, width = 5), col = 'salmon')
 // [[Rcpp::export]]
 Rcpp::NumericVector roll_mean(
     Rcpp::NumericVector x,
@@ -513,9 +538,11 @@ Rcpp::NumericVector roll_mean(
 //'
 //' @description Apply a moving-window median function to a numeric vector.
 //'
-//' @details Each window of \code{n}-length is applied \code{weights} and then
-//' slid/shifted/rolled \code{by} a positive integer amount about the window's
-//' \code{align}-ment index.
+//' @details
+//'
+//' For every index in the incoming vector \code{x}, a value is returned that
+//' is the median of all values in \code{x} that fall within a window of width
+//' \code{width}.
 //'
 //' The \code{align} parameter determines the alignment of the current index
 //' within the window. Thus:
@@ -526,20 +553,28 @@ Rcpp::NumericVector roll_mean(
 //'   \item{\code{align = 1  [------*]} will cause the returned vector to have width-1 \code{NA} values at the left end.}
 //' }
 //'
+//' For large vectors, the\code{by} parameter can be used to force the window
+//' to jump ahead \code{by} indices for the next calculation. Indices that are
+//' skipped over will be assigned \code{NA} values so that the return vector still has
+//' the same length as the incoming vector. This can dramatically speed up
+//' calculations for high resolution time series data.
+//'
 //' @param x Numeric vector.
 //' @param width Integer width of the rolling window.
 //' @param by An integer to shift the window by.
 //' @param align A signed integer representing the position of the return value within each window.
-//' \code{-1(left)|0(center)|1(right)}.
+//' \code{-1(left) | 0(center) | 1(right)}.
 //'
 //' @return Numeric vector of the same length as \code{x}.
 //'
 //' @examples
-//' # load airquality
-//' data("airquality")
+//' library(MazamaRollUtils)
 //'
-//' # calculate moving median of adjacent measurements
-//' roll_mean(airquality$Temp, width = 3)
+//' # R default air quality time series
+//' t <- datasets::airquality$Temp
+//'
+//' plot(t)
+//' lines(roll_median(t, width = 5), col = 'salmon')
 // [[Rcpp::export]]
 Rcpp::NumericVector roll_median (
     Rcpp::NumericVector x,
@@ -557,9 +592,11 @@ Rcpp::NumericVector roll_median (
 //'
 //' @description Apply a moving-window minimum function to a numeric vector.
 //'
-//' @details Each window of \code{n}-length is applied \code{weight} and then
-//' slid/shifted/rolled \code{by} a positive integer amount about the window's
-//' \code{align}-ment index.
+//' @details
+//'
+//' For every index in the incoming vector \code{x}, a value is returned that
+//' is the minimum of all values in \code{x} that fall within a window of width
+//' \code{width}.
 //'
 //' The \code{align} parameter determines the alignment of the current index
 //' within the window. Thus:
@@ -570,20 +607,28 @@ Rcpp::NumericVector roll_median (
 //'   \item{\code{align = 1  [------*]} will cause the returned vector to have width-1 \code{NA} values at the left end.}
 //' }
 //'
+//' For large vectors, the\code{by} parameter can be used to force the window
+//' to jump ahead \code{by} indices for the next calculation. Indices that are
+//' skipped over will be assigned \code{NA} values so that the return vector still has
+//' the same length as the incoming vector. This can dramatically speed up
+//' calculations for high resolution time series data.
+//'
 //' @param x Numeric vector.
 //' @param width Integer width of the rolling window.
 //' @param by An integer to shift the window by.
 //' @param align A signed integer representing the position of the return value within each window.
-//' \code{-1(left)|0(center)|1(right)}.
+//' \code{-1(left) | 0(center) | 1(right)}.
 //'
 //' @return Numeric vector of the same length as \code{x}.
 //'
 //' @examples
-//' # load airquality
-//' data("airquality")
+//' library(MazamaRollUtils)
 //'
-//' # calculate moving minimum of last 24 measurements
-//' roll_min(airquality$Temp, width = 24, align = -1)
+//' # R default air quality time series
+//' t <- datasets::airquality$Temp
+//'
+//' plot(t)
+//' lines(roll_min(t, width = 5), col = 'salmon')
 // [[Rcpp::export]]
 Rcpp::NumericVector roll_min(
     Rcpp::NumericVector x,
@@ -601,9 +646,11 @@ Rcpp::NumericVector roll_min(
 //'
 //' @description Apply a moving-window product function to a numeric vector.
 //'
-//' @details Each window of \code{n}-length is applied \code{weight} and then
-//' slid/shifted/rolled \code{by} a positive integer amount about the window's
-//' \code{align}-ment index.
+//' @details
+//'
+//' For every index in the incoming vector \code{x}, a value is returned that
+//' is the product of all values in \code{x} that fall within a window of width
+//' \code{width}.
 //'
 //' The \code{align} parameter determines the alignment of the current index
 //' within the window. Thus:
@@ -614,20 +661,28 @@ Rcpp::NumericVector roll_min(
 //'   \item{\code{align = 1  [------*]} will cause the returned vector to have width-1 \code{NA} values at the left end.}
 //' }
 //'
+//' For large vectors, the\code{by} parameter can be used to force the window
+//' to jump ahead \code{by} indices for the next calculation. Indices that are
+//' skipped over will be assigned \code{NA} values so that the return vector still has
+//' the same length as the incoming vector. This can dramatically speed up
+//' calculations for high resolution time series data.
+//'
 //' @param x Numeric vector.
 //' @param width Integer width of the rolling window.
 //' @param by An integer to shift the window by.
 //' @param align A signed integer representing the position of the return value within each window.
-//' \code{-1(left)|0(center)|1(right)}.
+//' \code{-1(left) | 0(center) | 1(right)}.
 //'
 //' @return Numeric vector of the same length as \code{x}.
 //'
 //' @examples
-//' # load airquality
-//' data("airquality")
+//' library(MazamaRollUtils)
 //'
-//' # calculate moving product of 12 measurements
-//' roll_prod(airquality$Temp, width = 12)
+//' # R default air quality time series
+//' t <- datasets::airquality$Temp
+//'
+//' t[1:10]
+//' roll_prod(t, width = 5)[1:10]
 // [[Rcpp::export]]
 Rcpp::NumericVector roll_prod(
     Rcpp::NumericVector x,
@@ -646,9 +701,11 @@ Rcpp::NumericVector roll_prod(
 //' @description Apply a moving-window standard deviation function to a
 //' numeric vector.
 //'
-//' @details Each window of \code{n}-length is applied \code{weight} and then
-//' slid/shifted/rolled \code{by} a positive integer amount about the window's
-//' \code{align}-ment index.
+//' @details
+//'
+//' For every index in the incoming vector \code{x}, a value is returned that
+//' is the standard deviation of all values in \code{x} that fall within a window of width
+//' \code{width}.
 //'
 //' The \code{align} parameter determines the alignment of the current index
 //' within the window. Thus:
@@ -659,20 +716,28 @@ Rcpp::NumericVector roll_prod(
 //'   \item{\code{align = 1  [------*]} will cause the returned vector to have width-1 \code{NA} values at the left end.}
 //' }
 //'
+//' For large vectors, the\code{by} parameter can be used to force the window
+//' to jump ahead \code{by} indices for the next calculation. Indices that are
+//' skipped over will be assigned \code{NA} values so that the return vector still has
+//' the same length as the incoming vector. This can dramatically speed up
+//' calculations for high resolution time series data.
+//'
 //' @param x Numeric vector.
 //' @param width Integer width of the rolling window.
 //' @param by An integer to shift the window by.
 //' @param align A signed integer representing the position of the return value within each window.
-//' \code{-1(left)|0(center)|1(right)}.
+//' \code{-1(left) | 0(center) | 1(right)}.
 //'
 //' @return Numeric vector of the same length as \code{x}.
 //'
 //' @examples
-//' # load airquality
-//' data("airquality")
+//' library(MazamaRollUtils)
 //'
-//' # calculate moving standard deviation of adjacent measurements
-//' roll_mean(airquality$Temp, width = 3)
+//' # R default air quality time series
+//' t <- datasets::airquality$Temp
+//'
+//' t[1:10]
+//' roll_sd(t, width = 5)[1:10]
 // [[Rcpp::export]]
 Rcpp::NumericVector roll_sd(
     Rcpp::NumericVector x,
@@ -690,9 +755,11 @@ Rcpp::NumericVector roll_sd(
 //'
 //' @description Apply a moving-window sum to a numeric vector.
 //'
-//' @details Each window of \code{n}-length is applied \code{weight} and then
-//' slid/shifted/rolled \code{by} a positive integer amount about the window's
-//' \code{align}-ment index.
+//' @details
+//'
+//' For every index in the incoming vector \code{x}, a value is returned that
+//' is the sum of all values in \code{x} that fall within a window of width
+//' \code{width}.
 //'
 //' The \code{align} parameter determines the alignment of the current index
 //' within the window. Thus:
@@ -703,20 +770,28 @@ Rcpp::NumericVector roll_sd(
 //'   \item{\code{align = 1  [------*]} will cause the returned vector to have width-1 \code{NA} values at the left end.}
 //' }
 //'
+//' For large vectors, the\code{by} parameter can be used to force the window
+//' to jump ahead \code{by} indices for the next calculation. Indices that are
+//' skipped over will be assigned \code{NA} values so that the return vector still has
+//' the same length as the incoming vector. This can dramatically speed up
+//' calculations for high resolution time series data.
+//'
 //' @param x Numeric vector.
 //' @param width Integer width of the rolling window.
 //' @param by An integer to shift the window by.
 //' @param align A signed integer representing the position of the return value within each window.
-//' \code{-1(left)|0(center)|1(right)}.
+//' \code{-1(left) | 0(center) | 1(right)}.
 //'
 //' @return Numeric vector of the same length as \code{x}.
 //'
 //' @examples
-//' # load airquality
-//' data("airquality")
+//' library(MazamaRollUtils)
 //'
-//' # calculate moving sum of last 3 measurements
-//' roll_sum(airquality$Temp, width = 3, align = -1)
+//' # R default air quality time series
+//' t <- datasets::airquality$Temp
+//'
+//' t[1:10]
+//' roll_sum(t, width = 5)[1:10]
 // [[Rcpp::export]]
 Rcpp::NumericVector roll_sum(
     Rcpp::NumericVector x,
@@ -734,9 +809,11 @@ Rcpp::NumericVector roll_sum(
 //'
 //' @description Apply a moving-window variance function to a numeric vector.
 //'
-//' @details Each window of \code{n}-length is applied \code{weight} and then
-//' slid/shifted/rolled \code{by} a positive integer amount about the window's
-//' \code{align}-ment index.
+//' @details
+//'
+//' For every index in the incoming vector \code{x}, a value is returned that
+//' is the variance of all values in \code{x} that fall within a window of width
+//' \code{width}.
 //'
 //' The \code{align} parameter determines the alignment of the current index
 //' within the window. Thus:
@@ -747,20 +824,28 @@ Rcpp::NumericVector roll_sum(
 //'   \item{\code{align = 1  [------*]} will cause the returned vector to have width-1 \code{NA} values at the left end.}
 //' }
 //'
+//' For large vectors, the\code{by} parameter can be used to force the window
+//' to jump ahead \code{by} indices for the next calculation. Indices that are
+//' skipped over will be assigned \code{NA} values so that the return vector still has
+//' the same length as the incoming vector. This can dramatically speed up
+//' calculations for high resolution time series data.
+//'
 //' @param x Numeric vector.
 //' @param width Integer width of the rolling window.
 //' @param by An integer to shift the window by.
 //' @param align A signed integer representing the position of the return value within each window.
-//' \code{-1(left)|0(center)|1(right)}.
+//' \code{-1(left) | 0(center) | 1(right)}.
 //'
 //' @return Numeric vector of the same length as \code{x}.
 //'
 //' @examples
-//' # load airquality
-//' data("airquality")
+//' library(MazamaRollUtils)
 //'
-//' # calculate moving variance of adjacent measurements
-//' roll_mean(airquality$Temp, width = 3)
+//' # R default air quality time series
+//' t <- datasets::airquality$Temp
+//'
+//' t[1:10]
+//' roll_var(t, width = 5)[1:10]
 // [[Rcpp::export]]
 Rcpp::NumericVector roll_var(
     Rcpp::NumericVector x,
