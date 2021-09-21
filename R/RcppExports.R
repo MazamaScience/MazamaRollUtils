@@ -21,8 +21,6 @@
 #'
 #' @param x Numeric vector.
 #' @param width Integer width of the rolling window.
-#' @param weights A numeric vector of size \code{n} specifying each window
-#' index weight. If \code{NULL}, the unit weight is used.
 #' @param by An integer to shift the window by.
 #' @param align A signed integer representing the windows alignment.
 #' \code{-1(left)|0(center)|1(right)}.
@@ -35,8 +33,8 @@
 #'
 #' # calculate moving hampel value of next 3 measurements
 #' roll_mean(airquality$Temp, width = 3, align = 1)
-roll_hampel <- function(x, width = 5L, weights = NULL, by = 1L, align = 0L) {
-    .Call(`_MazamaRollUtils_roll_hampel`, x, width, weights, by, align)
+roll_hampel <- function(x, width = 5L, by = 1L, align = 0L) {
+    .Call(`_MazamaRollUtils_roll_hampel`, x, width, by, align)
 }
 
 #' @title Roll Max
@@ -58,7 +56,6 @@ roll_hampel <- function(x, width = 5L, weights = NULL, by = 1L, align = 0L) {
 #'
 #' @param x Numeric vector.
 #' @param width Integer width of the rolling window.
-#' @param weights \emph{Not used in \code{roll_meax()}}.
 #' @param by Integer shift to use when sliding the window to the next location
 #' @param align Signed integer representing the window alignment.
 #' \code{-1(left)|0(center)|1(right)}.
@@ -71,8 +68,8 @@ roll_hampel <- function(x, width = 5L, weights = NULL, by = 1L, align = 0L) {
 #'
 #' # Calculate moving maximum of adjacent measurements
 #' roll_mean(airquality$Temp, width = 3)
-roll_max <- function(x, width = 5L, weights = NULL, by = 1L, align = 0L) {
-    .Call(`_MazamaRollUtils_roll_max`, x, width, weights, by, align)
+roll_max <- function(x, width = 5L, by = 1L, align = 0L) {
+    .Call(`_MazamaRollUtils_roll_max`, x, width, by, align)
 }
 
 #' @title Roll Mean
@@ -108,8 +105,8 @@ roll_max <- function(x, width = 5L, weights = NULL, by = 1L, align = 0L) {
 #'
 #' # calculate moving average of last 6 measurements
 #' roll_mean(airquality$Temp, width = 6, align = -1)
-roll_mean <- function(x, width = 5L, weights = NULL, by = 1L, align = 0L) {
-    .Call(`_MazamaRollUtils_roll_mean`, x, width, weights, by, align)
+roll_mean <- function(x, width = 5L, by = 1L, align = 0L, weights = NULL) {
+    .Call(`_MazamaRollUtils_roll_mean`, x, width, by, align, weights)
 }
 
 #' @title Roll Median
@@ -131,7 +128,6 @@ roll_mean <- function(x, width = 5L, weights = NULL, by = 1L, align = 0L) {
 #'
 #' @param x Numeric vector.
 #' @param width Integer width of the rolling window.
-#' @param weights \emph{Not used in \code{roll_median()}}.
 #' @param by An integer to shift the window by.
 #' @param align A signed integer representing the windows alignment.
 #' \code{-1(left)|0(center)|1(right)}.
@@ -144,8 +140,8 @@ roll_mean <- function(x, width = 5L, weights = NULL, by = 1L, align = 0L) {
 #'
 #' # calculate moving median of adjacent measurements
 #' roll_mean(airquality$Temp, width = 3)
-roll_median <- function(x, width = 5L, weights = NULL, by = 1L, align = 0L) {
-    .Call(`_MazamaRollUtils_roll_median`, x, width, weights, by, align)
+roll_median <- function(x, width = 5L, by = 1L, align = 0L) {
+    .Call(`_MazamaRollUtils_roll_median`, x, width, by, align)
 }
 
 #' @title Roll Min
@@ -167,7 +163,6 @@ roll_median <- function(x, width = 5L, weights = NULL, by = 1L, align = 0L) {
 #'
 #' @param x Numeric vector.
 #' @param width Integer width of the rolling window.
-#' @param weights \emph{Not used in \code{roll_median()}}.
 #' @param by An integer to shift the window by.
 #' @param align A signed integer representing the windows alignment.
 #' \code{-1(left)|0(center)|1(right)}.
@@ -180,8 +175,8 @@ roll_median <- function(x, width = 5L, weights = NULL, by = 1L, align = 0L) {
 #'
 #' # calculate moving minimum of last 24 measurements
 #' roll_min(airquality$Temp, width = 24, align = -1)
-roll_min <- function(x, width = 5L, weights = NULL, by = 1L, align = 0L) {
-    .Call(`_MazamaRollUtils_roll_min`, x, width, weights, by, align)
+roll_min <- function(x, width = 5L, by = 1L, align = 0L) {
+    .Call(`_MazamaRollUtils_roll_min`, x, width, by, align)
 }
 
 #' @title Roll Product
@@ -217,8 +212,8 @@ roll_min <- function(x, width = 5L, weights = NULL, by = 1L, align = 0L) {
 #'
 #' # calculate moving product of 12 measurements
 #' roll_prod(airquality$Temp, width = 12)
-roll_prod <- function(x, width = 5L, weights = NULL, by = 1L, align = 0L) {
-    .Call(`_MazamaRollUtils_roll_prod`, x, width, weights, by, align)
+roll_prod <- function(x, width = 5L, by = 1L, align = 0L, weights = NULL) {
+    .Call(`_MazamaRollUtils_roll_prod`, x, width, by, align, weights)
 }
 
 #' @title Roll Standard Deviation
@@ -241,7 +236,6 @@ roll_prod <- function(x, width = 5L, weights = NULL, by = 1L, align = 0L) {
 #'
 #' @param x Numeric vector.
 #' @param width Integer width of the rolling window.
-#' @param weights \emph{Not used in \code{roll_sd()}}.
 #' @param by An integer to shift the window by.
 #' @param align A signed integer representing the windows alignment.
 #' \code{-1(left)|0(center)|1(right)}.
@@ -254,8 +248,8 @@ roll_prod <- function(x, width = 5L, weights = NULL, by = 1L, align = 0L) {
 #'
 #' # calculate moving standard deviation of adjacent measurements
 #' roll_mean(airquality$Temp, width = 3)
-roll_sd <- function(x, width = 5L, weights = NULL, by = 1L, align = 0L) {
-    .Call(`_MazamaRollUtils_roll_sd`, x, width, weights, by, align)
+roll_sd <- function(x, width = 5L, by = 1L, align = 0L) {
+    .Call(`_MazamaRollUtils_roll_sd`, x, width, by, align)
 }
 
 #' @title Roll Sum
@@ -291,8 +285,8 @@ roll_sd <- function(x, width = 5L, weights = NULL, by = 1L, align = 0L) {
 #'
 #' # calculate moving sum of last 3 measurements
 #' roll_sum(airquality$Temp, width = 3, align = -1)
-roll_sum <- function(x, width = 5L, weights = NULL, by = 1L, align = 0L) {
-    .Call(`_MazamaRollUtils_roll_sum`, x, width, weights, by, align)
+roll_sum <- function(x, width = 5L, by = 1L, align = 0L, weights = NULL) {
+    .Call(`_MazamaRollUtils_roll_sum`, x, width, by, align, weights)
 }
 
 #' @title Roll Variance
@@ -314,7 +308,6 @@ roll_sum <- function(x, width = 5L, weights = NULL, by = 1L, align = 0L) {
 #'
 #' @param x Numeric vector.
 #' @param width Integer width of the rolling window.
-#' @param weights \emph{Not used in \code{roll_var()}}.
 #' @param by An integer to shift the window by.
 #' @param align A signed integer representing the windows alignment.
 #' \code{-1(left)|0(center)|1(right)}.
@@ -327,7 +320,7 @@ roll_sum <- function(x, width = 5L, weights = NULL, by = 1L, align = 0L) {
 #'
 #' # calculate moving variance of adjacent measurements
 #' roll_mean(airquality$Temp, width = 3)
-roll_var <- function(x, width = 5L, weights = NULL, by = 1L, align = 0L) {
-    .Call(`_MazamaRollUtils_roll_var`, x, width, weights, by, align)
+roll_var <- function(x, width = 5L, by = 1L, align = 0L) {
+    .Call(`_MazamaRollUtils_roll_var`, x, width, by, align)
 }
 

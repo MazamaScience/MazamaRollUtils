@@ -4,14 +4,12 @@
 \alias{roll_var}
 \title{Roll Variance}
 \usage{
-roll_var(x, width = 5L, weights = NULL, by = 1L, align = 0L)
+roll_var(x, width = 5L, by = 1L, align = 0L)
 }
 \arguments{
 \item{x}{Numeric vector.}
 
 \item{width}{Integer width of the rolling window.}
-
-\item{weights}{\emph{Not used in \code{roll_var()}}.}
 
 \item{by}{An integer to shift the window by.}
 

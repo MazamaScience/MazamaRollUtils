@@ -4,14 +4,12 @@
 \alias{roll_sd}
 \title{Roll Standard Deviation}
 \usage{
-roll_sd(x, width = 5L, weights = NULL, by = 1L, align = 0L)
+roll_sd(x, width = 5L, by = 1L, align = 0L)
 }
 \arguments{
 \item{x}{Numeric vector.}
 
 \item{width}{Integer width of the rolling window.}
-
-\item{weights}{\emph{Not used in \code{roll_sd()}}.}
 
 \item{by}{An integer to shift the window by.}
 

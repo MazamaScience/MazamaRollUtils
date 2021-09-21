@@ -11,9 +11,9 @@ public:
   void init(
       Rcpp::NumericVector x,
       int width,
-      Rcpp::Nullable<Rcpp::NumericVector> weights,
       int by,
-      int align
+      int align,
+      Rcpp::Nullable<Rcpp::NumericVector> weights
   ) {
 
     // Checks
@@ -363,8 +363,6 @@ private:
 //'
 //' @param x Numeric vector.
 //' @param width Integer width of the rolling window.
-//' @param weights A numeric vector of size \code{n} specifying each window
-//' index weight. If \code{NULL}, the unit weight is used.
 //' @param by An integer to shift the window by.
 //' @param align A signed integer representing the windows alignment.
 //' \code{-1(left)|0(center)|1(right)}.
@@ -381,12 +379,12 @@ private:
 Rcpp::NumericVector roll_hampel(
     Rcpp::NumericVector x,
     unsigned int width = 5,
-    Rcpp::Nullable<Rcpp::NumericVector> weights = R_NilValue,
     int by = 1,
     int align = 0
 ) {
   Roll roll;
-  roll.init(x, width, weights, by, align);
+  Rcpp::Nullable<Rcpp::NumericVector> weights = R_NilValue;
+  roll.init(x, width, by, align, weights);
   return roll.hampel();
 }
 
@@ -409,7 +407,6 @@ Rcpp::NumericVector roll_hampel(
 //'
 //' @param x Numeric vector.
 //' @param width Integer width of the rolling window.
-//' @param weights \emph{Not used in \code{roll_meax()}}.
 //' @param by Integer shift to use when sliding the window to the next location
 //' @param align Signed integer representing the window alignment.
 //' \code{-1(left)|0(center)|1(right)}.
@@ -426,12 +423,12 @@ Rcpp::NumericVector roll_hampel(
 Rcpp::NumericVector roll_max(
     Rcpp::NumericVector x,
     unsigned int width = 5,
-    Rcpp::Nullable<Rcpp::NumericVector> weights = R_NilValue,
     int by = 1,
     int align = 0
 ) {
   Roll roll;
-  roll.init(x, width, weights, by, align);
+  Rcpp::Nullable<Rcpp::NumericVector> weights = R_NilValue;
+  roll.init(x, width, by, align, weights);
   return roll.max();
 }
 
@@ -472,12 +469,12 @@ Rcpp::NumericVector roll_max(
 Rcpp::NumericVector roll_mean(
     Rcpp::NumericVector x,
     unsigned int width = 5,
-    Rcpp::Nullable<Rcpp::NumericVector> weights = R_NilValue,
     int by = 1,
-    int align = 0
+    int align = 0,
+    Rcpp::Nullable<Rcpp::NumericVector> weights = R_NilValue
 ) {
   Roll roll;
-  roll.init(x, width, weights, by, align);
+  roll.init(x, width, by, align, weights);
   return roll.mean();
 }
 
@@ -500,7 +497,6 @@ Rcpp::NumericVector roll_mean(
 //'
 //' @param x Numeric vector.
 //' @param width Integer width of the rolling window.
-//' @param weights \emph{Not used in \code{roll_median()}}.
 //' @param by An integer to shift the window by.
 //' @param align A signed integer representing the windows alignment.
 //' \code{-1(left)|0(center)|1(right)}.
@@ -517,12 +513,12 @@ Rcpp::NumericVector roll_mean(
 Rcpp::NumericVector roll_median (
     Rcpp::NumericVector x,
     unsigned int width = 5,
-    Rcpp::Nullable<Rcpp::NumericVector> weights = R_NilValue,
     int by = 1,
     int align = 0
 ) {
   Roll roll;
-  roll.init(x, width, weights, by, align);
+  Rcpp::Nullable<Rcpp::NumericVector> weights = R_NilValue;
+  roll.init(x, width, by, align, weights);
   return roll.median();
 }
 
@@ -545,7 +541,6 @@ Rcpp::NumericVector roll_median (
 //'
 //' @param x Numeric vector.
 //' @param width Integer width of the rolling window.
-//' @param weights \emph{Not used in \code{roll_median()}}.
 //' @param by An integer to shift the window by.
 //' @param align A signed integer representing the windows alignment.
 //' \code{-1(left)|0(center)|1(right)}.
@@ -562,12 +557,12 @@ Rcpp::NumericVector roll_median (
 Rcpp::NumericVector roll_min(
     Rcpp::NumericVector x,
     unsigned int width = 5,
-    Rcpp::Nullable<Rcpp::NumericVector> weights = R_NilValue,
     int by = 1,
     int align = 0
 ) {
   Roll roll;
-  roll.init(x, width, weights, by, align);
+  Rcpp::Nullable<Rcpp::NumericVector> weights = R_NilValue;
+  roll.init(x, width, by, align, weights);
   return roll.min();
 }
 
@@ -608,12 +603,12 @@ Rcpp::NumericVector roll_min(
 Rcpp::NumericVector roll_prod(
     Rcpp::NumericVector x,
     unsigned int width = 5,
-    Rcpp::Nullable<Rcpp::NumericVector> weights = R_NilValue,
     int by = 1,
-    int align = 0
+    int align = 0,
+    Rcpp::Nullable<Rcpp::NumericVector> weights = R_NilValue
 ) {
   Roll roll;
-  roll.init(x, width, weights, by, align);
+  roll.init(x, width, by, align, weights);
   return roll.prod();
 }
 
@@ -637,7 +632,6 @@ Rcpp::NumericVector roll_prod(
 //'
 //' @param x Numeric vector.
 //' @param width Integer width of the rolling window.
-//' @param weights \emph{Not used in \code{roll_sd()}}.
 //' @param by An integer to shift the window by.
 //' @param align A signed integer representing the windows alignment.
 //' \code{-1(left)|0(center)|1(right)}.
@@ -654,12 +648,12 @@ Rcpp::NumericVector roll_prod(
 Rcpp::NumericVector roll_sd(
     Rcpp::NumericVector x,
     unsigned int width = 5,
-    Rcpp::Nullable<Rcpp::NumericVector> weights = R_NilValue,
     int by = 1,
     int align = 0
 ) {
   Roll roll;
-  roll.init(x, width, weights, by, align);
+  Rcpp::Nullable<Rcpp::NumericVector> weights = R_NilValue;
+  roll.init(x, width, by, align, weights);
   return roll.sd();
 }
 
@@ -700,12 +694,12 @@ Rcpp::NumericVector roll_sd(
 Rcpp::NumericVector roll_sum(
     Rcpp::NumericVector x,
     unsigned int width = 5,
-    Rcpp::Nullable<Rcpp::NumericVector> weights = R_NilValue,
     int by = 1,
-    int align = 0
+    int align = 0,
+    Rcpp::Nullable<Rcpp::NumericVector> weights = R_NilValue
 ) {
   Roll roll;
-  roll.init(x, width, weights, by, align);
+  roll.init(x, width, by, align, weights);
   return roll.sum();
 }
 
@@ -728,7 +722,6 @@ Rcpp::NumericVector roll_sum(
 //'
 //' @param x Numeric vector.
 //' @param width Integer width of the rolling window.
-//' @param weights \emph{Not used in \code{roll_var()}}.
 //' @param by An integer to shift the window by.
 //' @param align A signed integer representing the windows alignment.
 //' \code{-1(left)|0(center)|1(right)}.
@@ -745,12 +738,12 @@ Rcpp::NumericVector roll_sum(
 Rcpp::NumericVector roll_var(
     Rcpp::NumericVector x,
     unsigned int width = 5,
-    Rcpp::Nullable<Rcpp::NumericVector> weights = R_NilValue,
     int by = 1,
     int align = 0
 ) {
   Roll roll;
-  roll.init(x, width, weights, by, align);
+  Rcpp::Nullable<Rcpp::NumericVector> weights = R_NilValue;
+  roll.init(x, width, by, align, weights);
   return roll.var();
 }
 

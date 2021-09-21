@@ -4,15 +4,12 @@
 \alias{roll_hampel}
 \title{Roll Hampel}
 \usage{
-roll_hampel(x, width = 5L, weights = NULL, by = 1L, align = 0L)
+roll_hampel(x, width = 5L, by = 1L, align = 0L)
 }
 \arguments{
 \item{x}{Numeric vector.}
 
 \item{width}{Integer width of the rolling window.}
-
-\item{weights}{A numeric vector of size \code{n} specifying each window
-index weight. If \code{NULL}, the unit weight is used.}
 
 \item{by}{An integer to shift the window by.}
 

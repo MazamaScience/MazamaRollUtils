@@ -13,7 +13,6 @@ test_that("we match results from zoo::rollapply", {
   run_tests <- function(
     x,
     n = 5,
-    weights = NULL,
     by = 1,
     align = 0,
     functions,
@@ -26,7 +25,7 @@ test_that("we match results from zoo::rollapply", {
       zoo_result <- zoo::rollapply(x, n, FUN = get(f), by = by, fill = NA, align = zalign)
       if (gctorture) gctorture(TRUE)
       MRU_FUN <- get(paste("roll", f, sep = "_"), envir = asNamespace("MazamaRollUtils"))
-      MRU_result <- MRU_FUN(x, n, weights, by , align)
+      MRU_result <- MRU_FUN(x, n, by , align)
       if (gctorture) gctorture(FALSE)
       expect_equal(MRU_result, zoo_result)
     }

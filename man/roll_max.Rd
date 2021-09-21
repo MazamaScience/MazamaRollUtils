@@ -4,14 +4,12 @@
 \alias{roll_max}
 \title{Roll Max}
 \usage{
-roll_max(x, width = 5L, weights = NULL, by = 1L, align = 0L)
+roll_max(x, width = 5L, by = 1L, align = 0L)
 }
 \arguments{
 \item{x}{Numeric vector.}
 
 \item{width}{Integer width of the rolling window.}
-
-\item{weights}{\emph{Not used in \code{roll_meax()}}.}
 
 \item{by}{Integer shift to use when sliding the window to the next location}
 

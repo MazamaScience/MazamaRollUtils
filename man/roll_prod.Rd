@@ -4,20 +4,20 @@
 \alias{roll_prod}
 \title{Roll Product}
 \usage{
-roll_prod(x, width = 5L, weights = NULL, by = 1L, align = 0L)
+roll_prod(x, width = 5L, by = 1L, align = 0L, weights = NULL)
 }
 \arguments{
 \item{x}{Numeric vector.}
 
 \item{width}{Integer width of the rolling window.}
 
-\item{weights}{A numeric vector of size \code{n} specifying each window
-index weight. If \code{NULL}, the unit weight is used.}
-
 \item{by}{An integer to shift the window by.}
 
 \item{align}{A signed integer representing the windows alignment.
 \code{-1(left)|0(center)|1(right)}.}
+
+\item{weights}{A numeric vector of size \code{n} specifying each window
+index weight. If \code{NULL}, the unit weight is used.}
 }
 \value{
 numeric vector of length(x)
