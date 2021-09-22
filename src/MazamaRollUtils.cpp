@@ -13,6 +13,7 @@ public:
       int width,
       int by,
       Rcpp::String const& align,
+      Rcpp::LogicalVector na_rm,
       Rcpp::Nullable<Rcpp::NumericVector> weights
   ) {
 
@@ -33,7 +34,14 @@ public:
     x_ = x;
     width_ = width;
     by_ = by;
+    na_rm_ = na_rm;
     weights_ = Rcpp::rep(1.0, width_);
+
+    if (na_rm_[0]) {
+      Rprintf("'na_rm_' evaluates as TRUE");
+    } else {
+      Rprintf("'na_rm_' evaluates as FALSE");
+    }
 
     // Default weights
     if (!weights.isNull()) {
@@ -168,6 +176,7 @@ private:
   int width_;                    // window width
   int by_;                       // increment
   int align_code_;               // alignment
+  Rcpp::LogicalVector na_rm_;    // NA removal
   Rcpp::NumericVector weights_;  // window weights
   int length_;                   // data length
   int half_width_;               // window half-width
@@ -426,7 +435,7 @@ private:
 // ) {
 //   Roll roll;
 //   Rcpp::Nullable<Rcpp::NumericVector> weights = R_NilValue;
-//   roll.init(x, width, by, align, weights);
+//   roll.init(x, width, by, align, na_rm, weights);
 //   return roll.hampel();
 // }
 
@@ -461,6 +470,8 @@ private:
 //' @param by Integer shift to use when sliding the window to the next location
 //' @param align Character position of the return value within the window --
 //' \code{"left" | "center" | "right"}.
+//' @param na_rm Logical specifying whether \code{NA} values should be removed
+//' before the calculations within each window.
 //'
 //' @return Numeric vector of the same length as \code{x}.
 //'
@@ -477,11 +488,12 @@ Rcpp::NumericVector roll_max(
     Rcpp::NumericVector x,
     unsigned int width = 5,
     int by = 1,
-    Rcpp::String const& align = "center"
+    Rcpp::String const& align = "center",
+    Rcpp::LogicalVector na_rm = Rcpp::LogicalVector::create(0)
 ) {
   Roll roll;
   Rcpp::Nullable<Rcpp::NumericVector> weights = R_NilValue;
-  roll.init(x, width, by, align, weights);
+  roll.init(x, width, by, align, na_rm, weights);
   return roll.max();
 }
 
@@ -520,6 +532,8 @@ Rcpp::NumericVector roll_max(
 //' @param by An integer to shift the window by.
 //' @param align Character position of the return value within the window --
 //' \code{"left" | "center" | "right"}.
+//' @param na_rm Logical specifying whether \code{NA} values should be removed
+//' before the calculations within each window.
 //' @param weights A numeric vector of size \code{width} specifying each window
 //' index weight. If \code{NULL}, unit weights are used.
 //'
@@ -539,10 +553,11 @@ Rcpp::NumericVector roll_mean(
     unsigned int width = 5,
     int by = 1,
     Rcpp::String const& align = "center",
+    Rcpp::LogicalVector na_rm = Rcpp::LogicalVector::create(0),
     Rcpp::Nullable<Rcpp::NumericVector> weights = R_NilValue
 ) {
   Roll roll;
-  roll.init(x, width, by, align, weights);
+  roll.init(x, width, by, align, na_rm, weights);
   return roll.mean();
 }
 
@@ -576,6 +591,8 @@ Rcpp::NumericVector roll_mean(
 //' @param by An integer to shift the window by.
 //' @param align Character position of the return value within the window --
 //' \code{"left" | "center" | "right"}.
+//' @param na_rm Logical specifying whether \code{NA} values should be removed
+//' before the calculations within each window.
 //'
 //' @return Numeric vector of the same length as \code{x}.
 //'
@@ -592,11 +609,12 @@ Rcpp::NumericVector roll_median (
     Rcpp::NumericVector x,
     unsigned int width = 5,
     int by = 1,
-    Rcpp::String const& align = "center"
+    Rcpp::String const& align = "center",
+    Rcpp::LogicalVector na_rm = Rcpp::LogicalVector::create(0)
 ) {
   Roll roll;
   Rcpp::Nullable<Rcpp::NumericVector> weights = R_NilValue;
-  roll.init(x, width, by, align, weights);
+  roll.init(x, width, by, align, na_rm, weights);
   return roll.median();
 }
 
@@ -630,6 +648,8 @@ Rcpp::NumericVector roll_median (
 //' @param by An integer to shift the window by.
 //' @param align Character position of the return value within the window --
 //' \code{"left" | "center" | "right"}.
+//' @param na_rm Logical specifying whether \code{NA} values should be removed
+//' before the calculations within each window.
 //'
 //' @return Numeric vector of the same length as \code{x}.
 //'
@@ -646,11 +666,12 @@ Rcpp::NumericVector roll_min(
     Rcpp::NumericVector x,
     unsigned int width = 5,
     int by = 1,
-    Rcpp::String const& align = "center"
+    Rcpp::String const& align = "center",
+    Rcpp::LogicalVector na_rm = Rcpp::LogicalVector::create(0)
 ) {
   Roll roll;
   Rcpp::Nullable<Rcpp::NumericVector> weights = R_NilValue;
-  roll.init(x, width, by, align, weights);
+  roll.init(x, width, by, align, na_rm, weights);
   return roll.min();
 }
 
@@ -684,6 +705,8 @@ Rcpp::NumericVector roll_min(
 //' @param by An integer to shift the window by.
 //' @param align Character position of the return value within the window --
 //' \code{"left" | "center" | "right"}.
+//' @param na_rm Logical specifying whether \code{NA} values should be removed
+//' before the calculations within each window.
 //'
 //' @return Numeric vector of the same length as \code{x}.
 //'
@@ -700,11 +723,12 @@ Rcpp::NumericVector roll_prod(
     Rcpp::NumericVector x,
     unsigned int width = 5,
     int by = 1,
-    Rcpp::String const& align = "center"
+    Rcpp::String const& align = "center",
+    Rcpp::LogicalVector na_rm = Rcpp::LogicalVector::create(0)
 ) {
   Roll roll;
   Rcpp::Nullable<Rcpp::NumericVector> weights = R_NilValue;
-  roll.init(x, width, by, align, weights);
+  roll.init(x, width, by, align, na_rm, weights);
   return roll.prod();
 }
 
@@ -739,6 +763,8 @@ Rcpp::NumericVector roll_prod(
 //' @param by An integer to shift the window by.
 //' @param align Character position of the return value within the window --
 //' \code{"left" | "center" | "right"}.
+//' @param na_rm Logical specifying whether \code{NA} values should be removed
+//' before the calculations within each window.
 //'
 //' @return Numeric vector of the same length as \code{x}.
 //'
@@ -755,11 +781,12 @@ Rcpp::NumericVector roll_sd(
     Rcpp::NumericVector x,
     unsigned int width = 5,
     int by = 1,
-    Rcpp::String const& align = "center"
+    Rcpp::String const& align = "center",
+    Rcpp::LogicalVector na_rm = Rcpp::LogicalVector::create(0)
 ) {
   Roll roll;
   Rcpp::Nullable<Rcpp::NumericVector> weights = R_NilValue;
-  roll.init(x, width, by, align, weights);
+  roll.init(x, width, by, align, na_rm, weights);
   return roll.sd();
 }
 
@@ -793,6 +820,8 @@ Rcpp::NumericVector roll_sd(
 //' @param by An integer to shift the window by.
 //' @param align Character position of the return value within the window --
 //' \code{"left" | "center" | "right"}.
+//' @param na_rm Logical specifying whether \code{NA} values should be removed
+//' before the calculations within each window.
 //'
 //' @return Numeric vector of the same length as \code{x}.
 //'
@@ -809,11 +838,12 @@ Rcpp::NumericVector roll_sum(
     Rcpp::NumericVector x,
     unsigned int width = 5,
     int by = 1,
-    Rcpp::String const& align = "center"
+    Rcpp::String const& align = "center",
+    Rcpp::LogicalVector na_rm = Rcpp::LogicalVector::create(0)
 ) {
   Roll roll;
   Rcpp::Nullable<Rcpp::NumericVector> weights = R_NilValue;
-  roll.init(x, width, by, align, weights);
+  roll.init(x, width, by, align, na_rm, weights);
   return roll.sum();
 }
 
@@ -847,6 +877,8 @@ Rcpp::NumericVector roll_sum(
 //' @param by An integer to shift the window by.
 //' @param align Character position of the return value within the window --
 //' \code{"left" | "center" | "right"}.
+//' @param na_rm Logical specifying whether \code{NA} values should be removed
+//' before the calculations within each window.
 //'
 //' @return Numeric vector of the same length as \code{x}.
 //'
@@ -863,11 +895,12 @@ Rcpp::NumericVector roll_var(
     Rcpp::NumericVector x,
     unsigned int width = 5,
     int by = 1,
-    Rcpp::String const& align = "center"
+    Rcpp::String const& align = "center",
+    Rcpp::LogicalVector na_rm = Rcpp::LogicalVector::create(0)
 ) {
   Roll roll;
   Rcpp::Nullable<Rcpp::NumericVector> weights = R_NilValue;
-  roll.init(x, width, by, align, weights);
+  roll.init(x, width, by, align, na_rm, weights);
   return roll.var();
 }
 

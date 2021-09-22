@@ -4,7 +4,14 @@
 \alias{roll_mean}
 \title{Roll Mean}
 \usage{
-roll_mean(x, width = 5L, by = 1L, align = "center", weights = NULL)
+roll_mean(
+  x,
+  width = 5L,
+  by = 1L,
+  align = "center",
+  na_rm = as.logical(c(0)),
+  weights = NULL
+)
 }
 \arguments{
 \item{x}{Numeric vector.}
@@ -15,6 +22,9 @@ roll_mean(x, width = 5L, by = 1L, align = "center", weights = NULL)
 
 \item{align}{Character position of the return value within the window --
 \code{"left" | "center" | "right"}.}
+
+\item{na_rm}{Logical specifying whether \code{NA} values should be removed
+before the calculations within each window.}
 
 \item{weights}{A numeric vector of size \code{width} specifying each window
 index weight. If \code{NULL}, unit weights are used.}

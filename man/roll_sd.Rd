@@ -4,7 +4,7 @@
 \alias{roll_sd}
 \title{Roll Standard Deviation}
 \usage{
-roll_sd(x, width = 5L, by = 1L, align = "center")
+roll_sd(x, width = 5L, by = 1L, align = "center", na_rm = as.logical(c(0)))
 }
 \arguments{
 \item{x}{Numeric vector.}
@@ -15,6 +15,9 @@ roll_sd(x, width = 5L, by = 1L, align = "center")
 
 \item{align}{Character position of the return value within the window --
 \code{"left" | "center" | "right"}.}
+
+\item{na_rm}{Logical specifying whether \code{NA} values should be removed
+before the calculations within each window.}
 }
 \value{
 Numeric vector of the same length as \code{x}.

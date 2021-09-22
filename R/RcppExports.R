@@ -32,6 +32,8 @@
 #' @param by Integer shift to use when sliding the window to the next location
 #' @param align Character position of the return value within the window --
 #' \code{"left" | "center" | "right"}.
+#' @param na_rm Logical specifying whether \code{NA} values should be removed
+#' before the calculations within each window.
 #'
 #' @return Numeric vector of the same length as \code{x}.
 #'
@@ -43,8 +45,8 @@
 #'
 #' plot(t)
 #' lines(roll_max(t, width = 5), col = 'salmon')
-roll_max <- function(x, width = 5L, by = 1L, align = "center") {
-    .Call(`_MazamaRollUtils_roll_max`, x, width, by, align)
+roll_max <- function(x, width = 5L, by = 1L, align = "center", na_rm = as.logical( c(0))) {
+    .Call(`_MazamaRollUtils_roll_max`, x, width, by, align, na_rm)
 }
 
 #' @title Roll Mean
@@ -82,6 +84,8 @@ roll_max <- function(x, width = 5L, by = 1L, align = "center") {
 #' @param by An integer to shift the window by.
 #' @param align Character position of the return value within the window --
 #' \code{"left" | "center" | "right"}.
+#' @param na_rm Logical specifying whether \code{NA} values should be removed
+#' before the calculations within each window.
 #' @param weights A numeric vector of size \code{width} specifying each window
 #' index weight. If \code{NULL}, unit weights are used.
 #'
@@ -95,8 +99,8 @@ roll_max <- function(x, width = 5L, by = 1L, align = "center") {
 #'
 #' plot(t)
 #' lines(roll_mean(t, width = 5), col = 'salmon')
-roll_mean <- function(x, width = 5L, by = 1L, align = "center", weights = NULL) {
-    .Call(`_MazamaRollUtils_roll_mean`, x, width, by, align, weights)
+roll_mean <- function(x, width = 5L, by = 1L, align = "center", na_rm = as.logical( c(0)), weights = NULL) {
+    .Call(`_MazamaRollUtils_roll_mean`, x, width, by, align, na_rm, weights)
 }
 
 #' @title Roll Median
@@ -129,6 +133,8 @@ roll_mean <- function(x, width = 5L, by = 1L, align = "center", weights = NULL) 
 #' @param by An integer to shift the window by.
 #' @param align Character position of the return value within the window --
 #' \code{"left" | "center" | "right"}.
+#' @param na_rm Logical specifying whether \code{NA} values should be removed
+#' before the calculations within each window.
 #'
 #' @return Numeric vector of the same length as \code{x}.
 #'
@@ -140,8 +146,8 @@ roll_mean <- function(x, width = 5L, by = 1L, align = "center", weights = NULL) 
 #'
 #' plot(t)
 #' lines(roll_median(t, width = 5), col = 'salmon')
-roll_median <- function(x, width = 5L, by = 1L, align = "center") {
-    .Call(`_MazamaRollUtils_roll_median`, x, width, by, align)
+roll_median <- function(x, width = 5L, by = 1L, align = "center", na_rm = as.logical( c(0))) {
+    .Call(`_MazamaRollUtils_roll_median`, x, width, by, align, na_rm)
 }
 
 #' @title Roll Min
@@ -174,6 +180,8 @@ roll_median <- function(x, width = 5L, by = 1L, align = "center") {
 #' @param by An integer to shift the window by.
 #' @param align Character position of the return value within the window --
 #' \code{"left" | "center" | "right"}.
+#' @param na_rm Logical specifying whether \code{NA} values should be removed
+#' before the calculations within each window.
 #'
 #' @return Numeric vector of the same length as \code{x}.
 #'
@@ -185,8 +193,8 @@ roll_median <- function(x, width = 5L, by = 1L, align = "center") {
 #'
 #' plot(t)
 #' lines(roll_min(t, width = 5), col = 'salmon')
-roll_min <- function(x, width = 5L, by = 1L, align = "center") {
-    .Call(`_MazamaRollUtils_roll_min`, x, width, by, align)
+roll_min <- function(x, width = 5L, by = 1L, align = "center", na_rm = as.logical( c(0))) {
+    .Call(`_MazamaRollUtils_roll_min`, x, width, by, align, na_rm)
 }
 
 #' @title Roll Product
@@ -219,6 +227,8 @@ roll_min <- function(x, width = 5L, by = 1L, align = "center") {
 #' @param by An integer to shift the window by.
 #' @param align Character position of the return value within the window --
 #' \code{"left" | "center" | "right"}.
+#' @param na_rm Logical specifying whether \code{NA} values should be removed
+#' before the calculations within each window.
 #'
 #' @return Numeric vector of the same length as \code{x}.
 #'
@@ -230,8 +240,8 @@ roll_min <- function(x, width = 5L, by = 1L, align = "center") {
 #'
 #' t[1:10]
 #' roll_prod(t, width = 5)[1:10]
-roll_prod <- function(x, width = 5L, by = 1L, align = "center") {
-    .Call(`_MazamaRollUtils_roll_prod`, x, width, by, align)
+roll_prod <- function(x, width = 5L, by = 1L, align = "center", na_rm = as.logical( c(0))) {
+    .Call(`_MazamaRollUtils_roll_prod`, x, width, by, align, na_rm)
 }
 
 #' @title Roll Standard Deviation
@@ -265,6 +275,8 @@ roll_prod <- function(x, width = 5L, by = 1L, align = "center") {
 #' @param by An integer to shift the window by.
 #' @param align Character position of the return value within the window --
 #' \code{"left" | "center" | "right"}.
+#' @param na_rm Logical specifying whether \code{NA} values should be removed
+#' before the calculations within each window.
 #'
 #' @return Numeric vector of the same length as \code{x}.
 #'
@@ -276,8 +288,8 @@ roll_prod <- function(x, width = 5L, by = 1L, align = "center") {
 #'
 #' t[1:10]
 #' roll_sd(t, width = 5)[1:10]
-roll_sd <- function(x, width = 5L, by = 1L, align = "center") {
-    .Call(`_MazamaRollUtils_roll_sd`, x, width, by, align)
+roll_sd <- function(x, width = 5L, by = 1L, align = "center", na_rm = as.logical( c(0))) {
+    .Call(`_MazamaRollUtils_roll_sd`, x, width, by, align, na_rm)
 }
 
 #' @title Roll Sum
@@ -310,6 +322,8 @@ roll_sd <- function(x, width = 5L, by = 1L, align = "center") {
 #' @param by An integer to shift the window by.
 #' @param align Character position of the return value within the window --
 #' \code{"left" | "center" | "right"}.
+#' @param na_rm Logical specifying whether \code{NA} values should be removed
+#' before the calculations within each window.
 #'
 #' @return Numeric vector of the same length as \code{x}.
 #'
@@ -321,8 +335,8 @@ roll_sd <- function(x, width = 5L, by = 1L, align = "center") {
 #'
 #' t[1:10]
 #' roll_sum(t, width = 5)[1:10]
-roll_sum <- function(x, width = 5L, by = 1L, align = "center") {
-    .Call(`_MazamaRollUtils_roll_sum`, x, width, by, align)
+roll_sum <- function(x, width = 5L, by = 1L, align = "center", na_rm = as.logical( c(0))) {
+    .Call(`_MazamaRollUtils_roll_sum`, x, width, by, align, na_rm)
 }
 
 #' @title Roll Variance
@@ -355,6 +369,8 @@ roll_sum <- function(x, width = 5L, by = 1L, align = "center") {
 #' @param by An integer to shift the window by.
 #' @param align Character position of the return value within the window --
 #' \code{"left" | "center" | "right"}.
+#' @param na_rm Logical specifying whether \code{NA} values should be removed
+#' before the calculations within each window.
 #'
 #' @return Numeric vector of the same length as \code{x}.
 #'
@@ -366,7 +382,7 @@ roll_sum <- function(x, width = 5L, by = 1L, align = "center") {
 #'
 #' t[1:10]
 #' roll_var(t, width = 5)[1:10]
-roll_var <- function(x, width = 5L, by = 1L, align = "center") {
-    .Call(`_MazamaRollUtils_roll_var`, x, width, by, align)
+roll_var <- function(x, width = 5L, by = 1L, align = "center", na_rm = as.logical( c(0))) {
+    .Call(`_MazamaRollUtils_roll_var`, x, width, by, align, na_rm)
 }
 
