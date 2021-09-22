@@ -37,11 +37,11 @@ public:
     na_rm_ = na_rm;
     weights_ = Rcpp::rep(1.0, width_);
 
-    if (na_rm_[0]) {
-      Rprintf("'na_rm_' evaluates as TRUE");
-    } else {
-      Rprintf("'na_rm_' evaluates as FALSE");
-    }
+    // if (na_rm_[0]) {
+    //   Rprintf("'na_rm_' evaluates as TRUE");
+    // } else {
+    //   Rprintf("'na_rm_' evaluates as FALSE");
+    // }
 
     // Default weights
     if (!weights.isNull()) {
@@ -439,52 +439,11 @@ private:
 //   return roll.hampel();
 // }
 
-//' @title Roll Max
-//'
-//' @description Apply a moving-window maximum function to a numeric vector.
-//'
-//' @details
-//'
-//' For every index in the incoming vector \code{x}, a value is returned that
-//' is the maximum of all values in \code{x} that fall within a window of width
-//' \code{width}.
-//'
-//' The \code{align} parameter determines the alignment of the return value
-//' within the window. Thus:
-//'
-//' \itemize{
-//'   \item{\code{align = -1 [*------]} will cause the returned vector to have width-1 \code{NA} values at the right end.}
-//'   \item{\code{align = 0  [---*---]} will cause the returned vector to have width/2 \code{NA} values at either end.}
-//'   \item{\code{align = 1  [------*]} will cause the returned vector to have width-1 \code{NA} values at the left end.}
-//' }
-//'
-//' For large vectors, the\code{by} parameter can be used to force the window
-//' to jump ahead \code{by} indices for the next calculation. Indices that are
-//' skipped over will be assigned \code{NA} values so that the return vector still has
-//' the same length as the incoming vector. This can dramatically speed up
-//' calculations for high resolution time series data.
-//'
-//'
-//' @param x Numeric vector.
-//' @param width Integer width of the rolling window.
-//' @param by Integer shift to use when sliding the window to the next location
-//' @param align Character position of the return value within the window --
-//' \code{"left" | "center" | "right"}.
-//' @param na_rm Logical specifying whether \code{NA} values should be removed
-//' before the calculations within each window.
-//'
-//' @return Numeric vector of the same length as \code{x}.
-//'
-//' @examples
-//' library(MazamaRollUtils)
-//'
-//' # R default air quality time series
-//' t <- datasets::airquality$Temp
-//'
-//' plot(t)
-//' lines(roll_max(t, width = 5), col = 'salmon')
-// [[Rcpp::export]]
-Rcpp::NumericVector roll_max(
+// See:  https://stackoverflow.com/questions/67920759/rcpp-exportpattern
+// See:  https://stackoverflow.com/questions/68643101/building-rcpp-package-how-to-make-functions-internal
+
+// [[Rcpp::export(".roll_max_cpp")]]
+Rcpp::NumericVector roll_max_cpp(
     Rcpp::NumericVector x,
     unsigned int width = 5,
     int by = 1,
@@ -497,58 +456,8 @@ Rcpp::NumericVector roll_max(
   return roll.max();
 }
 
-//' @title Roll Mean
-//'
-//' @description Apply a moving-window mean function to a numeric vector.
-//'
-//' @details
-//'
-//' For every index in the incoming vector \code{x}, a value is returned that
-//' is the mean of all values in \code{x} that fall within a window of width
-//' \code{width}.
-//'
-//' The \code{align} parameter determines the alignment of the return value
-//' within the window. Thus:
-//'
-//' \itemize{
-//'   \item{\code{align = -1 [*------]} will cause the returned vector to have width-1 \code{NA} values at the right end.}
-//'   \item{\code{align = 0  [---*---]} will cause the returned vector to have width/2 \code{NA} values at either end.}
-//'   \item{\code{align = 1  [------*]} will cause the returned vector to have width-1 \code{NA} values at the left end.}
-//' }
-//'
-//' For large vectors, the\code{by} parameter can be used to force the window
-//' to jump ahead \code{by} indices for the next calculation. Indices that are
-//' skipped over will be assigned \code{NA} values so that the return vector still has
-//' the same length as the incoming vector. This can dramatically speed up
-//' calculations for high resolution time series data.
-//'
-//' The \code{roll_mean()} function supports an additional \code{weights}
-//' argument that can be used to calculate a "weighted moving average" --
-//' a convolution of the incoming data with the \emph{kernel} (weighting function)
-//' provided in \code{weights}.
-//'
-//' @param x Numeric vector.
-//' @param width Integer width of the rolling window.
-//' @param by An integer to shift the window by.
-//' @param align Character position of the return value within the window --
-//' \code{"left" | "center" | "right"}.
-//' @param na_rm Logical specifying whether \code{NA} values should be removed
-//' before the calculations within each window.
-//' @param weights A numeric vector of size \code{width} specifying each window
-//' index weight. If \code{NULL}, unit weights are used.
-//'
-//' @return Numeric vector of the same length as \code{x}.
-//'
-//' @examples
-//' library(MazamaRollUtils)
-//'
-//' # R default air quality time series
-//' t <- datasets::airquality$Temp
-//'
-//' plot(t)
-//' lines(roll_mean(t, width = 5), col = 'salmon')
-// [[Rcpp::export]]
-Rcpp::NumericVector roll_mean(
+// [[Rcpp::export(".roll_mean_cpp")]]
+Rcpp::NumericVector roll_mean_cpp(
     Rcpp::NumericVector x,
     unsigned int width = 5,
     int by = 1,
@@ -561,51 +470,8 @@ Rcpp::NumericVector roll_mean(
   return roll.mean();
 }
 
-//' @title Roll Median
-//'
-//' @description Apply a moving-window median function to a numeric vector.
-//'
-//' @details
-//'
-//' For every index in the incoming vector \code{x}, a value is returned that
-//' is the median of all values in \code{x} that fall within a window of width
-//' \code{width}.
-//'
-//' The \code{align} parameter determines the alignment of the return value
-//' within the window. Thus:
-//'
-//' \itemize{
-//'   \item{\code{align = -1 [*------]} will cause the returned vector to have width-1 \code{NA} values at the right end.}
-//'   \item{\code{align = 0  [---*---]} will cause the returned vector to have width/2 \code{NA} values at either end.}
-//'   \item{\code{align = 1  [------*]} will cause the returned vector to have width-1 \code{NA} values at the left end.}
-//' }
-//'
-//' For large vectors, the\code{by} parameter can be used to force the window
-//' to jump ahead \code{by} indices for the next calculation. Indices that are
-//' skipped over will be assigned \code{NA} values so that the return vector still has
-//' the same length as the incoming vector. This can dramatically speed up
-//' calculations for high resolution time series data.
-//'
-//' @param x Numeric vector.
-//' @param width Integer width of the rolling window.
-//' @param by An integer to shift the window by.
-//' @param align Character position of the return value within the window --
-//' \code{"left" | "center" | "right"}.
-//' @param na_rm Logical specifying whether \code{NA} values should be removed
-//' before the calculations within each window.
-//'
-//' @return Numeric vector of the same length as \code{x}.
-//'
-//' @examples
-//' library(MazamaRollUtils)
-//'
-//' # R default air quality time series
-//' t <- datasets::airquality$Temp
-//'
-//' plot(t)
-//' lines(roll_median(t, width = 5), col = 'salmon')
-// [[Rcpp::export]]
-Rcpp::NumericVector roll_median (
+// [[Rcpp::export(".roll_median_cpp")]]
+Rcpp::NumericVector roll_median_cpp(
     Rcpp::NumericVector x,
     unsigned int width = 5,
     int by = 1,
@@ -618,51 +484,8 @@ Rcpp::NumericVector roll_median (
   return roll.median();
 }
 
-//' @title Roll Min
-//'
-//' @description Apply a moving-window minimum function to a numeric vector.
-//'
-//' @details
-//'
-//' For every index in the incoming vector \code{x}, a value is returned that
-//' is the minimum of all values in \code{x} that fall within a window of width
-//' \code{width}.
-//'
-//' The \code{align} parameter determines the alignment of the return value
-//' within the window. Thus:
-//'
-//' \itemize{
-//'   \item{\code{align = -1 [*------]} will cause the returned vector to have width-1 \code{NA} values at the right end.}
-//'   \item{\code{align = 0  [---*---]} will cause the returned vector to have width/2 \code{NA} values at either end.}
-//'   \item{\code{align = 1  [------*]} will cause the returned vector to have width-1 \code{NA} values at the left end.}
-//' }
-//'
-//' For large vectors, the\code{by} parameter can be used to force the window
-//' to jump ahead \code{by} indices for the next calculation. Indices that are
-//' skipped over will be assigned \code{NA} values so that the return vector still has
-//' the same length as the incoming vector. This can dramatically speed up
-//' calculations for high resolution time series data.
-//'
-//' @param x Numeric vector.
-//' @param width Integer width of the rolling window.
-//' @param by An integer to shift the window by.
-//' @param align Character position of the return value within the window --
-//' \code{"left" | "center" | "right"}.
-//' @param na_rm Logical specifying whether \code{NA} values should be removed
-//' before the calculations within each window.
-//'
-//' @return Numeric vector of the same length as \code{x}.
-//'
-//' @examples
-//' library(MazamaRollUtils)
-//'
-//' # R default air quality time series
-//' t <- datasets::airquality$Temp
-//'
-//' plot(t)
-//' lines(roll_min(t, width = 5), col = 'salmon')
-// [[Rcpp::export]]
-Rcpp::NumericVector roll_min(
+// [[Rcpp::export(".roll_min_cpp")]]
+Rcpp::NumericVector roll_min_cpp(
     Rcpp::NumericVector x,
     unsigned int width = 5,
     int by = 1,
@@ -675,51 +498,8 @@ Rcpp::NumericVector roll_min(
   return roll.min();
 }
 
-//' @title Roll Product
-//'
-//' @description Apply a moving-window product function to a numeric vector.
-//'
-//' @details
-//'
-//' For every index in the incoming vector \code{x}, a value is returned that
-//' is the product of all values in \code{x} that fall within a window of width
-//' \code{width}.
-//'
-//' The \code{align} parameter determines the alignment of the return value
-//' within the window. Thus:
-//'
-//' \itemize{
-//'   \item{\code{align = -1 [*------]} will cause the returned vector to have width-1 \code{NA} values at the right end.}
-//'   \item{\code{align = 0  [---*---]} will cause the returned vector to have width/2 \code{NA} values at either end.}
-//'   \item{\code{align = 1  [------*]} will cause the returned vector to have width-1 \code{NA} values at the left end.}
-//' }
-//'
-//' For large vectors, the\code{by} parameter can be used to force the window
-//' to jump ahead \code{by} indices for the next calculation. Indices that are
-//' skipped over will be assigned \code{NA} values so that the return vector still has
-//' the same length as the incoming vector. This can dramatically speed up
-//' calculations for high resolution time series data.
-//'
-//' @param x Numeric vector.
-//' @param width Integer width of the rolling window.
-//' @param by An integer to shift the window by.
-//' @param align Character position of the return value within the window --
-//' \code{"left" | "center" | "right"}.
-//' @param na_rm Logical specifying whether \code{NA} values should be removed
-//' before the calculations within each window.
-//'
-//' @return Numeric vector of the same length as \code{x}.
-//'
-//' @examples
-//' library(MazamaRollUtils)
-//'
-//' # R default air quality time series
-//' t <- datasets::airquality$Temp
-//'
-//' t[1:10]
-//' roll_prod(t, width = 5)[1:10]
-// [[Rcpp::export]]
-Rcpp::NumericVector roll_prod(
+// [[Rcpp::export(".roll_prod_cpp")]]
+Rcpp::NumericVector roll_prod_cpp(
     Rcpp::NumericVector x,
     unsigned int width = 5,
     int by = 1,
@@ -732,52 +512,8 @@ Rcpp::NumericVector roll_prod(
   return roll.prod();
 }
 
-//' @title Roll Standard Deviation
-//'
-//' @description Apply a moving-window standard deviation function to a
-//' numeric vector.
-//'
-//' @details
-//'
-//' For every index in the incoming vector \code{x}, a value is returned that
-//' is the standard deviation of all values in \code{x} that fall within a window of width
-//' \code{width}.
-//'
-//' The \code{align} parameter determines the alignment of the return value
-//' within the window. Thus:
-//'
-//' \itemize{
-//'   \item{\code{align = -1 [*------]} will cause the returned vector to have width-1 \code{NA} values at the right end.}
-//'   \item{\code{align = 0  [---*---]} will cause the returned vector to have width/2 \code{NA} values at either end.}
-//'   \item{\code{align = 1  [------*]} will cause the returned vector to have width-1 \code{NA} values at the left end.}
-//' }
-//'
-//' For large vectors, the\code{by} parameter can be used to force the window
-//' to jump ahead \code{by} indices for the next calculation. Indices that are
-//' skipped over will be assigned \code{NA} values so that the return vector still has
-//' the same length as the incoming vector. This can dramatically speed up
-//' calculations for high resolution time series data.
-//'
-//' @param x Numeric vector.
-//' @param width Integer width of the rolling window.
-//' @param by An integer to shift the window by.
-//' @param align Character position of the return value within the window --
-//' \code{"left" | "center" | "right"}.
-//' @param na_rm Logical specifying whether \code{NA} values should be removed
-//' before the calculations within each window.
-//'
-//' @return Numeric vector of the same length as \code{x}.
-//'
-//' @examples
-//' library(MazamaRollUtils)
-//'
-//' # R default air quality time series
-//' t <- datasets::airquality$Temp
-//'
-//' t[1:10]
-//' roll_sd(t, width = 5)[1:10]
-// [[Rcpp::export]]
-Rcpp::NumericVector roll_sd(
+// [[Rcpp::export(".roll_sd_cpp")]]
+Rcpp::NumericVector roll_sd_cpp(
     Rcpp::NumericVector x,
     unsigned int width = 5,
     int by = 1,
@@ -790,51 +526,8 @@ Rcpp::NumericVector roll_sd(
   return roll.sd();
 }
 
-//' @title Roll Sum
-//'
-//' @description Apply a moving-window sum to a numeric vector.
-//'
-//' @details
-//'
-//' For every index in the incoming vector \code{x}, a value is returned that
-//' is the sum of all values in \code{x} that fall within a window of width
-//' \code{width}.
-//'
-//' The \code{align} parameter determines the alignment of the return value
-//' within the window. Thus:
-//'
-//' \itemize{
-//'   \item{\code{align = -1 [*------]} will cause the returned vector to have width-1 \code{NA} values at the right end.}
-//'   \item{\code{align = 0  [---*---]} will cause the returned vector to have width/2 \code{NA} values at either end.}
-//'   \item{\code{align = 1  [------*]} will cause the returned vector to have width-1 \code{NA} values at the left end.}
-//' }
-//'
-//' For large vectors, the\code{by} parameter can be used to force the window
-//' to jump ahead \code{by} indices for the next calculation. Indices that are
-//' skipped over will be assigned \code{NA} values so that the return vector still has
-//' the same length as the incoming vector. This can dramatically speed up
-//' calculations for high resolution time series data.
-//'
-//' @param x Numeric vector.
-//' @param width Integer width of the rolling window.
-//' @param by An integer to shift the window by.
-//' @param align Character position of the return value within the window --
-//' \code{"left" | "center" | "right"}.
-//' @param na_rm Logical specifying whether \code{NA} values should be removed
-//' before the calculations within each window.
-//'
-//' @return Numeric vector of the same length as \code{x}.
-//'
-//' @examples
-//' library(MazamaRollUtils)
-//'
-//' # R default air quality time series
-//' t <- datasets::airquality$Temp
-//'
-//' t[1:10]
-//' roll_sum(t, width = 5)[1:10]
-// [[Rcpp::export]]
-Rcpp::NumericVector roll_sum(
+// [[Rcpp::export(".roll_sum_cpp")]]
+Rcpp::NumericVector roll_sum_cpp(
     Rcpp::NumericVector x,
     unsigned int width = 5,
     int by = 1,
@@ -847,51 +540,8 @@ Rcpp::NumericVector roll_sum(
   return roll.sum();
 }
 
-//' @title Roll Variance
-//'
-//' @description Apply a moving-window variance function to a numeric vector.
-//'
-//' @details
-//'
-//' For every index in the incoming vector \code{x}, a value is returned that
-//' is the variance of all values in \code{x} that fall within a window of width
-//' \code{width}.
-//'
-//' The \code{align} parameter determines the alignment of the return value
-//' within the window. Thus:
-//'
-//' \itemize{
-//'   \item{\code{align = -1 [*------]} will cause the returned vector to have width-1 \code{NA} values at the right end.}
-//'   \item{\code{align = 0  [---*---]} will cause the returned vector to have width/2 \code{NA} values at either end.}
-//'   \item{\code{align = 1  [------*]} will cause the returned vector to have width-1 \code{NA} values at the left end.}
-//' }
-//'
-//' For large vectors, the\code{by} parameter can be used to force the window
-//' to jump ahead \code{by} indices for the next calculation. Indices that are
-//' skipped over will be assigned \code{NA} values so that the return vector still has
-//' the same length as the incoming vector. This can dramatically speed up
-//' calculations for high resolution time series data.
-//'
-//' @param x Numeric vector.
-//' @param width Integer width of the rolling window.
-//' @param by An integer to shift the window by.
-//' @param align Character position of the return value within the window --
-//' \code{"left" | "center" | "right"}.
-//' @param na_rm Logical specifying whether \code{NA} values should be removed
-//' before the calculations within each window.
-//'
-//' @return Numeric vector of the same length as \code{x}.
-//'
-//' @examples
-//' library(MazamaRollUtils)
-//'
-//' # R default air quality time series
-//' t <- datasets::airquality$Temp
-//'
-//' t[1:10]
-//' roll_var(t, width = 5)[1:10]
-// [[Rcpp::export]]
-Rcpp::NumericVector roll_var(
+// [[Rcpp::export(".roll_var_cpp")]]
+Rcpp::NumericVector roll_var_cpp(
     Rcpp::NumericVector x,
     unsigned int width = 5,
     int by = 1,

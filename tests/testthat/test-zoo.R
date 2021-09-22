@@ -8,14 +8,13 @@ test_that("we match results from zoo::rollapply", {
   if (!requireNamespace("zoo", quietly = TRUE))
     skip("zoo not installed")
 
-  functions <- c("max", "median", "mean", "min", "prod", "sd", "sum", "var")
+  functions <- c("max", "mean", "median", "min", "prod", "sd", "sum", "var")
 
   run_tests <- function(
     x,
     n = 5,
     by = 1,
-    align = "center",
-    functions
+    align = "center"
   ) {
     for (f in functions) {
       zoo_result <- zoo::rollapply(x, n, FUN = get(f), by = by, fill = NA, align = align)
@@ -27,20 +26,20 @@ test_that("we match results from zoo::rollapply", {
 
   x <- rnorm(50)
 
-  run_tests(x, 1, by = 1, align = "center", functions = functions)
-  run_tests(x, 5, by = 1, align = "center", functions = functions)
-  run_tests(x, 49, by = 1, align = "center", functions = functions)
+  run_tests(x, 1, by = 1, align = "center")
+  run_tests(x, 5, by = 1, align = "center")
+  run_tests(x, 49, by = 1, align = "center")
 
   # NOTE:  MazamaRollUtils returns all NA when width = 50 as there is no index
   # NOTE:  at the middle of the window. This is different from zoo::rollapply()
 
   # Test with small numbers
   x <- rnorm(1E3) ^ 100
-  run_tests(x, 5, by = 1, align = "center", functions = functions)
+  run_tests(x, 5, by = 1, align = "center")
 
   # Test with large numbers
   x <- rnorm(1E3, mean = 1E200, sd = 1E201)
-  run_tests(x, 5, by = 1, align = "center", functions = functions)
+  run_tests(x, 5, by = 1, align = "center")
 
   # Try out different widths and alignments
   args <- expand.grid(
@@ -55,22 +54,18 @@ test_that("we match results from zoo::rollapply", {
       x,
       n = args$n[[i]],
       by = args$by[[i]],
-      align = as.character(args$align[[i]]),
-      functions = functions
+      align = as.character(args$align[[i]])
     )
   }
 
   # Make sure we properly handle NAs
-  functions <- c("max", "median", "mean", "min", "prod", "sum")
-
   x[sample(length(x), length(x) / 3)] <- NA
   for ( i in 1:nrow(args) ) {
       run_tests(
         x,
         n = args$n[[i]],
         by = args$by[[i]],
-        align = as.character(args$align[[i]]),
-        functions = functions
+        align = as.character(args$align[[i]])
       )
   }
 
