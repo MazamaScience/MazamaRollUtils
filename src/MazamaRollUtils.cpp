@@ -16,11 +16,11 @@ public:
       Rcpp::Nullable<Rcpp::NumericVector> weights
   ) {
 
-    if (width > x.size()) {
-      Rcpp::stop("Window 'width' cannot be larger than 'x'");
-    }
     if (width < 1) {
       Rcpp::stop("Window 'width' must be 1 or larger");
+    }
+    if (width > x.size()) {
+      Rcpp::stop("Window 'width' cannot be larger than 'x'");
     }
     if (by < 1) {
       Rcpp::stop("Increment 'by' must be 1 or larger");
@@ -33,17 +33,26 @@ public:
     x_ = x;
     width_ = width;
     by_ = by;
-    weights_ = Rcpp::rep(1.0, width);
+    weights_ = Rcpp::rep(1.0, width_);
 
     // Default weights
     if (!weights.isNull()) {
       // See:  https://stackoverflow.com/questions/43388698/rcpp-how-can-i-get-the-size-of-a-rcppnullable-numericvector
       Rcpp::NumericVector w(weights.get());
-      if (w.size() != width) {
+      if (w.size() != width_) {
         Rcpp::stop("'weights' must be either NULL or a vector of the same length as the window 'width'");
       }
+      for (int i = 0; i < width_; ++i) {
+        if (w[i] < 0) {
+          Rcpp::stop("All 'weights' must be positive values or zero. Negative weights are not supported.");
+        };
+      }
       // See:  https://en.cppreference.com/w/cpp/algorithm/accumulate
-      double normalization = (double)width_ / std::accumulate(w.begin(), w.end(), (double)0);
+      double weights_sum = std::accumulate(w.begin(), w.end(), (double)0);
+      if ( weights_sum == 0 ) {
+        Rcpp::stop("All 'weights' are zero. Please include non-zero values in 'weights'.");
+      }
+      double normalization = (double)width_ / weights_sum;
       for (int i = 0; i < width_; ++i) {
         weights_[i] = w[i] * normalization;
       }
