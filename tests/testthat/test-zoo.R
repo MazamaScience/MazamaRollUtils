@@ -1,7 +1,7 @@
 # These tests are modeled on the tests in the RcppRoll test/ directory
 #   https://github.com/kevinushey/RcppRoll
 
-context("zoo")
+context("zoo comparison")
 
 test_that("we match results from zoo::rollapply", {
 
@@ -14,14 +14,11 @@ test_that("we match results from zoo::rollapply", {
     x,
     n = 5,
     by = 1,
-    align = 0,
+    align = "center",
     functions
   ) {
     for (f in functions) {
-      if ( align == -1 ) zalign <- "left"
-      else if ( align == 0 ) zalign <- "center"
-      else if ( align == 1) zalign <- "right"
-      zoo_result <- zoo::rollapply(x, n, FUN = get(f), by = by, fill = NA, align = zalign)
+      zoo_result <- zoo::rollapply(x, n, FUN = get(f), by = by, fill = NA, align = align)
       MRU_FUN <- get(paste("roll", f, sep = "_"), envir = asNamespace("MazamaRollUtils"))
       MRU_result <- MRU_FUN(x, n, by , align)
       expect_equal(MRU_result, zoo_result)
@@ -30,26 +27,26 @@ test_that("we match results from zoo::rollapply", {
 
   x <- rnorm(50)
 
-  run_tests(x, 1, by = 1, align = 0, functions = functions)
-  run_tests(x, 5, by = 1, align = 0, functions = functions)
-  run_tests(x, 49, by = 1, align = 0, functions = functions)
+  run_tests(x, 1, by = 1, align = "center", functions = functions)
+  run_tests(x, 5, by = 1, align = "center", functions = functions)
+  run_tests(x, 49, by = 1, align = "center", functions = functions)
 
   # NOTE:  MazamaRollUtils returns all NA when width = 50 as there is no index
   # NOTE:  at the middle of the window. This is different from zoo::rollapply()
 
   # Test with small numbers
   x <- rnorm(1E3) ^ 100
-  run_tests(x, 5, by = 1, align = 0, functions = functions)
+  run_tests(x, 5, by = 1, align = "center", functions = functions)
 
   # Test with large numbers
   x <- rnorm(1E3, mean = 1E200, sd = 1E201)
-  run_tests(x, 5, by = 1, align = 0, functions = functions)
+  run_tests(x, 5, by = 1, align = "center", functions = functions)
 
   # Try out different widths and alignments
   args <- expand.grid(
     n = c(3, 9, 99),
     by = c(1, 2, 5),
-    align = c(-1, 0, 1)
+    align = c("left", "center", "right")
   )
 
   x <- rnorm(100, 100, 50)
@@ -58,7 +55,7 @@ test_that("we match results from zoo::rollapply", {
       x,
       n = args$n[[i]],
       by = args$by[[i]],
-      align = args$align[[i]],
+      align = as.character(args$align[[i]]),
       functions = functions
     )
   }
@@ -72,7 +69,7 @@ test_that("we match results from zoo::rollapply", {
         x,
         n = args$n[[i]],
         by = args$by[[i]],
-        align = args$align[[i]],
+        align = as.character(args$align[[i]]),
         functions = functions
       )
   }

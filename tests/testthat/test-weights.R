@@ -16,9 +16,9 @@ test_that("weights are applied to the proper positions", {
 
   x <- rnorm(50)
 
-  a <- roll_mean(x, 3, align = -1, weights = c(1,0,0))
-  b <- roll_mean(x, 3, align =  0, weights = c(0,1,0))
-  c <- roll_mean(x, 3, align =  1, weights = c(0,0,1))
+  a <- roll_mean(x, 3, align = "left", weights = c(1,0,0))
+  b <- roll_mean(x, 3, align = "center", weights = c(0,1,0))
+  c <- roll_mean(x, 3, align = "right", weights = c(0,0,1))
   mask <- !is.na(a) & !is.na(b) & !is.na(c)
   # NOTE:  testthat complains when we expect_true(a[mask], b[mask])
   am <- a[mask]

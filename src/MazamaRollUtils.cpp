@@ -12,25 +12,27 @@ public:
       Rcpp::NumericVector x,
       int width,
       int by,
-      int align,
+      Rcpp::String const& align,
       Rcpp::Nullable<Rcpp::NumericVector> weights
   ) {
 
     if (width > x.size()) {
       Rcpp::stop("Window 'width' cannot be larger than 'x'");
     }
+    if (width < 1) {
+      Rcpp::stop("Window 'width' must be 1 or larger");
+    }
+    if (by < 1) {
+      Rcpp::stop("Increment 'by' must be 1 or larger");
+    }
     if (by > x.size()) {
       Rcpp::stop("Increment 'by' cannot be larger than 'x'");
-    }
-    if (pow(align, 2) > 1) {
-      Rcpp::stop("Window alignment 'align' must be either -1 (left), 0 (center), or +1 (right)");
     }
 
     // Initialize private vars
     x_ = x;
     width_ = width;
     by_ = by;
-    align_ = align;
     weights_ = Rcpp::rep(1.0, width);
 
     // Default weights
@@ -52,19 +54,20 @@ public:
     half_width_ = width / 2;   // truncated division rounds down
 
     // Initialize start and end
-    switch (align) {
-    case -1:
+    if (align == "left") {
+      align_code_ = -1;
       start_ = 0;
       end_ = length_ - (width - 1);
-      break;
-    case 0:
+    } else if (align == "center") {
+      align_code_ = 0;
       start_ = half_width_;
       end_ = length_ - half_width_;
-      break;
-    case 1:
+    } else if (align == "right") {
+      align_code_ = 1;
       start_ = width - 1;
       end_ = length_;
-      break;
+    } else {
+      Rcpp::stop("Window alignment 'align' must be either 'left', 'center' or 'right'");
     }
 
   }
@@ -155,7 +158,7 @@ private:
   Rcpp::NumericVector x_;        // data
   int width_;                    // window width
   int by_;                       // increment
-  int align_;                    // alignment
+  int align_code_;               // alignment
   Rcpp::NumericVector weights_;  // window weights
   int length_;                   // data length
   int half_width_;               // window half-width
@@ -181,7 +184,7 @@ private:
     double max = x_[index];
     for (int i = 0; i < width_; ++i) {
       int s;
-      switch (align_) {
+      switch (align_code_) {
       case -1:
         s = index + i;
         break;
@@ -208,7 +211,7 @@ private:
     double mean = 0;
     for (int i = 0; i < width_; ++i) {
       int s;
-      switch (align_) {
+      switch (align_code_) {
       case -1:
         s = index + i;
         break;
@@ -236,7 +239,7 @@ private:
     Rcpp::NumericVector tmp(width_, NA_REAL);
     for (int i = 0; i < width_; ++i) {
       int s;
-      switch (align_) {
+      switch (align_code_) {
       case -1:
         s = index + i;
         break;
@@ -264,7 +267,7 @@ private:
     double min = x_[index];
     for (int i = 0; i < width_; ++i) {
       int s;
-      switch (align_) {
+      switch (align_code_) {
       case -1:
         s = index + i;
         break;
@@ -291,7 +294,7 @@ private:
     double prod = 1;
     for (int i = 0; i < width_; ++i) {
       int s;
-      switch (align_) {
+      switch (align_code_) {
       case -1:
         s = index + i;
         break;
@@ -318,7 +321,7 @@ private:
     double sum = 0;
     for (int i = 0; i < width_; ++i) {
       int s;
-      switch (align_) {
+      switch (align_code_) {
       case -1:
         s = index + i;
         break;
@@ -346,7 +349,7 @@ private:
     double mean = windowMean(index);
     for (int i = 0; i < width_; ++i) {
       int s;
-      switch (align_) {
+      switch (align_code_) {
       case -1:
         s = index + i;
         break;
@@ -382,7 +385,7 @@ private:
 // //' slid/shifted/rolled \code{by} a positive integer amount about the window's
 // //' \code{align}-ment index.
 // //'
-// //' The \code{align} parameter determines the alignment of the current index
+// //' The \code{align} parameter determines the alignment of the return value
 // //' within the window. Thus:
 // //'
 // //' \itemize{
@@ -394,7 +397,7 @@ private:
 // //' @param x Numeric vector.
 // //' @param width Integer width of the rolling window.
 // //' @param by An integer to shift the window by.
-// //' @param align A signed integer representing the position of the return value within each window.
+// //' @param align A signed integer representing the position of the return value within the window.
 // //' \code{-1(left) | 0(center) | 1(right)}.
 // //'
 // //' @return Numeric vector of the same length as \code{x}.
@@ -428,7 +431,7 @@ private:
 //' is the maximum of all values in \code{x} that fall within a window of width
 //' \code{width}.
 //'
-//' The \code{align} parameter determines the alignment of the current index
+//' The \code{align} parameter determines the alignment of the return value
 //' within the window. Thus:
 //'
 //' \itemize{
@@ -447,8 +450,8 @@ private:
 //' @param x Numeric vector.
 //' @param width Integer width of the rolling window.
 //' @param by Integer shift to use when sliding the window to the next location
-//' @param align Signed integer representing the position of the return value within each window.
-//' \code{-1(left) | 0(center) | 1(right)}.
+//' @param align Character position of the return value within the window --
+//' \code{"left" | "center" | "right"}.
 //'
 //' @return Numeric vector of the same length as \code{x}.
 //'
@@ -465,7 +468,7 @@ Rcpp::NumericVector roll_max(
     Rcpp::NumericVector x,
     unsigned int width = 5,
     int by = 1,
-    int align = 0
+    Rcpp::String const& align = "center"
 ) {
   Roll roll;
   Rcpp::Nullable<Rcpp::NumericVector> weights = R_NilValue;
@@ -483,7 +486,7 @@ Rcpp::NumericVector roll_max(
 //' is the mean of all values in \code{x} that fall within a window of width
 //' \code{width}.
 //'
-//' The \code{align} parameter determines the alignment of the current index
+//' The \code{align} parameter determines the alignment of the return value
 //' within the window. Thus:
 //'
 //' \itemize{
@@ -506,8 +509,8 @@ Rcpp::NumericVector roll_max(
 //' @param x Numeric vector.
 //' @param width Integer width of the rolling window.
 //' @param by An integer to shift the window by.
-//' @param align A signed integer representing the position of the return value within each window.
-//' \code{-1(left) | 0(center) | 1(right)}.
+//' @param align Character position of the return value within the window --
+//' \code{"left" | "center" | "right"}.
 //' @param weights A numeric vector of size \code{width} specifying each window
 //' index weight. If \code{NULL}, unit weights are used.
 //'
@@ -526,7 +529,7 @@ Rcpp::NumericVector roll_mean(
     Rcpp::NumericVector x,
     unsigned int width = 5,
     int by = 1,
-    int align = 0,
+    Rcpp::String const& align = "center",
     Rcpp::Nullable<Rcpp::NumericVector> weights = R_NilValue
 ) {
   Roll roll;
@@ -544,7 +547,7 @@ Rcpp::NumericVector roll_mean(
 //' is the median of all values in \code{x} that fall within a window of width
 //' \code{width}.
 //'
-//' The \code{align} parameter determines the alignment of the current index
+//' The \code{align} parameter determines the alignment of the return value
 //' within the window. Thus:
 //'
 //' \itemize{
@@ -562,8 +565,8 @@ Rcpp::NumericVector roll_mean(
 //' @param x Numeric vector.
 //' @param width Integer width of the rolling window.
 //' @param by An integer to shift the window by.
-//' @param align A signed integer representing the position of the return value within each window.
-//' \code{-1(left) | 0(center) | 1(right)}.
+//' @param align Character position of the return value within the window --
+//' \code{"left" | "center" | "right"}.
 //'
 //' @return Numeric vector of the same length as \code{x}.
 //'
@@ -580,7 +583,7 @@ Rcpp::NumericVector roll_median (
     Rcpp::NumericVector x,
     unsigned int width = 5,
     int by = 1,
-    int align = 0
+    Rcpp::String const& align = "center"
 ) {
   Roll roll;
   Rcpp::Nullable<Rcpp::NumericVector> weights = R_NilValue;
@@ -598,7 +601,7 @@ Rcpp::NumericVector roll_median (
 //' is the minimum of all values in \code{x} that fall within a window of width
 //' \code{width}.
 //'
-//' The \code{align} parameter determines the alignment of the current index
+//' The \code{align} parameter determines the alignment of the return value
 //' within the window. Thus:
 //'
 //' \itemize{
@@ -616,8 +619,8 @@ Rcpp::NumericVector roll_median (
 //' @param x Numeric vector.
 //' @param width Integer width of the rolling window.
 //' @param by An integer to shift the window by.
-//' @param align A signed integer representing the position of the return value within each window.
-//' \code{-1(left) | 0(center) | 1(right)}.
+//' @param align Character position of the return value within the window --
+//' \code{"left" | "center" | "right"}.
 //'
 //' @return Numeric vector of the same length as \code{x}.
 //'
@@ -634,7 +637,7 @@ Rcpp::NumericVector roll_min(
     Rcpp::NumericVector x,
     unsigned int width = 5,
     int by = 1,
-    int align = 0
+    Rcpp::String const& align = "center"
 ) {
   Roll roll;
   Rcpp::Nullable<Rcpp::NumericVector> weights = R_NilValue;
@@ -652,7 +655,7 @@ Rcpp::NumericVector roll_min(
 //' is the product of all values in \code{x} that fall within a window of width
 //' \code{width}.
 //'
-//' The \code{align} parameter determines the alignment of the current index
+//' The \code{align} parameter determines the alignment of the return value
 //' within the window. Thus:
 //'
 //' \itemize{
@@ -670,8 +673,8 @@ Rcpp::NumericVector roll_min(
 //' @param x Numeric vector.
 //' @param width Integer width of the rolling window.
 //' @param by An integer to shift the window by.
-//' @param align A signed integer representing the position of the return value within each window.
-//' \code{-1(left) | 0(center) | 1(right)}.
+//' @param align Character position of the return value within the window --
+//' \code{"left" | "center" | "right"}.
 //'
 //' @return Numeric vector of the same length as \code{x}.
 //'
@@ -688,7 +691,7 @@ Rcpp::NumericVector roll_prod(
     Rcpp::NumericVector x,
     unsigned int width = 5,
     int by = 1,
-    int align = 0
+    Rcpp::String const& align = "center"
 ) {
   Roll roll;
   Rcpp::Nullable<Rcpp::NumericVector> weights = R_NilValue;
@@ -707,7 +710,7 @@ Rcpp::NumericVector roll_prod(
 //' is the standard deviation of all values in \code{x} that fall within a window of width
 //' \code{width}.
 //'
-//' The \code{align} parameter determines the alignment of the current index
+//' The \code{align} parameter determines the alignment of the return value
 //' within the window. Thus:
 //'
 //' \itemize{
@@ -725,8 +728,8 @@ Rcpp::NumericVector roll_prod(
 //' @param x Numeric vector.
 //' @param width Integer width of the rolling window.
 //' @param by An integer to shift the window by.
-//' @param align A signed integer representing the position of the return value within each window.
-//' \code{-1(left) | 0(center) | 1(right)}.
+//' @param align Character position of the return value within the window --
+//' \code{"left" | "center" | "right"}.
 //'
 //' @return Numeric vector of the same length as \code{x}.
 //'
@@ -743,7 +746,7 @@ Rcpp::NumericVector roll_sd(
     Rcpp::NumericVector x,
     unsigned int width = 5,
     int by = 1,
-    int align = 0
+    Rcpp::String const& align = "center"
 ) {
   Roll roll;
   Rcpp::Nullable<Rcpp::NumericVector> weights = R_NilValue;
@@ -761,7 +764,7 @@ Rcpp::NumericVector roll_sd(
 //' is the sum of all values in \code{x} that fall within a window of width
 //' \code{width}.
 //'
-//' The \code{align} parameter determines the alignment of the current index
+//' The \code{align} parameter determines the alignment of the return value
 //' within the window. Thus:
 //'
 //' \itemize{
@@ -779,8 +782,8 @@ Rcpp::NumericVector roll_sd(
 //' @param x Numeric vector.
 //' @param width Integer width of the rolling window.
 //' @param by An integer to shift the window by.
-//' @param align A signed integer representing the position of the return value within each window.
-//' \code{-1(left) | 0(center) | 1(right)}.
+//' @param align Character position of the return value within the window --
+//' \code{"left" | "center" | "right"}.
 //'
 //' @return Numeric vector of the same length as \code{x}.
 //'
@@ -797,7 +800,7 @@ Rcpp::NumericVector roll_sum(
     Rcpp::NumericVector x,
     unsigned int width = 5,
     int by = 1,
-    int align = 0
+    Rcpp::String const& align = "center"
 ) {
   Roll roll;
   Rcpp::Nullable<Rcpp::NumericVector> weights = R_NilValue;
@@ -815,7 +818,7 @@ Rcpp::NumericVector roll_sum(
 //' is the variance of all values in \code{x} that fall within a window of width
 //' \code{width}.
 //'
-//' The \code{align} parameter determines the alignment of the current index
+//' The \code{align} parameter determines the alignment of the return value
 //' within the window. Thus:
 //'
 //' \itemize{
@@ -833,8 +836,8 @@ Rcpp::NumericVector roll_sum(
 //' @param x Numeric vector.
 //' @param width Integer width of the rolling window.
 //' @param by An integer to shift the window by.
-//' @param align A signed integer representing the position of the return value within each window.
-//' \code{-1(left) | 0(center) | 1(right)}.
+//' @param align Character position of the return value within the window --
+//' \code{"left" | "center" | "right"}.
 //'
 //' @return Numeric vector of the same length as \code{x}.
 //'
@@ -851,7 +854,7 @@ Rcpp::NumericVector roll_var(
     Rcpp::NumericVector x,
     unsigned int width = 5,
     int by = 1,
-    int align = 0
+    Rcpp::String const& align = "center"
 ) {
   Roll roll;
   Rcpp::Nullable<Rcpp::NumericVector> weights = R_NilValue;

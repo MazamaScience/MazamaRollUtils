@@ -4,7 +4,7 @@
 \alias{roll_sum}
 \title{Roll Sum}
 \usage{
-roll_sum(x, width = 5L, by = 1L, align = 0L)
+roll_sum(x, width = 5L, by = 1L, align = "center")
 }
 \arguments{
 \item{x}{Numeric vector.}
@@ -13,8 +13,8 @@ roll_sum(x, width = 5L, by = 1L, align = 0L)
 
 \item{by}{An integer to shift the window by.}
 
-\item{align}{A signed integer representing the position of the return value within each window.
-\code{-1(left) | 0(center) | 1(right)}.}
+\item{align}{Character position of the return value within the window --
+\code{"left" | "center" | "right"}.}
 }
 \value{
 Numeric vector of the same length as \code{x}.
@@ -27,7 +27,7 @@ For every index in the incoming vector \code{x}, a value is returned that
 is the sum of all values in \code{x} that fall within a window of width
 \code{width}.
 
-The \code{align} parameter determines the alignment of the current index
+The \code{align} parameter determines the alignment of the return value
 within the window. Thus:
 
 \itemize{
