@@ -1,3 +1,4 @@
+# Comparing results with other rolling packages
 
 library(MazamaRollUtils)
 
