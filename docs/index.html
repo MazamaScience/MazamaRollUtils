@@ -46,6 +46,9 @@
   </a>
 </li>
 <li>
+  <a href="articles/MazamaRollUtils.html">Get started</a>
+</li>
+<li>
   <a href="reference/index.html">Reference</a>
 </li>
 <li>
@@ -81,14 +84,14 @@ maxes and other functions.</code></pre>
 <div id="background" class="section level2">
 <h2 class="hasAnchor">
 <a href="#background" class="anchor"></a>Background</h2>
-<p>Analasys of time series data often involves applying “rolling” functions to calculate, <em>e.g.</em> a “moving average”. These functions are straightforward to write in any language and it makes sense to have C++ versions of common rolling functions available to R as they dramatically speed up calculations. Several packages exist that provide some version of this functionality:</p>
+<p>Analysis of time series data often involves applying “rolling” functions to calculate, <em>e.g.</em> a “moving average”. These functions are straightforward to write in any language and it makes sense to have C++ versions of common rolling functions available to R as they dramatically speed up calculations. Several packages exist that provide some version of this functionality:</p>
 <ul>
 <li>
-<a href="https://cran.r-project.org/web/packages/zoo/index.html">zoo</a> – core R package with a specific data model</li>
+<a href="https://cran.r-project.org/package=zoo">zoo</a> – core R package with a specific data model</li>
 <li>
-<a href="https://cran.r-project.org/web/packages/seismicRoll/index.html">seismicRoll</a> – rolling functions focused on seismology</li>
+<a href="https://cran.r-project.org/package=seismicRoll">seismicRoll</a> – rolling functions focused on seismology</li>
 <li>
-<a href="https://cran.r-project.org/web/packages/RcppRoll/index.html">RcppRoll</a> – rolling functions for basic statistics</li>
+<a href="https://cran.r-project.org/package=RcppRoll">RcppRoll</a> – rolling functions for basic statistics</li>
 </ul>
 <p>Our goal in creating a new package of C++ rolling functions is to build up a suite of functions useful in environmental time series analysis. We want these functions to be available in a neutral environment with no underlying data model. The functions are as straightforward to use as is reasonably possible with a target audience of data analysts at any level of R expertise.</p>
 </div>
@@ -146,9 +149,9 @@ lines(t, roll_min(x, width = 12), col = 'light blue')</a></code></pre>
   <div class="dev-status">
 <h2>Dev status</h2>
 <ul class="list-unstyled">
-<li><a href="https://cran.r-project.org/package=MazamaTimeSeries"><img src="http://www.r-pkg.org/badges/version/MazamaTimeSeries" alt="CRAN_Status_Badge"></a></li>
-<li><a href="https://cran.r-project.org/package=MazamaTimeSeries"><img src="http://cranlogs.r-pkg.org/badges/MazamaTimeSeries" alt="Downloads"></a></li>
-<li><a href="https://travis-ci.org/MazamaScience/MazamaTimeSeries"><img src="https://travis-ci.org/MazamaScience/MazamaTimeSeries.svg?branch=master" alt="Build Status"></a></li>
+<li><a href="https://cran.r-project.org/package=MazamaRollUtils"><img src="http://www.r-pkg.org/badges/version/MazamaRollUtils" alt="CRAN_Status_Badge"></a></li>
+<li><a href="https://cran.r-project.org/package=MazamaRollUtils"><img src="http://cranlogs.r-pkg.org/badges/MazamaRollUtils" alt="Downloads"></a></li>
+<li><a href="https://travis-ci.org/MazamaScience/MazamaRollUtils"><img src="https://travis-ci.org/MazamaScience/MazamaRollUtils.svg?branch=master" alt="Build Status"></a></li>
 </ul>
 </div>
 </div>

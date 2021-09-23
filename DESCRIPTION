@@ -20,8 +20,15 @@ Depends:
     R (>= 3.5.0)
 Imports: 
   Rcpp (>= 1.0.6),
-Suggests: zoo, testthat
+Suggests:
+    knitr,
+    markdown,
+    rmarkdown,
+    roxygen2,
+    testthat (>= 2.1.0),
+    zoo
 LinkingTo: Rcpp
 Encoding: UTF-8
+VignetteBuilder: knitr
 LazyData: true
 RoxygenNote: 7.1.2

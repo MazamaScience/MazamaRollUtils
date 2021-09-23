@@ -26,7 +26,7 @@ roll_mean(
 \item{na.rm}{Logical specifying whether \code{NA} values should be removed
 before the calculations within each window.}
 
-\item{weights}{A numeric vector of size \code{width} specifying each window
+\item{weights}{Numeric vector of size \code{width} specifying each window
 index weight. If \code{NULL}, unit weights are used.}
 }
 \value{

@@ -12,7 +12,7 @@ maxes and other functions.
 
 ## Background
 
-Analasys of time series data often involves applying "rolling" functions to calculate,
+Analysis of time series data often involves applying "rolling" functions to calculate,
 _e.g._ a "moving average". These functions are straightforward to write in any language
 and it makes sense to have C++ versions of common rolling functions available
 to R as they dramatically speed up calculations. Several packages exist that 

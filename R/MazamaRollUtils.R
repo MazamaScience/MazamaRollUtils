@@ -259,7 +259,7 @@ roll_max <- function(
 #' \code{"left" | "center" | "right"}.
 #' @param na.rm Logical specifying whether \code{NA} values should be removed
 #' before the calculations within each window.
-#' @param weights A numeric vector of size \code{width} specifying each window
+#' @param weights Numeric vector of size \code{width} specifying each window
 #' index weight. If \code{NULL}, unit weights are used.
 #'
 #' @return Numeric vector of the same length as \code{x}.
