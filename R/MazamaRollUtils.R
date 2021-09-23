@@ -1,3 +1,143 @@
+#' @title Roll Hampel
+#'
+#' @description Apply a moving-window Hampel function to a numeric vector.
+#'
+#' @details
+#'
+#' The Hampel filter is a robust outlier detector using Median Absolute Deviation (MAD).
+#'
+#' For every index in the incoming vector \code{x}, a value is returned that
+#' is the Hampel funcion of all values in \code{x} that fall within a window of width
+#' \code{width}.
+#'
+#' The \code{align} parameter determines the alignment of the return value
+#' within the window. Thus:
+#'
+#' \itemize{
+#'   \item{\code{align = -1 [*------]} will cause the returned vector to have width-1 \code{NA} values at the right end.}
+#'   \item{\code{align = 0  [---*---]} will cause the returned vector to have width/2 \code{NA} values at either end.}
+#'   \item{\code{align = 1  [------*]} will cause the returned vector to have width-1 \code{NA} values at the left end.}
+#' }
+#'
+#' For large vectors, the\code{by} parameter can be used to force the window
+#' to jump ahead \code{by} indices for the next calculation. Indices that are
+#' skipped over will be assigned \code{NA} values so that the return vector still has
+#' the same length as the incoming vector. This can dramatically speed up
+#' calculations for high resolution time series data.
+#'
+#'
+#' @param x Numeric vector.
+#' @param width Integer width of the rolling window.
+#' @param by Integer shift to use when sliding the window to the next location
+#' @param align Character position of the return value within the window. One of:
+#' \code{"left" | "center" | "right"}.
+#' @param na.rm Logical specifying whether \code{NA} values should be removed
+#' before the calculations within each window.
+#'
+#' @return Numeric vector of the same length as \code{x}.
+#'
+#' @examples
+#' library(MazamaRollUtils)
+#'
+#' x <- c(0, 0, 0, 1, 1, 2, 2, 4, 6, 9, 0, 0, 0)
+#' roll_hampel(x, 3)
+
+
+roll_hampel <- function(
+  x,
+  width = 1L,
+  by = 1L,
+  align = c("center", "left", "right"),
+  na.rm = FALSE
+) {
+
+  if ( !is.numeric(x) ) stop("'x' must be numeric.")
+  if ( !is.numeric(width) ) stop("'width' must be numeric.")
+  if ( !is.numeric(by) ) stop("'by' must be numeric.")
+  if ( !is.character(align) ) stop("'align' must be character.")
+  if ( !is.logical(na.rm) ) stop("'na.rm' must be logical.")
+
+  result <- .roll_hampel_cpp(
+    x,
+    as.integer(width),
+    as.integer(by),
+    as.character(match.arg(align)),
+    as.logical(na.rm)
+  )
+
+  return(result)
+}
+
+#' @title Roll MAD
+#'
+#' @description Apply a moving-window Median Absolute Deviation function to a numeric vector.
+#'
+#' @details
+#'
+#' For every index in the incoming vector \code{x}, a value is returned that
+#' is the Median Absolute Deviation (MAD) of all values in \code{x} that fall within a window of width
+#' \code{width}.
+#'
+#' The \code{align} parameter determines the alignment of the return value
+#' within the window. Thus:
+#'
+#' \itemize{
+#'   \item{\code{align = -1 [*------]} will cause the returned vector to have width-1 \code{NA} values at the right end.}
+#'   \item{\code{align = 0  [---*---]} will cause the returned vector to have width/2 \code{NA} values at either end.}
+#'   \item{\code{align = 1  [------*]} will cause the returned vector to have width-1 \code{NA} values at the left end.}
+#' }
+#'
+#' For large vectors, the\code{by} parameter can be used to force the window
+#' to jump ahead \code{by} indices for the next calculation. Indices that are
+#' skipped over will be assigned \code{NA} values so that the return vector still has
+#' the same length as the incoming vector. This can dramatically speed up
+#' calculations for high resolution time series data.
+#'
+#'
+#' @param x Numeric vector.
+#' @param width Integer width of the rolling window.
+#' @param by Integer shift to use when sliding the window to the next location
+#' @param align Character position of the return value within the window. One of:
+#' \code{"left" | "center" | "right"}.
+#' @param na.rm Logical specifying whether \code{NA} values should be removed
+#' before the calculations within each window.
+#'
+#' @return Numeric vector of the same length as \code{x}.
+#'
+#' @examples
+#' library(MazamaRollUtils)
+#'
+#' # Wikipedia example
+#' x <- c(0, 0, 0, 1, 1, 2, 2, 4, 6, 9, 0, 0, 0)
+#' roll_MAD(x, 3)
+#' roll_MAD(x, 5)
+#' roll_MAD(x, 7)
+
+roll_MAD <- function(
+  x,
+  width = 1L,
+  by = 1L,
+  align = c("center", "left", "right"),
+  na.rm = FALSE
+) {
+
+  if ( !is.numeric(x) ) stop("'x' must be numeric.")
+  if ( !is.numeric(width) ) stop("'width' must be numeric.")
+  if ( !is.numeric(by) ) stop("'by' must be numeric.")
+  if ( !is.character(align) ) stop("'align' must be character.")
+  if ( !is.logical(na.rm) ) stop("'na.rm' must be logical.")
+
+  result <- .roll_MAD_cpp(
+    x,
+    as.integer(width),
+    as.integer(by),
+    as.character(match.arg(align)),
+    as.logical(na.rm)
+  )
+
+  return(result)
+}
+
 #' @title Roll Max
 #'
 #' @description Apply a moving-window maximum function to a numeric vector.

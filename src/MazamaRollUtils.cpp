@@ -98,6 +98,24 @@ public:
   //   return out;
   // }
 
+  // Rolling Hampel filter
+  Rcpp::NumericVector hampel() {
+    Rcpp::NumericVector out(length_, NA_REAL);
+    for (int i = start_; i < end_; i += by_) {
+      out[i] = windowHampel(i);
+    }
+    return out;
+  }
+
+  // Rolling Median Absolute Deviation
+  Rcpp::NumericVector MAD() {
+    Rcpp::NumericVector out(length_, NA_REAL);
+    for (int i = start_; i < end_; i += by_) {
+      out[i] = windowMAD(i);
+    }
+    return out;
+  }
+
   // Rolling Maximum
   Rcpp::NumericVector max() {
     Rcpp::NumericVector out(length_, NA_REAL);
@@ -196,6 +214,62 @@ private:
   //   double mad = tmp[half_width_];
   //   return std::fabs(x_[index] - mediawidth_i) / (kappa * mad);
   // }
+
+  // Window Hampel filter
+  double windowHampel(const int &index) {
+    const double kappa = 1.4826;
+    double median = windowMedian(index);
+    if (ISNAN(median)) {
+      return NA_REAL;
+    }
+    double MAD = windowMAD(index);
+    if (ISNAN(MAD)) {
+      return NA_REAL;
+    }
+    return std::fabs(x_[index] - median) / (kappa * MAD);
+  }
+
+  // Window Median Absolute Deviation
+  double windowMAD(const int &index) {
+    int na_count = 0;
+    double median = windowMedian(index);
+    if (ISNAN(median)) {
+      return NA_REAL;
+    }
+    Rcpp::NumericVector tmp(width_, NA_REAL);
+    for (int i = 0; i < width_; ++i) {
+      int s;
+      switch (align_code_) {
+      case -1:
+        s = index + i;
+        break;
+      case 0:
+        s = index - half_width_ + i;
+        break;
+      case 1:
+        s = index - (width_ - 1) + i;
+        break;
+      }
+      if ( s < 0 ) {
+        if (!na_rm_) {
+          return NA_REAL;
+        }
+        na_count += 1;
+      } else if (ISNAN(x_[s])) {
+        if (!na_rm_) {
+          return NA_REAL;
+        }
+        na_count += 1;
+      } else {
+        tmp[i] = std::fabs(x_[s] - median);
+      }
+    }
+    if (na_count == width_) {
+      return NA_REAL;
+    }
+    std::nth_element(tmp.begin(), tmp.begin() + half_width_, tmp.end());
+    return tmp[half_width_];
+  }
 
   // Window Maximum
   double windowMax(const int &index) {
@@ -519,6 +593,34 @@ private:
 
 // See:  https://stackoverflow.com/questions/67920759/rcpp-exportpattern
 // See:  https://stackoverflow.com/questions/68643101/building-rcpp-package-how-to-make-functions-internal
+
+// [[Rcpp::export(".roll_hampel_cpp")]]
+Rcpp::NumericVector roll_hampel_cpp(
+    Rcpp::NumericVector x,
+    unsigned int width = 5,
+    int by = 1,
+    Rcpp::String const& align = "center",
+    Rcpp::LogicalVector na_rm = Rcpp::LogicalVector::create(0)
+) {
+  Roll roll;
+  Rcpp::Nullable<Rcpp::NumericVector> weights = R_NilValue;
+  roll.init(x, width, by, align, na_rm, weights);
+  return roll.hampel();
+}
+
+// [[Rcpp::export(".roll_MAD_cpp")]]
+Rcpp::NumericVector roll_MAD_cpp(
+    Rcpp::NumericVector x,
+    unsigned int width = 5,
+    int by = 1,
+    Rcpp::String const& align = "center",
+    Rcpp::LogicalVector na_rm = Rcpp::LogicalVector::create(0)
+) {
+  Roll roll;
+  Rcpp::Nullable<Rcpp::NumericVector> weights = R_NilValue;
+  roll.init(x, width, by, align, na_rm, weights);
+  return roll.MAD();
+}
 
 // [[Rcpp::export(".roll_max_cpp")]]
 Rcpp::NumericVector roll_max_cpp(

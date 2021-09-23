@@ -10,6 +10,36 @@ Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
 Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
+// roll_hampel_cpp
+Rcpp::NumericVector roll_hampel_cpp(Rcpp::NumericVector x, unsigned int width, int by, Rcpp::String const& align, Rcpp::LogicalVector na_rm);
+RcppExport SEXP _MazamaRollUtils_roll_hampel_cpp(SEXP xSEXP, SEXP widthSEXP, SEXP bySEXP, SEXP alignSEXP, SEXP na_rmSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type x(xSEXP);
+    Rcpp::traits::input_parameter< unsigned int >::type width(widthSEXP);
+    Rcpp::traits::input_parameter< int >::type by(bySEXP);
+    Rcpp::traits::input_parameter< Rcpp::String const& >::type align(alignSEXP);
+    Rcpp::traits::input_parameter< Rcpp::LogicalVector >::type na_rm(na_rmSEXP);
+    rcpp_result_gen = Rcpp::wrap(roll_hampel_cpp(x, width, by, align, na_rm));
+    return rcpp_result_gen;
+END_RCPP
+}
+// roll_MAD_cpp
+Rcpp::NumericVector roll_MAD_cpp(Rcpp::NumericVector x, unsigned int width, int by, Rcpp::String const& align, Rcpp::LogicalVector na_rm);
+RcppExport SEXP _MazamaRollUtils_roll_MAD_cpp(SEXP xSEXP, SEXP widthSEXP, SEXP bySEXP, SEXP alignSEXP, SEXP na_rmSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type x(xSEXP);
+    Rcpp::traits::input_parameter< unsigned int >::type width(widthSEXP);
+    Rcpp::traits::input_parameter< int >::type by(bySEXP);
+    Rcpp::traits::input_parameter< Rcpp::String const& >::type align(alignSEXP);
+    Rcpp::traits::input_parameter< Rcpp::LogicalVector >::type na_rm(na_rmSEXP);
+    rcpp_result_gen = Rcpp::wrap(roll_MAD_cpp(x, width, by, align, na_rm));
+    return rcpp_result_gen;
+END_RCPP
+}
 // roll_max_cpp
 Rcpp::NumericVector roll_max_cpp(Rcpp::NumericVector x, unsigned int width, int by, Rcpp::String const& align, Rcpp::LogicalVector na_rm);
 RcppExport SEXP _MazamaRollUtils_roll_max_cpp(SEXP xSEXP, SEXP widthSEXP, SEXP bySEXP, SEXP alignSEXP, SEXP na_rmSEXP) {
@@ -133,6 +163,8 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
+    {"_MazamaRollUtils_roll_hampel_cpp", (DL_FUNC) &_MazamaRollUtils_roll_hampel_cpp, 5},
+    {"_MazamaRollUtils_roll_MAD_cpp", (DL_FUNC) &_MazamaRollUtils_roll_MAD_cpp, 5},
     {"_MazamaRollUtils_roll_max_cpp", (DL_FUNC) &_MazamaRollUtils_roll_max_cpp, 5},
     {"_MazamaRollUtils_roll_mean_cpp", (DL_FUNC) &_MazamaRollUtils_roll_mean_cpp, 6},
     {"_MazamaRollUtils_roll_median_cpp", (DL_FUNC) &_MazamaRollUtils_roll_median_cpp, 5},
