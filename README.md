@@ -49,13 +49,13 @@ devtools::install_github("MazamaScience/MazamaRollUtils")
 ```
 library(MazamaRollUtils)
 
-# R default air quality time series
-t <- datasets::airquality$Temp
+# Example air quality time series
+t <- example_pm25$datetime
+x <- example_pm25$pm25
 
-plot(t)
-lines(roll_max(t, width = 5), col = 'salmon')
-lines(roll_mean(t, width = 5), col = 'black')
-lines(roll_min(t, width = 5), col = 'lightblue')
+plot(t, x)
+lines(t, roll_max(x, width = 12), col = 'salmon')
+lines(t, roll_min(x, width = 12), col = 'light blue')
 ```
 ----
 

@@ -105,13 +105,13 @@ maxes and other functions.</code></pre>
 <a href="#examples" class="anchor"></a>Examples</h2>
 <pre><code><a href="https://github.com/MazamaScience/MazamaRollUtils">library(MazamaRollUtils)
 
-# R default air quality time series
-t &lt;- datasets::airquality$Temp
+# Example air quality time series
+t &lt;- example_pm25$datetime
+x &lt;- example_pm25$pm25
 
-plot(t)
-lines(roll_max(t, width = 5), col = 'salmon')
-lines(roll_mean(t, width = 5), col = 'black')
-lines(roll_min(t, width = 5), col = 'lightblue')</a></code></pre>
+plot(t, x)
+lines(t, roll_max(x, width = 12), col = 'salmon')
+lines(t, roll_min(x, width = 12), col = 'light blue')</a></code></pre>
 <hr>
 <p>This project is supported by Mazama Science.</p>
 </div>

@@ -37,11 +37,13 @@
 #' @examples
 #' library(MazamaRollUtils)
 #'
-#' # R default air quality time series
-#' t <- datasets::airquality$Temp
+#' # Example air quality time series
+#' t <- example_pm25$datetime
+#' x <- example_pm25$pm25
 #'
-#' plot(t)
-#' lines(roll_max(t, width = 5), col = 'salmon')
+#' plot(t, x, pch = 16, cex = 0.5)
+#' lines(t, roll_max(x, width = 12), col = 'salmon')
+#' lines(t, roll_min(x, width = 12), col = 'light blue')
 
 roll_max <- function(
   x,
@@ -113,11 +115,13 @@ roll_max <- function(
 #' @examples
 #' library(MazamaRollUtils)
 #'
-#' # R default air quality time series
-#' t <- datasets::airquality$Temp
+#' # Example air quality time series
+#' t <- example_pm25$datetime
+#' x <- example_pm25$pm25
 #'
-#' plot(t)
-#' lines(roll_mean(t, width = 5), col = 'salmon')
+#' plot(t, x, pch = 16, cex = 0.5)
+#' lines(t, roll_mean(x, width = 3), col = "goldenrod")
+#' lines(t, roll_mean(x, width = 23), col = "purple")
 
 roll_mean <- function(
   x,
@@ -188,11 +192,13 @@ roll_mean <- function(
 #' @examples
 #' library(MazamaRollUtils)
 #'
-#' # R default air quality time series
-#' t <- datasets::airquality$Temp
+#' # Example air quality time series
+#' t <- example_pm25$datetime
+#' x <- example_pm25$pm25
 #'
-#' plot(t)
-#' lines(roll_median(t, width = 5), col = 'salmon')
+#' plot(t, x, pch = 16, cex = 0.5)
+#' lines(t, roll_median(x, width = 3), col = "goldenrod")
+#' lines(t, roll_median(x, width = 23), col = "purple")
 
 roll_median <- function(
   x,
@@ -257,11 +263,13 @@ roll_median <- function(
 #' @examples
 #' library(MazamaRollUtils)
 #'
-#' # R default air quality time series
-#' t <- datasets::airquality$Temp
+#' # Example air quality time series
+#' t <- example_pm25$datetime
+#' x <- example_pm25$pm25
 #'
-#' plot(t)
-#' lines(roll_min(t, width = 5), col = 'salmon')
+#' plot(t, x, pch = 16, cex = 0.5)
+#' lines(t, roll_max(x, width = 24), col = 'salmon')
+#' lines(t, roll_min(x, width = 24), col = 'light blue')
 
 roll_min <- function(
   x,
@@ -326,11 +334,12 @@ roll_min <- function(
 #' @examples
 #' library(MazamaRollUtils)
 #'
-#' # R default air quality time series
-#' t <- datasets::airquality$Temp
+#' # Example air quality time series
+#' t <- example_pm25$datetime
+#' x <- example_pm25$pm25
 #'
-#' t[1:10]
-#' roll_prod(t, width = 5)[1:10]
+#' x[1:10]
+#' roll_prod(x, width = 5)[1:10]
 
 roll_prod <- function(
   x,
@@ -396,11 +405,12 @@ roll_prod <- function(
 #' @examples
 #' library(MazamaRollUtils)
 #'
-#' # R default air quality time series
-#' t <- datasets::airquality$Temp
+#' # Example air quality time series
+#' t <- example_pm25$datetime
+#' x <- example_pm25$pm25
 #'
-#' t[1:10]
-#' roll_sd(t, width = 5)[1:10]
+#' x[1:10]
+#' roll_sd(x, width = 5)[1:10]
 
 roll_sd <- function(
   x,
@@ -465,11 +475,12 @@ roll_sd <- function(
 #' @examples
 #' library(MazamaRollUtils)
 #'
-#' # R default air quality time series
-#' t <- datasets::airquality$Temp
+#' # Example air quality time series
+#' t <- example_pm25$datetime
+#' x <- example_pm25$pm25
 #'
-#' t[1:10]
-#' roll_sum(t, width = 5)[1:10]
+#' x[1:10]
+#' roll_sum(x, width = 5)[1:10]
 
 roll_sum <- function(
   x,
@@ -534,11 +545,12 @@ roll_sum <- function(
 #' @examples
 #' library(MazamaRollUtils)
 #'
-#' # R default air quality time series
-#' t <- datasets::airquality$Temp
+#' # Example air quality time series
+#' t <- example_pm25$datetime
+#' x <- example_pm25$pm25
 #'
-#' t[1:10]
-#' roll_var(t, width = 5)[1:10]
+#' x[1:10]
+#' roll_var(x, width = 5)[1:10]
 
 roll_var <- function(
   x,

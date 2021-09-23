@@ -54,9 +54,11 @@ calculations for high resolution time series data.
 \examples{
 library(MazamaRollUtils)
 
-# R default air quality time series
-t <- datasets::airquality$Temp
+# Example air quality time series
+t <- example_pm25$datetime
+x <- example_pm25$pm25
 
-plot(t)
-lines(roll_min(t, width = 5), col = 'salmon')
+plot(t, x, pch = 16, cex = 0.5)
+lines(t, roll_max(x, width = 24), col = 'salmon')
+lines(t, roll_min(x, width = 24), col = 'light blue')
 }

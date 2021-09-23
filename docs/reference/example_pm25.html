@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Roll Sum — roll_sum • MazamaRollUtils</title>
+<title>Example timeseries dataset — example_pm25 • MazamaRollUtils</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,20 @@
 
 
 
-<meta property="og:title" content="Roll Sum — roll_sum" />
-<meta property="og:description" content="Apply a moving-window sum to a numeric vector." />
+<meta property="og:title" content="Example timeseries dataset — example_pm25" />
+<meta property="og:description" content="The example_pm25_data dataset provides example timeseries
+data for practicing and code examples. This data represents hourly air quality
+measurements.
+This dataset was was generated on 2021-09-22 by running:
+
+library(AirSensor)
+
+example_pm25 &amp;lt;- example_sensor$data
+names(example_pm25) &amp;lt;- c(&quot;datetime&quot;, &quot;pm25&quot;)
+
+save(example_pm25, file = &quot;data/example_pm25.rda&quot;)
+
+" />
 
 
 
@@ -111,84 +123,34 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Roll Sum</h1>
-    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/MazamaRollUtils/blob/master/R/MazamaRollUtils.R'><code>R/MazamaRollUtils.R</code></a></small>
-    <div class="hidden name"><code>roll_sum.Rd</code></div>
+    <h1>Example timeseries dataset</h1>
+    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/MazamaRollUtils/blob/master/R/data.R'><code>R/data.R</code></a></small>
+    <div class="hidden name"><code>example_pm25.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Apply a moving-window sum to a numeric vector.</p>
+    <p>The <code>example_pm25_data</code> dataset provides example timeseries
+data for practicing and code examples. This data represents hourly air quality
+measurements.</p>
+<p>This dataset was was generated on 2021-09-22 by running:</p>
+<pre>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/MazamaScience/AirSensor'>AirSensor</a></span><span class='op'>)</span>
+
+<span class='va'>example_pm25</span> <span class='op'>&lt;-</span> <span class='va'>example_sensor</span><span class='op'>$</span><span class='va'>data</span>
+<span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='va'>example_pm25</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"datetime"</span>, <span class='st'>"pm25"</span><span class='op'>)</span>
+
+<span class='fu'><a href='https://rdrr.io/r/base/save.html'>save</a></span><span class='op'>(</span><span class='va'>example_pm25</span>, file <span class='op'>=</span> <span class='st'>"data/example_pm25.rda"</span><span class='op'>)</span>
+</pre>
+
     </div>
 
-    <pre class="usage"><span class='fu'>roll_sum</span><span class='op'>(</span>
-  <span class='va'>x</span>,
-  width <span class='op'>=</span> <span class='fl'>1L</span>,
-  by <span class='op'>=</span> <span class='fl'>1L</span>,
-  align <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"center"</span>, <span class='st'>"left"</span>, <span class='st'>"right"</span><span class='op'>)</span>,
-  na.rm <span class='op'>=</span> <span class='cn'>FALSE</span>
-<span class='op'>)</span></pre>
+    <pre class="usage"><span class='va'>example_pm25</span></pre>
 
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>x</th>
-      <td><p>Numeric vector.</p></td>
-    </tr>
-    <tr>
-      <th>width</th>
-      <td><p>Integer width of the rolling window.</p></td>
-    </tr>
-    <tr>
-      <th>by</th>
-      <td><p>An integer to shift the window by.</p></td>
-    </tr>
-    <tr>
-      <th>align</th>
-      <td><p>Character position of the return value within the window --
-<code>"left" | "center" | "right"</code>.</p></td>
-    </tr>
-    <tr>
-      <th>na.rm</th>
-      <td><p>Logical specifying whether <code>NA</code> values should be removed
-before the calculations within each window.</p></td>
-    </tr>
-    </table>
 
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
 
-    <p>Numeric vector of the same length as <code>x</code>.</p>
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+    <p>A dataframe with columns "datetime" and "pm25".</p>
 
-    <p>For every index in the incoming vector <code>x</code>, a value is returned that
-is the sum of all values in <code>x</code> that fall within a window of width
-<code>width</code>.</p>
-<p>The <code>align</code> parameter determines the alignment of the return value
-within the window. Thus:</p>
-<ul>
-<li><p><code>align = -1 [*------]</code> will cause the returned vector to have width-1 <code>NA</code> values at the right end.</p></li>
-<li><p><code>align = 0  [---*---]</code> will cause the returned vector to have width/2 <code>NA</code> values at either end.</p></li>
-<li><p><code>align = 1  [------*]</code> will cause the returned vector to have width-1 <code>NA</code> values at the left end.</p></li>
-</ul>
-
-<p>For large vectors, the<code>by</code> parameter can be used to force the window
-to jump ahead <code>by</code> indices for the next calculation. Indices that are
-skipped over will be assigned <code>NA</code> values so that the return vector still has
-the same length as the incoming vector. This can dramatically speed up
-calculations for high resolution time series data.</p>
-
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/MazamaScience/MazamaRollUtils'>MazamaRollUtils</a></span><span class='op'>)</span>
-
-<span class='co'># Example air quality time series</span>
-<span class='va'>t</span> <span class='op'>&lt;-</span> <span class='va'>example_pm25</span><span class='op'>$</span><span class='va'>datetime</span>
-<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='va'>example_pm25</span><span class='op'>$</span><span class='va'>pm25</span>
-
-<span class='va'>x</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span><span class='op'>]</span>
-</div><div class='output co'>#&gt;  [1] 13.032808  9.208778  9.413230 10.089091 10.075755  8.240968  9.507955
-#&gt;  [8] 10.704980 11.232667  9.767381</div><div class='input'><span class='fu'>roll_sum</span><span class='op'>(</span><span class='va'>x</span>, width <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span><span class='op'>]</span>
-</div><div class='output co'>#&gt;  [1]       NA       NA 51.81966 47.02782 47.32700 48.61875 49.76232 49.45395
-#&gt;  [9] 51.83642 53.29824</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

@@ -63,9 +63,11 @@ provided in \code{weights}.
 \examples{
 library(MazamaRollUtils)
 
-# R default air quality time series
-t <- datasets::airquality$Temp
+# Example air quality time series
+t <- example_pm25$datetime
+x <- example_pm25$pm25
 
-plot(t)
-lines(roll_mean(t, width = 5), col = 'salmon')
+plot(t, x, pch = 16, cex = 0.5)
+lines(t, roll_mean(x, width = 3), col = "goldenrod")
+lines(t, roll_mean(x, width = 23), col = "purple")
 }

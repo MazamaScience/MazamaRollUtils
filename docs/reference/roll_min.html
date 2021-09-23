@@ -112,7 +112,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Roll Min</h1>
-    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/MazamaRollUtils/blob/master/R/RcppExports.R'><code>R/RcppExports.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/MazamaRollUtils/blob/master/R/MazamaRollUtils.R'><code>R/MazamaRollUtils.R</code></a></small>
     <div class="hidden name"><code>roll_min.Rd</code></div>
     </div>
 
@@ -120,7 +120,13 @@
     <p>Apply a moving-window minimum function to a numeric vector.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>roll_min</span><span class='op'>(</span><span class='va'>x</span>, width <span class='op'>=</span> <span class='fl'>5L</span>, by <span class='op'>=</span> <span class='fl'>1L</span>, align <span class='op'>=</span> <span class='fl'>0L</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>roll_min</span><span class='op'>(</span>
+  <span class='va'>x</span>,
+  width <span class='op'>=</span> <span class='fl'>1L</span>,
+  by <span class='op'>=</span> <span class='fl'>1L</span>,
+  align <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"center"</span>, <span class='st'>"left"</span>, <span class='st'>"right"</span><span class='op'>)</span>,
+  na.rm <span class='op'>=</span> <span class='cn'>FALSE</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -139,8 +145,13 @@
     </tr>
     <tr>
       <th>align</th>
-      <td><p>A signed integer representing the position of the return value within each window.
-<code>-1(left) | 0(center) | 1(right)</code>.</p></td>
+      <td><p>Character position of the return value within the window --
+<code>"left" | "center" | "right"</code>.</p></td>
+    </tr>
+    <tr>
+      <th>na.rm</th>
+      <td><p>Logical specifying whether <code>NA</code> values should be removed
+before the calculations within each window.</p></td>
     </tr>
     </table>
 
@@ -152,7 +163,7 @@
     <p>For every index in the incoming vector <code>x</code>, a value is returned that
 is the minimum of all values in <code>x</code> that fall within a window of width
 <code>width</code>.</p>
-<p>The <code>align</code> parameter determines the alignment of the current index
+<p>The <code>align</code> parameter determines the alignment of the return value
 within the window. Thus:</p>
 <ul>
 <li><p><code>align = -1 [*------]</code> will cause the returned vector to have width-1 <code>NA</code> values at the right end.</p></li>
@@ -169,11 +180,13 @@ calculations for high resolution time series data.</p>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/MazamaScience/MazamaRollUtils'>MazamaRollUtils</a></span><span class='op'>)</span>
 
-<span class='co'># R default air quality time series</span>
-<span class='va'>t</span> <span class='op'>&lt;-</span> <span class='fu'>datasets</span><span class='fu'>::</span><span class='va'><a href='https://rdrr.io/r/datasets/airquality.html'>airquality</a></span><span class='op'>$</span><span class='va'>Temp</span>
+<span class='co'># Example air quality time series</span>
+<span class='va'>t</span> <span class='op'>&lt;-</span> <span class='va'>example_pm25</span><span class='op'>$</span><span class='va'>datetime</span>
+<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='va'>example_pm25</span><span class='op'>$</span><span class='va'>pm25</span>
 
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>t</span><span class='op'>)</span>
-</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/lines.html'>lines</a></span><span class='op'>(</span><span class='fu'>roll_min</span><span class='op'>(</span><span class='va'>t</span>, width <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span>, col <span class='op'>=</span> <span class='st'>'salmon'</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>t</span>, <span class='va'>x</span>, pch <span class='op'>=</span> <span class='fl'>16</span>, cex <span class='op'>=</span> <span class='fl'>0.5</span><span class='op'>)</span>
+</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/lines.html'>lines</a></span><span class='op'>(</span><span class='va'>t</span>, <span class='fu'><a href='roll_max.html'>roll_max</a></span><span class='op'>(</span><span class='va'>x</span>, width <span class='op'>=</span> <span class='fl'>24</span><span class='op'>)</span>, col <span class='op'>=</span> <span class='st'>'salmon'</span><span class='op'>)</span>
+</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/lines.html'>lines</a></span><span class='op'>(</span><span class='va'>t</span>, <span class='fu'>roll_min</span><span class='op'>(</span><span class='va'>x</span>, width <span class='op'>=</span> <span class='fl'>24</span><span class='op'>)</span>, col <span class='op'>=</span> <span class='st'>'light blue'</span><span class='op'>)</span>
 </div><div class='img'><img src='roll_min-1.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
