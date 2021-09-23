@@ -1,6 +1,6 @@
-[![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/MazamaTimeSeries)](https://cran.r-project.org/package=MazamaTimeSeries)
-[![Downloads](http://cranlogs.r-pkg.org/badges/MazamaTimeSeries)](https://cran.r-project.org/package=MazamaTimeSeries)
-[![Build Status](https://travis-ci.org/MazamaScience/MazamaTimeSeries.svg?branch=master)](https://travis-ci.org/MazamaScience/MazamaTimeSeries)
+[![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/MazamaRollUtils)](https://cran.r-project.org/package=MazamaRollUtils)
+[![Downloads](http://cranlogs.r-pkg.org/badges/MazamaRollUtils)](https://cran.r-project.org/package=MazamaRollUtils)
+[![Build Status](https://travis-ci.org/MazamaScience/MazamaRollUtils.svg?branch=master)](https://travis-ci.org/MazamaScience/MazamaRollUtils)
 
 
 # MazamaRollUtils
@@ -18,10 +18,10 @@ and it makes sense to have C++ versions of common rolling functions available
 to R as they dramatically speed up calculations. Several packages exist that 
 provide some version of this functionality:
 
-* [zoo](https://cran.r-project.org/web/packages/zoo/index.html) -- 
+* [zoo](https://cran.r-project.org/package=zoo) -- 
 core R package with a specific data model
-* [seismicRoll](https://cran.r-project.org/web/packages/seismicRoll/index.html) -- rolling functions focused on seismology
-* [RcppRoll](https://cran.r-project.org/web/packages/RcppRoll/index.html) --
+* [seismicRoll](https://cran.r-project.org/package=seismicRoll) -- rolling functions focused on seismology
+* [RcppRoll](https://cran.r-project.org/package=RcppRoll) --
 rolling functions for basic statistics
 
 Our goal in creating a new package of C++ rolling functions is to build up a
