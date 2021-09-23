@@ -17,9 +17,9 @@ roll_min(
 
 \item{width}{Integer width of the rolling window.}
 
-\item{by}{An integer to shift the window by.}
+\item{by}{Integer shift by which the window is moved each iteration.}
 
-\item{align}{Character position of the return value within the window --
+\item{align}{Character position of the return value within the window. One of:
 \code{"left" | "center" | "right"}.}
 
 \item{na.rm}{Logical specifying whether \code{NA} values should be removed
@@ -59,6 +59,17 @@ t <- example_pm25$datetime
 x <- example_pm25$pm25
 
 plot(t, x, pch = 16, cex = 0.5)
-lines(t, roll_max(x, width = 24), col = 'salmon')
-lines(t, roll_min(x, width = 24), col = 'light blue')
+lines(t, roll_max(x, width = 12), col = 'red')
+lines(t, roll_min(x, width = 12), col = 'deepskyblue')
+title("12-hr Rolling Max and Min")
+
+plot(t, x, pch = 16, cex = 0.5)
+points(t, roll_min(x, width = 12, na.rm = TRUE),
+       pch = 16, col = 'deepskyblue')
+points(t, roll_min(x, width = 12, na.rm = FALSE),
+       pch = 16, col = adjustcolor('black', 0.4))
+legend("topright", pch = c(16, 16),
+       col = c("deepskyblue", adjustcolor("black", 0.4)),
+       legend = c("na.rm = TRUE", "na.rm = FALSE"))
+title("12-hr Rolling min with/out na.rm")
 }

@@ -34,7 +34,7 @@ public:
     x_ = x;
     width_ = width;
     by_ = by;
-    na_rm_ = na_rm;
+    na_rm_ = na_rm[0];
     weights_ = Rcpp::rep(1.0, width_);
 
     // if (na_rm_[0]) {
@@ -176,7 +176,7 @@ private:
   int width_;                    // window width
   int by_;                       // increment
   int align_code_;               // alignment
-  Rcpp::LogicalVector na_rm_;    // NA removal
+  bool na_rm_;                   // NA removal
   Rcpp::NumericVector weights_;  // window weights
   int length_;                   // data length
   int half_width_;               // window half-width
@@ -199,6 +199,7 @@ private:
 
   // Window Maximum
   double windowMax(const int &index) {
+    int na_count = 0;
     double max = x_[index];
     for (int i = 0; i < width_; ++i) {
       int s;
@@ -214,18 +215,32 @@ private:
         break;
       }
       if ( s < 0 ) {
-        return NA_REAL;
+        if (!na_rm_) {
+          return NA_REAL;
+        }
+        na_count += 1;
       } else if (ISNAN(x_[s])) {
-        return NA_REAL;
+        if (!na_rm_) {
+          return NA_REAL;
+        }
+        na_count += 1;
       } else {
-        if (x_[s] > max) max = x_[s];
+        if (ISNAN(max)) {
+          max = x_[s];
+        } else {
+          if (x_[s] > max) max = x_[s];
+        }
       }
+    }
+    if (na_count == width_) {
+      return NA_REAL;
     }
     return max;
   }
 
   // Window Mean
   double windowMean(const int &index) {
+    int na_count = 0;
     double mean = 0;
     for (int i = 0; i < width_; ++i) {
       int s;
@@ -241,12 +256,21 @@ private:
         break;
       }
       if ( s < 0 ) {
-        return NA_REAL;
+        if (!na_rm_) {
+          return NA_REAL;
+        }
+        na_count += 1;
       } else if (ISNAN(x_[s])) {
-        return NA_REAL;
+        if (!na_rm_) {
+          return NA_REAL;
+        }
+        na_count += 1;
       } else {
         mean += x_[s] * weights_[i];
       }
+    }
+    if (na_count == width_) {
+      return NA_REAL;
     }
     mean /= (double)width_;
     return mean;
@@ -254,6 +278,7 @@ private:
 
   // Window Median
   double windowMedian(const int &index) {
+    int na_count = 0;
     Rcpp::NumericVector tmp(width_, NA_REAL);
     for (int i = 0; i < width_; ++i) {
       int s;
@@ -269,12 +294,21 @@ private:
         break;
       }
       if ( s < 0 ) {
-        return NA_REAL;
+        if (!na_rm_) {
+          return NA_REAL;
+        }
+        na_count += 1;
       } else if (ISNAN(x_[s])) {
-        return NA_REAL;
+        if (!na_rm_) {
+          return NA_REAL;
+        }
+        na_count += 1;
       } else {
         tmp[i] = x_[s];
       }
+    }
+    if (na_count == width_) {
+      return NA_REAL;
     }
     std::nth_element(tmp.begin(), tmp.begin() + half_width_, tmp.end());
     return tmp[half_width_];
@@ -282,6 +316,7 @@ private:
 
   // Window Minimum
   double windowMin(const int &index) {
+    int na_count = 0;
     double min = x_[index];
     for (int i = 0; i < width_; ++i) {
       int s;
@@ -297,18 +332,32 @@ private:
         break;
       }
       if ( s < 0 ) {
-        return NA_REAL;
+        if (!na_rm_) {
+          return NA_REAL;
+        }
+        na_count += 1;
       } else if (ISNAN(x_[s])) {
-        return NA_REAL;
+        if (!na_rm_) {
+          return NA_REAL;
+        }
+        na_count += 1;
       } else {
-        if (x_[s] < min) min = x_[s];
+        if (ISNAN(min)) {
+          min = x_[s];
+        } else {
+          if (x_[s] < min) min = x_[s];
+        }
       }
+    }
+    if (na_count == width_) {
+      return NA_REAL;
     }
     return min;
   }
 
   // Window Product
   double windowProd(const int &index) {
+    int na_count = 0;
     double prod = 1;
     for (int i = 0; i < width_; ++i) {
       int s;
@@ -324,18 +373,28 @@ private:
         break;
       }
       if ( s < 0 ) {
-        return NA_REAL;
+        if (!na_rm_) {
+          return NA_REAL;
+        }
+        na_count += 1;
       } else if (ISNAN(x_[s])) {
-        return NA_REAL;
+        if (!na_rm_) {
+          return NA_REAL;
+        }
+        na_count += 1;
       } else {
         prod *= x_[s];
       }
+    }
+    if (na_count == width_) {
+      return NA_REAL;
     }
     return prod;
   }
 
   // Window Sum
   double windowSum(const int &index) {
+    int na_count = 0;
     double sum = 0;
     for (int i = 0; i < width_; ++i) {
       int s;
@@ -351,18 +410,28 @@ private:
         break;
       }
       if ( s < 0 ) {
-        return NA_REAL;
+        if (!na_rm_) {
+          return NA_REAL;
+        }
+        na_count += 1;
       } else if (ISNAN(x_[s])) {
-        return NA_REAL;
+        if (!na_rm_) {
+          return NA_REAL;
+        }
+        na_count += 1;
       } else {
         sum += x_[s];
       }
+    }
+    if (na_count == width_) {
+      return NA_REAL;
     }
     return sum;
   }
 
   // Window Variance
   double windowVar(const int &index) {
+    int na_count = 0;
     double var = 0;
     double mean = windowMean(index);
     for (int i = 0; i < width_; ++i) {
@@ -379,14 +448,23 @@ private:
         break;
       }
       if ( s < 0 ) {
-        return NA_REAL;
+        if (!na_rm_) {
+          return NA_REAL;
+        }
+        na_count += 1;
       } else if (ISNAN(x_[s])) {
-        return NA_REAL;
+        if (!na_rm_) {
+          return NA_REAL;
+        }
+        na_count += 1;
       } else {
         var += (x_[s] - mean) * (x_[s] - mean);
       }
     }
-    var /= ((double)width_ - (double)1);
+    if (na_count == width_) {
+      return NA_REAL;
+    }
+    var /= ((double)width_ - na_count - 1);
     return var;
   }
 

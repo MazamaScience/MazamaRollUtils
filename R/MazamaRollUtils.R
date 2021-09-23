@@ -27,7 +27,7 @@
 #' @param x Numeric vector.
 #' @param width Integer width of the rolling window.
 #' @param by Integer shift to use when sliding the window to the next location
-#' @param align Character position of the return value within the window --
+#' @param align Character position of the return value within the window. One of:
 #' \code{"left" | "center" | "right"}.
 #' @param na.rm Logical specifying whether \code{NA} values should be removed
 #' before the calculations within each window.
@@ -42,8 +42,20 @@
 #' x <- example_pm25$pm25
 #'
 #' plot(t, x, pch = 16, cex = 0.5)
-#' lines(t, roll_max(x, width = 12), col = 'salmon')
-#' lines(t, roll_min(x, width = 12), col = 'light blue')
+#' lines(t, roll_max(x, width = 12), col = 'red')
+#' lines(t, roll_min(x, width = 12), col = 'deepskyblue')
+#' title("12-hr Rolling Max and Min")
+#'
+#' plot(t, x, pch = 16, cex = 0.5)
+#' points(t, roll_max(x, width = 12, na.rm = TRUE),
+#'        pch = 16, col = 'red')
+#' points(t, roll_max(x, width = 12, na.rm = FALSE),
+#'        pch = 16, col = adjustcolor('black', 0.4))
+#' legend("topright", pch = c(1, 16),
+#'        col = c("red", adjustcolor("black", 0.4)),
+#'        legend = c("na.rm = TRUE", "na.rm = FALSE"))
+#' title("12-hr Rolling max with/out na.rm")
+#'
 
 roll_max <- function(
   x,
@@ -102,8 +114,8 @@ roll_max <- function(
 #'
 #' @param x Numeric vector.
 #' @param width Integer width of the rolling window.
-#' @param by An integer to shift the window by.
-#' @param align Character position of the return value within the window --
+#' @param by Integer shift by which the window is moved each iteration.
+#' @param align Character position of the return value within the window. One of:
 #' \code{"left" | "center" | "right"}.
 #' @param na.rm Logical specifying whether \code{NA} values should be removed
 #' before the calculations within each window.
@@ -122,6 +134,10 @@ roll_max <- function(
 #' plot(t, x, pch = 16, cex = 0.5)
 #' lines(t, roll_mean(x, width = 3), col = "goldenrod")
 #' lines(t, roll_mean(x, width = 23), col = "purple")
+#' legend("topright", lty = c(1, 1),
+#'        col = c("goldenrod", "purple"),
+#'        legend = c("3-hr mean", "12-hr mean"))
+#' title("3- and 23-hr Rolling mean")
 
 roll_mean <- function(
   x,
@@ -181,8 +197,8 @@ roll_mean <- function(
 #'
 #' @param x Numeric vector.
 #' @param width Integer width of the rolling window.
-#' @param by An integer to shift the window by.
-#' @param align Character position of the return value within the window --
+#' @param by Integer shift by which the window is moved each iteration.
+#' @param align Character position of the return value within the window. One of:
 #' \code{"left" | "center" | "right"}.
 #' @param na.rm Logical specifying whether \code{NA} values should be removed
 #' before the calculations within each window.
@@ -199,6 +215,10 @@ roll_mean <- function(
 #' plot(t, x, pch = 16, cex = 0.5)
 #' lines(t, roll_median(x, width = 3), col = "goldenrod")
 #' lines(t, roll_median(x, width = 23), col = "purple")
+#' legend("topright", lty = c(1, 1),
+#'        col = c("goldenrod", "purple"),
+#'        legend = c("3-hr median", "12-hr median"))
+#' title("3- and 23-hr Rolling median")
 
 roll_median <- function(
   x,
@@ -252,8 +272,8 @@ roll_median <- function(
 #'
 #' @param x Numeric vector.
 #' @param width Integer width of the rolling window.
-#' @param by An integer to shift the window by.
-#' @param align Character position of the return value within the window --
+#' @param by Integer shift by which the window is moved each iteration.
+#' @param align Character position of the return value within the window. One of:
 #' \code{"left" | "center" | "right"}.
 #' @param na.rm Logical specifying whether \code{NA} values should be removed
 #' before the calculations within each window.
@@ -268,8 +288,19 @@ roll_median <- function(
 #' x <- example_pm25$pm25
 #'
 #' plot(t, x, pch = 16, cex = 0.5)
-#' lines(t, roll_max(x, width = 24), col = 'salmon')
-#' lines(t, roll_min(x, width = 24), col = 'light blue')
+#' lines(t, roll_max(x, width = 12), col = 'red')
+#' lines(t, roll_min(x, width = 12), col = 'deepskyblue')
+#' title("12-hr Rolling Max and Min")
+#'
+#' plot(t, x, pch = 16, cex = 0.5)
+#' points(t, roll_min(x, width = 12, na.rm = TRUE),
+#'        pch = 16, col = 'deepskyblue')
+#' points(t, roll_min(x, width = 12, na.rm = FALSE),
+#'        pch = 16, col = adjustcolor('black', 0.4))
+#' legend("topright", pch = c(16, 16),
+#'        col = c("deepskyblue", adjustcolor("black", 0.4)),
+#'        legend = c("na.rm = TRUE", "na.rm = FALSE"))
+#' title("12-hr Rolling min with/out na.rm")
 
 roll_min <- function(
   x,
@@ -323,8 +354,8 @@ roll_min <- function(
 #'
 #' @param x Numeric vector.
 #' @param width Integer width of the rolling window.
-#' @param by An integer to shift the window by.
-#' @param align Character position of the return value within the window --
+#' @param by Integer shift by which the window is moved each iteration.
+#' @param align Character position of the return value within the window. One of:
 #' \code{"left" | "center" | "right"}.
 #' @param na.rm Logical specifying whether \code{NA} values should be removed
 #' before the calculations within each window.
@@ -392,13 +423,14 @@ roll_prod <- function(
 #' the same length as the incoming vector. This can dramatically speed up
 #' calculations for high resolution time series data.
 #'
+#' @note No \code{na.rm} argument is provided as interpretation of the results
+#' is not at all clear.
+#'
 #' @param x Numeric vector.
 #' @param width Integer width of the rolling window.
-#' @param by An integer to shift the window by.
-#' @param align Character position of the return value within the window --
+#' @param by Integer shift by which the window is moved each iteration.
+#' @param align Character position of the return value within the window. One of:
 #' \code{"left" | "center" | "right"}.
-#' @param na.rm Logical specifying whether \code{NA} values should be removed
-#' before the calculations within each window.
 #'
 #' @return Numeric vector of the same length as \code{x}.
 #'
@@ -416,22 +448,20 @@ roll_sd <- function(
   x,
   width = 1L,
   by = 1L,
-  align = c("center", "left", "right"),
-  na.rm = FALSE
+  align = c("center", "left", "right")
 ) {
 
   if ( !is.numeric(x) ) stop("'x' must be numeric.")
   if ( !is.numeric(width) ) stop("'width' must be numeric.")
   if ( !is.numeric(by) ) stop("'by' must be numeric.")
   if ( !is.character(align) ) stop("'align' must be character.")
-  if ( !is.logical(na.rm) ) stop("'na.rm' must be logical.")
 
   result <- .roll_sd_cpp(
     x,
     as.integer(width),
     as.integer(by),
     as.character(match.arg(align)),
-    as.logical(na.rm)
+    as.logical(FALSE)
   )
 
   return(result)
@@ -464,8 +494,8 @@ roll_sd <- function(
 #'
 #' @param x Numeric vector.
 #' @param width Integer width of the rolling window.
-#' @param by An integer to shift the window by.
-#' @param align Character position of the return value within the window --
+#' @param by Integer shift by which the window is moved each iteration.
+#' @param align Character position of the return value within the window. One of:
 #' \code{"left" | "center" | "right"}.
 #' @param na.rm Logical specifying whether \code{NA} values should be removed
 #' before the calculations within each window.
@@ -532,13 +562,14 @@ roll_sum <- function(
 #' the same length as the incoming vector. This can dramatically speed up
 #' calculations for high resolution time series data.
 #'
+#' @note No \code{na.rm} argument is provided as interpretation of the results
+#' is not at all clear.
+#'
 #' @param x Numeric vector.
 #' @param width Integer width of the rolling window.
-#' @param by An integer to shift the window by.
-#' @param align Character position of the return value within the window --
+#' @param by Integer shift by which the window is moved each iteration.
+#' @param align Character position of the return value within the window. One of:
 #' \code{"left" | "center" | "right"}.
-#' @param na.rm Logical specifying whether \code{NA} values should be removed
-#' before the calculations within each window.
 #'
 #' @return Numeric vector of the same length as \code{x}.
 #'
@@ -556,22 +587,20 @@ roll_var <- function(
   x,
   width = 1L,
   by = 1L,
-  align = c("center", "left", "right"),
-  na.rm = FALSE
+  align = c("center", "left", "right")
 ) {
 
   if ( !is.numeric(x) ) stop("'x' must be numeric.")
   if ( !is.numeric(width) ) stop("'width' must be numeric.")
   if ( !is.numeric(by) ) stop("'by' must be numeric.")
   if ( !is.character(align) ) stop("'align' must be character.")
-  if ( !is.logical(na.rm) ) stop("'na.rm' must be logical.")
 
   result <- .roll_var_cpp(
     x,
     as.integer(width),
     as.integer(by),
     as.character(match.arg(align)),
-    as.logical(na.rm)
+    as.logical(FALSE)
   )
 
   return(result)

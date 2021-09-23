@@ -17,9 +17,9 @@ roll_sum(
 
 \item{width}{Integer width of the rolling window.}
 
-\item{by}{An integer to shift the window by.}
+\item{by}{Integer shift by which the window is moved each iteration.}
 
-\item{align}{Character position of the return value within the window --
+\item{align}{Character position of the return value within the window. One of:
 \code{"left" | "center" | "right"}.}
 
 \item{na.rm}{Logical specifying whether \code{NA} values should be removed

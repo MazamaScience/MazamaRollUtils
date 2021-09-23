@@ -141,11 +141,11 @@
     </tr>
     <tr>
       <th>by</th>
-      <td><p>An integer to shift the window by.</p></td>
+      <td><p>Integer shift by which the window is moved each iteration.</p></td>
     </tr>
     <tr>
       <th>align</th>
-      <td><p>Character position of the return value within the window --
+      <td><p>Character position of the return value within the window. One of:
 <code>"left" | "center" | "right"</code>.</p></td>
     </tr>
     <tr>
@@ -185,9 +185,20 @@ calculations for high resolution time series data.</p>
 <span class='va'>x</span> <span class='op'>&lt;-</span> <span class='va'>example_pm25</span><span class='op'>$</span><span class='va'>pm25</span>
 
 <span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>t</span>, <span class='va'>x</span>, pch <span class='op'>=</span> <span class='fl'>16</span>, cex <span class='op'>=</span> <span class='fl'>0.5</span><span class='op'>)</span>
-</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/lines.html'>lines</a></span><span class='op'>(</span><span class='va'>t</span>, <span class='fu'><a href='roll_max.html'>roll_max</a></span><span class='op'>(</span><span class='va'>x</span>, width <span class='op'>=</span> <span class='fl'>24</span><span class='op'>)</span>, col <span class='op'>=</span> <span class='st'>'salmon'</span><span class='op'>)</span>
-</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/lines.html'>lines</a></span><span class='op'>(</span><span class='va'>t</span>, <span class='fu'>roll_min</span><span class='op'>(</span><span class='va'>x</span>, width <span class='op'>=</span> <span class='fl'>24</span><span class='op'>)</span>, col <span class='op'>=</span> <span class='st'>'light blue'</span><span class='op'>)</span>
-</div><div class='img'><img src='roll_min-1.png' alt='' width='700' height='433' /></div></pre>
+</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/lines.html'>lines</a></span><span class='op'>(</span><span class='va'>t</span>, <span class='fu'><a href='roll_max.html'>roll_max</a></span><span class='op'>(</span><span class='va'>x</span>, width <span class='op'>=</span> <span class='fl'>12</span><span class='op'>)</span>, col <span class='op'>=</span> <span class='st'>'red'</span><span class='op'>)</span>
+</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/lines.html'>lines</a></span><span class='op'>(</span><span class='va'>t</span>, <span class='fu'>roll_min</span><span class='op'>(</span><span class='va'>x</span>, width <span class='op'>=</span> <span class='fl'>12</span><span class='op'>)</span>, col <span class='op'>=</span> <span class='st'>'deepskyblue'</span><span class='op'>)</span>
+</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/title.html'>title</a></span><span class='op'>(</span><span class='st'>"12-hr Rolling Max and Min"</span><span class='op'>)</span>
+</div><div class='img'><img src='roll_min-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>t</span>, <span class='va'>x</span>, pch <span class='op'>=</span> <span class='fl'>16</span>, cex <span class='op'>=</span> <span class='fl'>0.5</span><span class='op'>)</span>
+</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/points.html'>points</a></span><span class='op'>(</span><span class='va'>t</span>, <span class='fu'>roll_min</span><span class='op'>(</span><span class='va'>x</span>, width <span class='op'>=</span> <span class='fl'>12</span>, na.rm <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>,
+       pch <span class='op'>=</span> <span class='fl'>16</span>, col <span class='op'>=</span> <span class='st'>'deepskyblue'</span><span class='op'>)</span>
+</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/points.html'>points</a></span><span class='op'>(</span><span class='va'>t</span>, <span class='fu'>roll_min</span><span class='op'>(</span><span class='va'>x</span>, width <span class='op'>=</span> <span class='fl'>12</span>, na.rm <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>,
+       pch <span class='op'>=</span> <span class='fl'>16</span>, col <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/grDevices/adjustcolor.html'>adjustcolor</a></span><span class='op'>(</span><span class='st'>'black'</span>, <span class='fl'>0.4</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/legend.html'>legend</a></span><span class='op'>(</span><span class='st'>"topright"</span>, pch <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>16</span>, <span class='fl'>16</span><span class='op'>)</span>,
+       col <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"deepskyblue"</span>, <span class='fu'><a href='https://rdrr.io/r/grDevices/adjustcolor.html'>adjustcolor</a></span><span class='op'>(</span><span class='st'>"black"</span>, <span class='fl'>0.4</span><span class='op'>)</span><span class='op'>)</span>,
+       legend <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"na.rm = TRUE"</span>, <span class='st'>"na.rm = FALSE"</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/title.html'>title</a></span><span class='op'>(</span><span class='st'>"12-hr Rolling min with/out na.rm"</span><span class='op'>)</span>
+</div><div class='img'><img src='roll_min-2.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

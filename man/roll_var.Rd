@@ -4,26 +4,17 @@
 \alias{roll_var}
 \title{Roll Variance}
 \usage{
-roll_var(
-  x,
-  width = 1L,
-  by = 1L,
-  align = c("center", "left", "right"),
-  na.rm = FALSE
-)
+roll_var(x, width = 1L, by = 1L, align = c("center", "left", "right"))
 }
 \arguments{
 \item{x}{Numeric vector.}
 
 \item{width}{Integer width of the rolling window.}
 
-\item{by}{An integer to shift the window by.}
+\item{by}{Integer shift by which the window is moved each iteration.}
 
-\item{align}{Character position of the return value within the window --
+\item{align}{Character position of the return value within the window. One of:
 \code{"left" | "center" | "right"}.}
-
-\item{na.rm}{Logical specifying whether \code{NA} values should be removed
-before the calculations within each window.}
 }
 \value{
 Numeric vector of the same length as \code{x}.
@@ -50,6 +41,10 @@ to jump ahead \code{by} indices for the next calculation. Indices that are
 skipped over will be assigned \code{NA} values so that the return vector still has
 the same length as the incoming vector. This can dramatically speed up
 calculations for high resolution time series data.
+}
+\note{
+No \code{na.rm} argument is provided as interpretation of the results
+is not at all clear.
 }
 \examples{
 library(MazamaRollUtils)

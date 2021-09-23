@@ -18,9 +18,9 @@ roll_mean(
 
 \item{width}{Integer width of the rolling window.}
 
-\item{by}{An integer to shift the window by.}
+\item{by}{Integer shift by which the window is moved each iteration.}
 
-\item{align}{Character position of the return value within the window --
+\item{align}{Character position of the return value within the window. One of:
 \code{"left" | "center" | "right"}.}
 
 \item{na.rm}{Logical specifying whether \code{NA} values should be removed
@@ -70,4 +70,8 @@ x <- example_pm25$pm25
 plot(t, x, pch = 16, cex = 0.5)
 lines(t, roll_mean(x, width = 3), col = "goldenrod")
 lines(t, roll_mean(x, width = 23), col = "purple")
+legend("topright", lty = c(1, 1),
+       col = c("goldenrod", "purple"),
+       legend = c("3-hr mean", "12-hr mean"))
+title("3- and 23-hr Rolling mean")
 }
