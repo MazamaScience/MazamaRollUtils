@@ -5,10 +5,8 @@ Version: 0.1.3
 Date: 2021-09-15
 Authors@R: c(
     person("Jonathan", "Callahan", email="jonathan.s.callahan@gmail.com", role=c("aut", "cre")),
-    person("Hans", "Martin", email="hans@mazamascience.com", role=c("aut"))
+    person("Hans", "Martin", email="hansmrtn@gmail.com", role=c("aut"))
     )
-Author: Jonathan Callahan [aut, cre],
-    Hans Martin [aut]
 Maintainer: Jonathan Callahan <jonathan.s.callahan@gmail.com>
 Description: A suite of compiled functions calculating rolling mins, means, 
     maxes and other statistics. This package is designed to meet the needs of
