@@ -6,8 +6,9 @@ A dedicated Slack channel has been created for announcements, support and to hel
 # MazamaRollUtils
 
 ```
-A suite of utility functions for calculating rolling mins, means, 
-maxes and other functions.
+A suite of compiled functions calculating rolling mins, means,
+maxes and other statistics. This package is designed to meet the needs of
+data processing systems for environmental time series.
 ```
 
 ## Background
