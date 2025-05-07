@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Introduction to MazamaRollUtils • MazamaRollUtils</title>
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
+<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
 <script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
@@ -19,6 +19,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,18 +33,12 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MazamaRollUtils</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.4</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
 <li>
   <a href="../articles/MazamaRollUtils.html">Get started</a>
 </li>
@@ -55,7 +51,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/MazamaScience/MazamaRollUtils/">
+  <a href="https://github.com/MazamaScience/MazamaRollUtils/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -70,50 +66,67 @@
 
       
 
-      </header><script src="MazamaRollUtils_files/header-attrs-2.10/header-attrs.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Introduction to MazamaRollUtils</h1>
-                        <h4 class="author">Jonathan Callahan, Mazama Science</h4>
+                        <h4 data-toc-skip class="author">Jonathan
+Callahan, Mazama Science</h4>
             
-            <h4 class="date">September 22, 2021</h4>
+            <h4 data-toc-skip class="date">September 22, 2021</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/MazamaScience/MazamaRollUtils/blob/master/vignettes/MazamaRollUtils.Rmd"><code>vignettes/MazamaRollUtils.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/MazamaScience/MazamaRollUtils/blob/HEAD/vignettes/MazamaRollUtils.Rmd" class="external-link"><code>vignettes/MazamaRollUtils.Rmd</code></a></small>
       <div class="hidden name"><code>MazamaRollUtils.Rmd</code></div>
 
     </div>
 
     
     
-<div id="background" class="section level2">
-<h2 class="hasAnchor">
-<a href="#background" class="anchor"></a>Background</h2>
-<p>Analysis of time series data often involves applying “rolling” functions to calculate, <em>e.g.</em> a “moving average”. These functions are straightforward to write in any language and it makes sense to have C++ versions of common rolling functions available to R as they dramatically speed up calculations. Several packages exist that provide some version of this functionality:</p>
+<div class="section level2">
+<h2 id="background">Background<a class="anchor" aria-label="anchor" href="#background"></a>
+</h2>
+<p>Analysis of time series data often involves applying “rolling”
+functions to calculate, <em>e.g.</em> a “moving average”. These
+functions are straightforward to write in any language and it makes
+sense to have C++ versions of common rolling functions available to R as
+they dramatically speed up calculations. Several packages exist that
+provide some version of this functionality:</p>
 <ul>
 <li>
-<a href="https://cran.r-project.org/package=zoo">zoo</a> – core R package with a specific data model</li>
+<a href="https://cran.r-project.org/package=zoo" class="external-link">zoo</a> – core R
+package with a specific data model</li>
 <li>
-<a href="https://cran.r-project.org/package=seismicRoll">seismicRoll</a> – rolling functions focused on seismology</li>
+<a href="https://cran.r-project.org/package=seismicRoll" class="external-link">seismicRoll</a> –
+rolling functions focused on seismology</li>
 <li>
-<a href="https://cran.r-project.org/package=RcppRoll">RcppRoll</a> – rolling functions for basic statistics</li>
+<a href="https://cran.r-project.org/package=RcppRoll" class="external-link">RcppRoll</a> –
+rolling functions for basic statistics</li>
 </ul>
-<p>Our goal in creating a new package of C++ rolling functions is to build up a suite of functions useful in environmental time series analysis. We want these functions to be available in a neutral environment with no underlying data model. The functions are as straightforward to use as is reasonably possible with a target audience of data analysts at any level of R expertise.</p>
+<p>Our goal in creating a new package of C++ rolling functions is to
+build up a suite of functions useful in environmental time series
+analysis. We want these functions to be available in a neutral
+environment with no underlying data model. The functions are as
+straightforward to use as is reasonably possible with a target audience
+of data analysts at any level of R expertise.</p>
 </div>
-<div id="installation" class="section level2">
-<h2 class="hasAnchor">
-<a href="#installation" class="anchor"></a>Installation</h2>
+<div class="section level2">
+<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h2>
 <p>Install from CRAN with:</p>
-<pre><code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages('MazamaRollUtils')</a></code></pre>
+<pre><code><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">'MazamaRollUtils'</span><span class="op">)</span></span></code></pre>
 <p>Install the latest version from GitHub with:</p>
-<pre><code><a href="https://devtools.r-lib.org//reference/remote-reexports.html">devtools::install_github("MazamaScience/MazamaRollUtils")</a></code></pre>
+<pre><code><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"MazamaScience/MazamaRollUtils"</span><span class="op">)</span></span></code></pre>
 </div>
-<div id="features" class="section level2">
-<h2 class="hasAnchor">
-<a href="#features" class="anchor"></a>Features</h2>
-<div id="predictable-names" class="section level3">
-<h3 class="hasAnchor">
-<a href="#predictable-names" class="anchor"></a>Predictable Names</h3>
-<p>Many of the rolling functions in <strong>MazamaRollUtils</strong> have the names of familiar <strong>R</strong> functions with <code>roll_</code> prepended. These functions calculate rolling versions of the expected statistic:</p>
+<div class="section level2">
+<h2 id="features">Features<a class="anchor" aria-label="anchor" href="#features"></a>
+</h2>
+<div class="section level3">
+<h3 id="predictable-names">Predictable Names<a class="anchor" aria-label="anchor" href="#predictable-names"></a>
+</h3>
+<p>Many of the rolling functions in <strong>MazamaRollUtils</strong>
+have the names of familiar <strong>R</strong> functions with
+<code>roll_</code> prepended. These functions calculate rolling versions
+of the expected statistic:</p>
 <ul>
 <li><code><a href="../reference/roll_max.html">roll_max()</a></code></li>
 <li><code><a href="../reference/roll_mean.html">roll_mean()</a></code></li>
@@ -124,130 +137,150 @@
 <li><code><a href="../reference/roll_sum.html">roll_sum()</a></code></li>
 <li><code><a href="../reference/roll_var.html">roll_var()</a></code></li>
 </ul>
-<p>Additional rolling functions with no equivalent in base R include:</p>
+<p>Additional rolling functions with no equivalent in base R
+include:</p>
 <ul>
 <li>
 <code><a href="../reference/roll_MAD.html">roll_MAD()</a></code> – Median Absolute Deviation</li>
 <li>
 <code><a href="../reference/roll_hampel.html">roll_hampel()</a></code> – Hampel filter</li>
 </ul>
-<p>Other functions wrap the rolling functions to provide enhanced functionality. These are not required to return vectors of the same length as the input data.</p>
+<p>Other functions wrap the rolling functions to provide enhanced
+functionality. These are not required to return vectors of the same
+length as the input data.</p>
 <ul>
 <li>
-<code><a href="../reference/findOutliers.html">findOutliers()</a></code> – returns indices of outlier values identified by <code><a href="../reference/roll_hampel.html">roll_hampel()</a></code>.</li>
+<code><a href="../reference/findOutliers.html">findOutliers()</a></code> – returns indices of outlier values
+identified by <code><a href="../reference/roll_hampel.html">roll_hampel()</a></code>.</li>
 </ul>
 </div>
-<div id="common-arguments" class="section level3">
-<h3 class="hasAnchor">
-<a href="#common-arguments" class="anchor"></a>Common Arguments</h3>
-<p>All of the <code>roll_~()</code> functions accept the same arguments where appropriate:</p>
+<div class="section level3">
+<h3 id="common-arguments">Common Arguments<a class="anchor" aria-label="anchor" href="#common-arguments"></a>
+</h3>
+<p>All of the <code>roll_~()</code> functions accept the same arguments
+where appropriate:</p>
 <ul>
 <li>
 <code>x</code> – Numeric vector input.</li>
 <li>
 <code>width</code> – Integer width of the rolling window.</li>
 <li>
-<code>by</code> – Integer shift to use when sliding the window to the next location align Character position of the return value within the window. One of: <code>"left" | "center" | "right"</code>.</li>
+<code>by</code> – Integer shift to use when sliding the window to
+the next location align Character position of the return value within
+the window. One of: <code>"left" | "center" | "right"</code>.</li>
 <li>
-<code>na.rm</code> – Logical specifying whether  values should be removed before the calculations within each window.</li>
+<code>na.rm</code> – Logical specifying whether values should be
+removed before the calculations within each window.</li>
 </ul>
 <p>The <code><a href="../reference/roll_mean.html">roll_mean()</a></code> function also accepts:</p>
 <ul>
 <li>
-<code>weights</code> – Numeric vector of size <code>width</code> specifying each window index weight. If <code>NULL</code>, unit weights are used.</li>
+<code>weights</code> – Numeric vector of size <code>width</code>
+specifying each window index weight. If <code>NULL</code>, unit weights
+are used.</li>
 </ul>
 </div>
-<div id="predictable-return-length" class="section level3">
-<h3 class="hasAnchor">
-<a href="#predictable-return-length" class="anchor"></a>Predictable Return Length</h3>
-<p>The output of each <code>roll_~()</code> function is guaranteed to have the same length as the input vector, with varying stretches of <code>NA</code> at one or both ends depending on arguments <code>width</code>, <code>align</code> and <code>na.rm</code>. This makes it easy to align the return values with the input data.</p>
+<div class="section level3">
+<h3 id="predictable-return-length">Predictable Return Length<a class="anchor" aria-label="anchor" href="#predictable-return-length"></a>
+</h3>
+<p>The output of each <code>roll_~()</code> function is guaranteed to
+have the same length as the input vector, with varying stretches of
+<code>NA</code> at one or both ends depending on arguments
+<code>width</code>, <code>align</code> and <code>na.rm</code>. This
+makes it easy to align the return values with the input data.</p>
 </div>
 </div>
-<div id="examples" class="section level2">
-<h2 class="hasAnchor">
-<a href="#examples" class="anchor"></a>Examples</h2>
-<p>The example dataset included in the package contains a tiny amount of data but suffices to demonstrate usage of package functions.</p>
-<div id="basic-rolling-means" class="section level3">
-<h3 class="hasAnchor">
-<a href="#basic-rolling-means" class="anchor"></a>Basic Rolling Means</h3>
+<div class="section level2">
+<h2 id="examples">Examples<a class="anchor" aria-label="anchor" href="#examples"></a>
+</h2>
+<p>The example dataset included in the package contains a tiny amount of
+data but suffices to demonstrate usage of package functions.</p>
+<div class="section level3">
+<h3 id="basic-rolling-means">Basic Rolling Means<a class="anchor" aria-label="anchor" href="#basic-rolling-means"></a>
+</h3>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/MazamaScience/MazamaRollUtils">MazamaRollUtils</a></span><span class="op">)</span>
-
-<span class="co"># Extract vectors from our example dataset</span>
-<span class="va">t</span> <span class="op">&lt;-</span> <span class="va">example_pm25</span><span class="op">$</span><span class="va">datetime</span>
-<span class="va">x</span> <span class="op">&lt;-</span> <span class="va">example_pm25</span><span class="op">$</span><span class="va">pm25</span>
-
-<span class="co"># Plot with 3- and 24-hr rolling means</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/layout.html">layout</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">t</span>, <span class="va">x</span>, pch <span class="op">=</span> <span class="fl">16</span>, cex <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/lines.html">lines</a></span><span class="op">(</span><span class="va">t</span>, <span class="fu"><a href="../reference/roll_mean.html">roll_mean</a></span><span class="op">(</span><span class="va">x</span>, width <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>, col <span class="op">=</span> <span class="st">'red'</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/title.html">title</a></span><span class="op">(</span><span class="st">"3-hour Rolling Mean"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">t</span>, <span class="va">x</span>, pch <span class="op">=</span> <span class="fl">16</span>, cex <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/lines.html">lines</a></span><span class="op">(</span><span class="va">t</span>, <span class="fu"><a href="../reference/roll_mean.html">roll_mean</a></span><span class="op">(</span><span class="va">x</span>, width <span class="op">=</span> <span class="fl">24</span><span class="op">)</span>, col <span class="op">=</span> <span class="st">'red'</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/title.html">title</a></span><span class="op">(</span><span class="st">"24-hour Rolling Mean"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/MazamaScience/MazamaRollUtils" class="external-link">MazamaRollUtils</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Extract vectors from our example dataset</span></span>
+<span><span class="va">t</span> <span class="op">&lt;-</span> <span class="va">example_pm25</span><span class="op">$</span><span class="va">datetime</span></span>
+<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="va">example_pm25</span><span class="op">$</span><span class="va">pm25</span></span>
+<span></span>
+<span><span class="co"># Plot with 3- and 24-hr rolling means</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/layout.html" class="external-link">layout</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">t</span>, <span class="va">x</span>, pch <span class="op">=</span> <span class="fl">16</span>, cex <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/lines.html" class="external-link">lines</a></span><span class="op">(</span><span class="va">t</span>, <span class="fu"><a href="../reference/roll_mean.html">roll_mean</a></span><span class="op">(</span><span class="va">x</span>, width <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>, col <span class="op">=</span> <span class="st">'red'</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/title.html" class="external-link">title</a></span><span class="op">(</span><span class="st">"3-hour Rolling Mean"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">t</span>, <span class="va">x</span>, pch <span class="op">=</span> <span class="fl">16</span>, cex <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/lines.html" class="external-link">lines</a></span><span class="op">(</span><span class="va">t</span>, <span class="fu"><a href="../reference/roll_mean.html">roll_mean</a></span><span class="op">(</span><span class="va">x</span>, width <span class="op">=</span> <span class="fl">24</span><span class="op">)</span>, col <span class="op">=</span> <span class="st">'red'</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/title.html" class="external-link">title</a></span><span class="op">(</span><span class="st">"24-hour Rolling Mean"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="MazamaRollUtils_files/figure-html/example_1-1.png" width="672"></p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/layout.html">layout</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/layout.html" class="external-link">layout</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div id="using-width-align-by-and-na-rm" class="section level3">
-<h3 class="hasAnchor">
-<a href="#using-width-align-by-and-na-rm" class="anchor"></a>Using ‘width’, ‘align’, ‘by’ and ‘na.rm’</h3>
-<p>The next example uses all of the standard arguments to quickly calculate a daily maximum value and spread it out across all indices.</p>
+<div class="section level3">
+<h3 id="using-width-align-by-and-na-rm">Using ‘width’, ‘align’, ‘by’ and ‘na.rm’<a class="anchor" aria-label="anchor" href="#using-width-align-by-and-na-rm"></a>
+</h3>
+<p>The next example uses all of the standard arguments to quickly
+calculate a daily maximum value and spread it out across all
+indices.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/MazamaScience/MazamaRollUtils">MazamaRollUtils</a></span><span class="op">)</span>
-
-<span class="co"># Extract vectors from our example dataset</span>
-<span class="va">t</span> <span class="op">&lt;-</span> <span class="va">example_pm25</span><span class="op">$</span><span class="va">datetime</span>
-<span class="va">x</span> <span class="op">&lt;-</span> <span class="va">example_pm25</span><span class="op">$</span><span class="va">pm25</span>
-
-<span class="co"># Calculate the left-aligned 24-hr max every hour, ignoring NA values</span>
-<span class="va">max_24hr</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/roll_max.html">roll_max</a></span><span class="op">(</span><span class="va">x</span>, width <span class="op">=</span> <span class="fl">24</span>, align <span class="op">=</span> <span class="st">"left"</span>, by <span class="op">=</span> <span class="fl">1</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-
-<span class="co"># Calculate the left-aligned daily max once every 24 hours, ignoring NA values</span>
-<span class="va">max_daily_day</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/roll_max.html">roll_max</a></span><span class="op">(</span><span class="va">x</span>, width <span class="op">=</span> <span class="fl">24</span>, align <span class="op">=</span> <span class="st">"left"</span>, by <span class="op">=</span> <span class="fl">24</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-
-<span class="co"># Spread the max_daily_day value out to every hour with a right-aligned look "back"</span>
-<span class="va">max_daily_hour</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/roll_max.html">roll_max</a></span><span class="op">(</span><span class="va">max_daily_day</span>, width <span class="op">=</span> <span class="fl">24</span>, align <span class="op">=</span> <span class="st">"right"</span>, by <span class="op">=</span> <span class="fl">1</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-
-<span class="co"># Plot with 3- and 24-hr rolling means</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/layout.html">layout</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">t</span>, <span class="va">max_24hr</span>, col <span class="op">=</span> <span class="st">'red'</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/points.html">points</a></span><span class="op">(</span><span class="va">t</span>, <span class="va">x</span>, pch <span class="op">=</span> <span class="fl">16</span>, cex <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/title.html">title</a></span><span class="op">(</span><span class="st">"Rolling 24-hr Max"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">t</span>, <span class="va">max_daily_day</span>, col <span class="op">=</span> <span class="st">'red'</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/points.html">points</a></span><span class="op">(</span><span class="va">t</span>, <span class="va">x</span>, pch <span class="op">=</span> <span class="fl">16</span>, cex <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/title.html">title</a></span><span class="op">(</span><span class="st">"Daily 24-hr Max"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">t</span>, <span class="va">max_daily_hour</span>, col <span class="op">=</span> <span class="st">'red'</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/points.html">points</a></span><span class="op">(</span><span class="va">t</span>, <span class="va">x</span>, pch <span class="op">=</span> <span class="fl">16</span>, cex <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/title.html">title</a></span><span class="op">(</span><span class="st">"Hourly Daily Max"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/MazamaScience/MazamaRollUtils" class="external-link">MazamaRollUtils</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Extract vectors from our example dataset</span></span>
+<span><span class="va">t</span> <span class="op">&lt;-</span> <span class="va">example_pm25</span><span class="op">$</span><span class="va">datetime</span></span>
+<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="va">example_pm25</span><span class="op">$</span><span class="va">pm25</span></span>
+<span></span>
+<span><span class="co"># Calculate the left-aligned 24-hr max every hour, ignoring NA values</span></span>
+<span><span class="va">max_24hr</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/roll_max.html">roll_max</a></span><span class="op">(</span><span class="va">x</span>, width <span class="op">=</span> <span class="fl">24</span>, align <span class="op">=</span> <span class="st">"left"</span>, by <span class="op">=</span> <span class="fl">1</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Calculate the left-aligned daily max once every 24 hours, ignoring NA values</span></span>
+<span><span class="va">max_daily_day</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/roll_max.html">roll_max</a></span><span class="op">(</span><span class="va">x</span>, width <span class="op">=</span> <span class="fl">24</span>, align <span class="op">=</span> <span class="st">"left"</span>, by <span class="op">=</span> <span class="fl">24</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Spread the max_daily_day value out to every hour with a right-aligned look "back"</span></span>
+<span><span class="va">max_daily_hour</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/roll_max.html">roll_max</a></span><span class="op">(</span><span class="va">max_daily_day</span>, width <span class="op">=</span> <span class="fl">24</span>, align <span class="op">=</span> <span class="st">"right"</span>, by <span class="op">=</span> <span class="fl">1</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Plot with 3- and 24-hr rolling means</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/layout.html" class="external-link">layout</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">t</span>, <span class="va">max_24hr</span>, col <span class="op">=</span> <span class="st">'red'</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">t</span>, <span class="va">x</span>, pch <span class="op">=</span> <span class="fl">16</span>, cex <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/title.html" class="external-link">title</a></span><span class="op">(</span><span class="st">"Rolling 24-hr Max"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">t</span>, <span class="va">max_daily_day</span>, col <span class="op">=</span> <span class="st">'red'</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">t</span>, <span class="va">x</span>, pch <span class="op">=</span> <span class="fl">16</span>, cex <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/title.html" class="external-link">title</a></span><span class="op">(</span><span class="st">"Daily 24-hr Max"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">t</span>, <span class="va">max_daily_hour</span>, col <span class="op">=</span> <span class="st">'red'</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">t</span>, <span class="va">x</span>, pch <span class="op">=</span> <span class="fl">16</span>, cex <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/title.html" class="external-link">title</a></span><span class="op">(</span><span class="st">"Hourly Daily Max"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="MazamaRollUtils_files/figure-html/example_2-1.png" width="672"></p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/layout.html">layout</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/layout.html" class="external-link">layout</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div id="using-roll_mean-with-weights" class="section level3">
-<h3 class="hasAnchor">
-<a href="#using-roll_mean-with-weights" class="anchor"></a>Using roll_mean() with ‘weights’</h3>
-<p>The <code><a href="../reference/roll_mean.html">roll_mean()</a></code> function accepts a <code>weights</code> argument that can be used to create a <em>weighted moving average</em>. The next example demonstrates creation of an exponential weighting function to be applied to our data.</p>
+<div class="section level3">
+<h3 id="using-roll_mean-with-weights">Using roll_mean() with ‘weights’<a class="anchor" aria-label="anchor" href="#using-roll_mean-with-weights"></a>
+</h3>
+<p>The <code><a href="../reference/roll_mean.html">roll_mean()</a></code> function accepts a <code>weights</code>
+argument that can be used to create a <em>weighted moving average</em>.
+The next example demonstrates creation of an exponential weighting
+function to be applied to our data.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/MazamaScience/MazamaRollUtils">MazamaRollUtils</a></span><span class="op">)</span>
-
-<span class="co"># Extract vectors from our example dataset</span>
-<span class="va">t</span> <span class="op">&lt;-</span> <span class="va">example_pm25</span><span class="op">$</span><span class="va">datetime</span>
-<span class="va">x</span> <span class="op">&lt;-</span> <span class="va">example_pm25</span><span class="op">$</span><span class="va">pm25</span>
-
-<span class="co"># Create weights for a 9-element exponentially weighted window</span>
-<span class="co">#   See:  https://en.wikipedia.org/wiki/Moving_average</span>
-<span class="va">N</span> <span class="op">&lt;-</span> <span class="fl">9</span>
-<span class="va">alpha</span> <span class="op">&lt;-</span> <span class="fl">2</span><span class="op">/</span><span class="op">(</span><span class="va">N</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span>
-<span class="va">w</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="fl">1</span><span class="op">-</span><span class="va">alpha</span><span class="op">)</span><span class="op">^</span><span class="op">(</span><span class="fl">0</span><span class="op">:</span><span class="op">(</span><span class="va">N</span><span class="op">-</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span>
-<span class="va">weights</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rev.html">rev</a></span><span class="op">(</span><span class="va">w</span><span class="op">)</span>          <span class="co"># right aligned window</span>
-
-<span class="va">EMA</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/roll_mean.html">roll_mean</a></span><span class="op">(</span><span class="va">x</span>, width <span class="op">=</span> <span class="va">N</span>, align <span class="op">=</span> <span class="st">"right"</span>, weights <span class="op">=</span> <span class="va">weights</span><span class="op">)</span>
-
-<span class="co"># Plot Exponential Moving Average (EMA)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">t</span>, <span class="va">x</span>, pch <span class="op">=</span> <span class="fl">16</span>, cex <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/lines.html">lines</a></span><span class="op">(</span><span class="va">t</span>, <span class="va">EMA</span>, col <span class="op">=</span> <span class="st">'red'</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/title.html">title</a></span><span class="op">(</span><span class="st">"9-Element Exponential Moving Average"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/MazamaScience/MazamaRollUtils" class="external-link">MazamaRollUtils</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Extract vectors from our example dataset</span></span>
+<span><span class="va">t</span> <span class="op">&lt;-</span> <span class="va">example_pm25</span><span class="op">$</span><span class="va">datetime</span></span>
+<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="va">example_pm25</span><span class="op">$</span><span class="va">pm25</span></span>
+<span></span>
+<span><span class="co"># Create weights for a 9-element exponentially weighted window</span></span>
+<span><span class="co">#   See:  https://en.wikipedia.org/wiki/Moving_average</span></span>
+<span><span class="va">N</span> <span class="op">&lt;-</span> <span class="fl">9</span></span>
+<span><span class="va">alpha</span> <span class="op">&lt;-</span> <span class="fl">2</span><span class="op">/</span><span class="op">(</span><span class="va">N</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="va">w</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="fl">1</span><span class="op">-</span><span class="va">alpha</span><span class="op">)</span><span class="op">^</span><span class="op">(</span><span class="fl">0</span><span class="op">:</span><span class="op">(</span><span class="va">N</span><span class="op">-</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">weights</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rev.html" class="external-link">rev</a></span><span class="op">(</span><span class="va">w</span><span class="op">)</span>          <span class="co"># right aligned window</span></span>
+<span></span>
+<span><span class="va">EMA</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/roll_mean.html">roll_mean</a></span><span class="op">(</span><span class="va">x</span>, width <span class="op">=</span> <span class="va">N</span>, align <span class="op">=</span> <span class="st">"right"</span>, weights <span class="op">=</span> <span class="va">weights</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Plot Exponential Moving Average (EMA)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">t</span>, <span class="va">x</span>, pch <span class="op">=</span> <span class="fl">16</span>, cex <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/lines.html" class="external-link">lines</a></span><span class="op">(</span><span class="va">t</span>, <span class="va">EMA</span>, col <span class="op">=</span> <span class="st">'red'</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/title.html" class="external-link">title</a></span><span class="op">(</span><span class="st">"9-Element Exponential Moving Average"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="MazamaRollUtils_files/figure-html/example_3-1.png" width="672"></p>
 </div>
 </div>
@@ -264,11 +297,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Jonathan Callahan, Hans Martin.</p>
+  <p></p>
+<p>Developed by Jonathan Callahan, Hans Martin.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
 </div>
 
       </footer>
@@ -276,6 +311,8 @@
 
   
 
+
+  
 
   </body>
 </html>

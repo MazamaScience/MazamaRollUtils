@@ -1,3 +1,7 @@
+# MazamaRollUtils 0.1.4
+
+* Address CRAN testing error.
+
 # MazamaRollUtils 0.1.3
 
 * Release candidate for testing.
