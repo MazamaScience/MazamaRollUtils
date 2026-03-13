@@ -40,9 +40,9 @@ The `align` parameter determines the alignment of the return value
 within the window. Thus:
 
 \itemize{
-  \item{`align = "left"   [*------]` will cause the returned vector to have width-1 `NA` values at the right end.}
-  \item{`align = "center" [---*---]` will cause the returned vector to have width/2 `NA` values at either end.}
-  \item{`align = "right"  [------*]` will cause the returned vector to have width-1 `NA` values at the left end.}
+  \item{`align = "left"   [*------]` will cause the returned vector to have width - 1 `NA` values at the right end.}
+  \item{`align = "center" [---*---]` will cause the returned vector to have `NA` values at either end as needed for centered alignment.}
+  \item{`align = "right"  [------*]` will cause the returned vector to have width - 1 `NA` values at the left end.}
 }
 
 For large vectors, the `by` parameter can be used to force the window
@@ -61,6 +61,6 @@ lines(t, roll_median(x, width = 3), col = "goldenrod")
 lines(t, roll_median(x, width = 23), col = "purple")
 legend("topright", lty = c(1, 1),
        col = c("goldenrod", "purple"),
-       legend = c("3-hr median", "12-hr median"))
+       legend = c("3-hr median", "23-hr median"))
 title("3- and 23-hr Rolling median")
 }

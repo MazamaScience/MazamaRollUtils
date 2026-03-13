@@ -1,7 +1,12 @@
+# load the compiled shared library
 useDynLib(MazamaRollUtils, .registration=TRUE)
 importFrom(Rcpp, evalCpp)
+
+# Outlier detection
 export(findOutliers)
 export(roll_hampel)
+
+# Rolling statistics
 export(roll_MAD)
 export(roll_max)
 export(roll_mean)

@@ -17,7 +17,7 @@ roll_max(
 
 \item{width}{Integer width of the rolling window.}
 
-\item{by}{Integer shift to use when sliding the window to the next location}
+\item{by}{Integer shift by which the window is moved each iteration.}
 
 \item{align}{Character position of the return value within the window. One of:
 `"left" | "center" | "right"`.}
@@ -40,9 +40,9 @@ The `align` parameter determines the alignment of the return value
 within the window. Thus:
 
 \itemize{
-  \item{`align = "left"   [*------]` will cause the returned vector to have width-1 `NA` values at the right end.}
-  \item{`align = "center" [---*---]` will cause the returned vector to have width/2 `NA` values at either end.}
-  \item{`align = "right"  [------*]` will cause the returned vector to have width-1 `NA` values at the left end.}
+  \item{`align = "left"   [*------]` will cause the returned vector to have width - 1 `NA` values at the right end.}
+  \item{`align = "center" [---*---]` will cause the returned vector to have `NA` values at either end as needed for centered alignment.}
+  \item{`align = "right"  [------*]` will cause the returned vector to have width - 1 `NA` values at the left end.}
 }
 
 For large vectors, the `by` parameter can be used to force the window
@@ -57,18 +57,17 @@ t <- example_pm25$datetime
 x <- example_pm25$pm25
 
 plot(t, x, pch = 16, cex = 0.5)
-lines(t, roll_max(x, width = 12), col = 'red')
-lines(t, roll_min(x, width = 12), col = 'deepskyblue')
+lines(t, roll_max(x, width = 12), col = "red")
+lines(t, roll_min(x, width = 12), col = "deepskyblue")
 title("12-hr Rolling Max and Min")
 
 plot(t, x, pch = 16, cex = 0.5)
 points(t, roll_max(x, width = 12, na.rm = TRUE),
-       pch = 16, col = 'red')
+       pch = 16, col = "red")
 points(t, roll_max(x, width = 12, na.rm = FALSE),
-       pch = 16, col = adjustcolor('black', 0.4))
+       pch = 16, col = adjustcolor("black", 0.4))
 legend("topright", pch = c(1, 16),
        col = c("red", adjustcolor("black", 0.4)),
        legend = c("na.rm = TRUE", "na.rm = FALSE"))
 title("12-hr Rolling max with/out na.rm")
-
 }

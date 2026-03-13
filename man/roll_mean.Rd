@@ -26,7 +26,7 @@ roll_mean(
 \item{na.rm}{Logical specifying whether `NA` values should be removed
 before the calculations within each window.}
 
-\item{weights}{Numeric vector of size `width` specifying each window
+\item{weights}{Numeric vector of length `width` specifying each window
 index weight. If `NULL`, unit weights are used.}
 }
 \value{
@@ -44,9 +44,9 @@ The `align` parameter determines the alignment of the return value
 within the window. Thus:
 
 \itemize{
-  \item{`align = "left"   [*------]` will cause the returned vector to have width-1 `NA` values at the right end.}
-  \item{`align = "center" [---*---]` will cause the returned vector to have width/2 `NA` values at either end.}
-  \item{`align = "right"  [------*]` will cause the returned vector to have width-1 `NA` values at the left end.}
+  \item{`align = "left"   [*------]` will cause the returned vector to have width - 1 `NA` values at the right end.}
+  \item{`align = "center" [---*---]` will cause the returned vector to have `NA` values at either end as needed for centered alignment.}
+  \item{`align = "right"  [------*]` will cause the returned vector to have width - 1 `NA` values at the left end.}
 }
 
 For large vectors, the `by` parameter can be used to force the window
@@ -56,9 +56,8 @@ the same length as the incoming vector. This can dramatically speed up
 calculations for high resolution time series data.
 
 The `roll_mean()` function supports an additional `weights`
-argument that can be used to calculate a "weighted moving average" --
-a convolution of the incoming data with the \emph{kernel} (weighting function)
-provided in `weights`.
+argument that can be used to calculate a weighted moving average,
+a convolution of the incoming data with the kernel provided in `weights`.
 }
 \examples{
 # Example air quality time series

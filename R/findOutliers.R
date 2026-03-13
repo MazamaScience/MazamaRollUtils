@@ -67,23 +67,44 @@ findOutliers <- function(
     fixedThreshold = TRUE
 ) {
 
-  if (!is.logical(fixedThreshold)) {
-    warning(
-      sprintf(
-        "Argument 'fixedThreshold' must be logical; got %s. Using TRUE.",
-        deparse(fixedThreshold)
-      )
-    )
-    fixedThreshold <- TRUE
+  if ( !is.atomic(x) || !is.numeric(x) || !is.null(dim(x)) ) {
+    stop("'x' must be a numeric vector.")
   }
 
-  h <- roll_hampel(x, width)
+  if ( length(width) != 1 || !is.numeric(width) || is.na(width) ||
+       !is.finite(width) || width < 1 || width != as.integer(width) ) {
+    stop("'width' must be a single positive integer.")
+  }
+
+  if ( length(thresholdMin) != 1 || !is.numeric(thresholdMin) ||
+       is.na(thresholdMin) || !is.finite(thresholdMin) ||
+       thresholdMin < 0 ) {
+    stop("'thresholdMin' must be a single non-negative numeric value.")
+  }
+
+  if ( length(fixedThreshold) != 1 || !is.logical(fixedThreshold) ||
+       is.na(fixedThreshold) ) {
+    stop("'fixedThreshold' must be TRUE or FALSE.")
+  }
+
+  if ( !fixedThreshold ) {
+    if ( length(selectivity) != 1 || !is.numeric(selectivity) ||
+         is.na(selectivity) || !is.finite(selectivity) ||
+         selectivity <= 0 || selectivity > 1 ) {
+      stop(
+        "'selectivity' must be a single numeric value in the interval ",
+        "(0, 1] when 'fixedThreshold = FALSE'."
+      )
+    }
+  }
+
+  h <- roll_hampel(x, width = as.integer(width))
 
   # If 50%+ of values in a window are identical, h can become Inf.
   # In that case, replace Inf with NA.
-  h[is.infinite(h)] <- NA
+  h[is.infinite(h)] <- NA_real_
 
-  if (all(is.na(h))) {
+  if ( all(is.na(h)) ) {
     stop(
       "roll_hampel() returned all NA values; this can occur when 50% or more ",
       "of values in every rolling window are identical."
@@ -92,14 +113,14 @@ findOutliers <- function(
 
   maxH <- max(h, na.rm = TRUE)
 
-  if (maxH < thresholdMin) {
+  if ( maxH < thresholdMin ) {
     return(integer(0))
-  } else {
-    if (fixedThreshold) {
-      return(which(h > thresholdMin))
-    } else {
-      return(which(h > maxH * selectivity))
-    }
   }
 
+  if ( fixedThreshold ) {
+    return(which(h > thresholdMin))
+  }
+
+  return(which(h > maxH * selectivity))
 }
+

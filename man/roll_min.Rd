@@ -40,9 +40,9 @@ The `align` parameter determines the alignment of the return value
 within the window. Thus:
 
 \itemize{
-  \item{`align = "left"   [*------]` will cause the returned vector to have width-1 `NA` values at the right end.}
-  \item{`align = "center" [---*---]` will cause the returned vector to have width/2 `NA` values at either end.}
-  \item{`align = "right"  [------*]` will cause the returned vector to have width-1 `NA` values at the left end.}
+  \item{`align = "left"   [*------]` will cause the returned vector to have width - 1 `NA` values at the right end.}
+  \item{`align = "center" [---*---]` will cause the returned vector to have `NA` values at either end as needed for centered alignment.}
+  \item{`align = "right"  [------*]` will cause the returned vector to have width - 1 `NA` values at the left end.}
 }
 
 For large vectors, the `by` parameter can be used to force the window
@@ -57,15 +57,15 @@ t <- example_pm25$datetime
 x <- example_pm25$pm25
 
 plot(t, x, pch = 16, cex = 0.5)
-lines(t, roll_max(x, width = 12), col = 'red')
-lines(t, roll_min(x, width = 12), col = 'deepskyblue')
+lines(t, roll_max(x, width = 12), col = "red")
+lines(t, roll_min(x, width = 12), col = "deepskyblue")
 title("12-hr Rolling Max and Min")
 
 plot(t, x, pch = 16, cex = 0.5)
 points(t, roll_min(x, width = 12, na.rm = TRUE),
-       pch = 16, col = 'deepskyblue')
+       pch = 16, col = "deepskyblue")
 points(t, roll_min(x, width = 12, na.rm = FALSE),
-       pch = 16, col = adjustcolor('black', 0.4))
+       pch = 16, col = adjustcolor("black", 0.4))
 legend("topright", pch = c(16, 16),
        col = c("deepskyblue", adjustcolor("black", 0.4)),
        legend = c("na.rm = TRUE", "na.rm = FALSE"))

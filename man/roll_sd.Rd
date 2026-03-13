@@ -25,16 +25,16 @@ numeric vector.
 }
 \details{
 For every index in the incoming vector `x`, a value is returned that
-is the standard deviation of all values in `x` that fall within a window of width
-`width`.
+is the standard deviation of all values in `x` that fall within a window of
+width `width`.
 
 The `align` parameter determines the alignment of the return value
 within the window. Thus:
 
 \itemize{
-  \item{`align = "left"   [*------]` will cause the returned vector to have width-1 `NA` values at the right end.}
-  \item{`align = "center" [---*---]` will cause the returned vector to have width/2 `NA` values at either end.}
-  \item{`align = "right"  [------*]` will cause the returned vector to have width-1 `NA` values at the left end.}
+  \item{`align = "left"   [*------]` will cause the returned vector to have width - 1 `NA` values at the right end.}
+  \item{`align = "center" [---*---]` will cause the returned vector to have `NA` values at either end as needed for centered alignment.}
+  \item{`align = "right"  [------*]` will cause the returned vector to have width - 1 `NA` values at the left end.}
 }
 
 For large vectors, the `by` parameter can be used to force the window
@@ -44,8 +44,9 @@ the same length as the incoming vector. This can dramatically speed up
 calculations for high resolution time series data.
 }
 \note{
-No `na.rm` argument is provided as interpretation of the results
-is not at all clear.
+A `na.rm` argument is not provided for `roll_sd()` because the
+statistical meaning of standard deviation computed from partially missing
+windows may be ambiguous.
 }
 \examples{
 # Example air quality time series
