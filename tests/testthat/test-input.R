@@ -1,5 +1,3 @@
-context("input")
-
 test_that("bad input is detected", {
 
   functions <- c("max", "mean", "median", "min", "prod", "sd", "sum", "var")

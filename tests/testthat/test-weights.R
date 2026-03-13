@@ -1,4 +1,3 @@
-context("weights")
 
 test_that("weights are normalized", {
 

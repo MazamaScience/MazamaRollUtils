@@ -1,5 +1,3 @@
-context("na.rm")
-
 test_that("na removal is supported", {
 
   x <- c(1:4, NA, 6:10)

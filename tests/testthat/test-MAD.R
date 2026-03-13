@@ -1,5 +1,3 @@
-context("Median Absolute Deviation")
-
 test_that("roll_MAD works", {
 
   # See:  https://en.wikipedia.org/wiki/Median_absolute_deviation

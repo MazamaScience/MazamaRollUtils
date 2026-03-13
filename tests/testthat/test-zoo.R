@@ -1,8 +1,6 @@
 # These tests are modeled on the tests in the RcppRoll test/ directory
 #   https://github.com/kevinushey/RcppRoll
 
-context("zoo comparison")
-
 test_that("we match results from zoo::rollapply", {
 
   if (!requireNamespace("zoo", quietly = TRUE))

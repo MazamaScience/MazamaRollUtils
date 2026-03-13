@@ -11,13 +11,13 @@ Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
 // roll_hampel_cpp
-Rcpp::NumericVector roll_hampel_cpp(Rcpp::NumericVector x, unsigned int width, int by, Rcpp::String const& align, Rcpp::LogicalVector na_rm);
+Rcpp::NumericVector roll_hampel_cpp(Rcpp::NumericVector x, int width, int by, Rcpp::String const& align, Rcpp::LogicalVector na_rm);
 RcppExport SEXP _MazamaRollUtils_roll_hampel_cpp(SEXP xSEXP, SEXP widthSEXP, SEXP bySEXP, SEXP alignSEXP, SEXP na_rmSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< Rcpp::NumericVector >::type x(xSEXP);
-    Rcpp::traits::input_parameter< unsigned int >::type width(widthSEXP);
+    Rcpp::traits::input_parameter< int >::type width(widthSEXP);
     Rcpp::traits::input_parameter< int >::type by(bySEXP);
     Rcpp::traits::input_parameter< Rcpp::String const& >::type align(alignSEXP);
     Rcpp::traits::input_parameter< Rcpp::LogicalVector >::type na_rm(na_rmSEXP);
@@ -26,13 +26,13 @@ BEGIN_RCPP
 END_RCPP
 }
 // roll_MAD_cpp
-Rcpp::NumericVector roll_MAD_cpp(Rcpp::NumericVector x, unsigned int width, int by, Rcpp::String const& align, Rcpp::LogicalVector na_rm);
+Rcpp::NumericVector roll_MAD_cpp(Rcpp::NumericVector x, int width, int by, Rcpp::String const& align, Rcpp::LogicalVector na_rm);
 RcppExport SEXP _MazamaRollUtils_roll_MAD_cpp(SEXP xSEXP, SEXP widthSEXP, SEXP bySEXP, SEXP alignSEXP, SEXP na_rmSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< Rcpp::NumericVector >::type x(xSEXP);
-    Rcpp::traits::input_parameter< unsigned int >::type width(widthSEXP);
+    Rcpp::traits::input_parameter< int >::type width(widthSEXP);
     Rcpp::traits::input_parameter< int >::type by(bySEXP);
     Rcpp::traits::input_parameter< Rcpp::String const& >::type align(alignSEXP);
     Rcpp::traits::input_parameter< Rcpp::LogicalVector >::type na_rm(na_rmSEXP);
@@ -41,13 +41,13 @@ BEGIN_RCPP
 END_RCPP
 }
 // roll_max_cpp
-Rcpp::NumericVector roll_max_cpp(Rcpp::NumericVector x, unsigned int width, int by, Rcpp::String const& align, Rcpp::LogicalVector na_rm);
+Rcpp::NumericVector roll_max_cpp(Rcpp::NumericVector x, int width, int by, Rcpp::String const& align, Rcpp::LogicalVector na_rm);
 RcppExport SEXP _MazamaRollUtils_roll_max_cpp(SEXP xSEXP, SEXP widthSEXP, SEXP bySEXP, SEXP alignSEXP, SEXP na_rmSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< Rcpp::NumericVector >::type x(xSEXP);
-    Rcpp::traits::input_parameter< unsigned int >::type width(widthSEXP);
+    Rcpp::traits::input_parameter< int >::type width(widthSEXP);
     Rcpp::traits::input_parameter< int >::type by(bySEXP);
     Rcpp::traits::input_parameter< Rcpp::String const& >::type align(alignSEXP);
     Rcpp::traits::input_parameter< Rcpp::LogicalVector >::type na_rm(na_rmSEXP);
@@ -56,13 +56,13 @@ BEGIN_RCPP
 END_RCPP
 }
 // roll_mean_cpp
-Rcpp::NumericVector roll_mean_cpp(Rcpp::NumericVector x, unsigned int width, int by, Rcpp::String const& align, Rcpp::LogicalVector na_rm, Rcpp::Nullable<Rcpp::NumericVector> weights);
+Rcpp::NumericVector roll_mean_cpp(Rcpp::NumericVector x, int width, int by, Rcpp::String const& align, Rcpp::LogicalVector na_rm, Rcpp::Nullable<Rcpp::NumericVector> weights);
 RcppExport SEXP _MazamaRollUtils_roll_mean_cpp(SEXP xSEXP, SEXP widthSEXP, SEXP bySEXP, SEXP alignSEXP, SEXP na_rmSEXP, SEXP weightsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< Rcpp::NumericVector >::type x(xSEXP);
-    Rcpp::traits::input_parameter< unsigned int >::type width(widthSEXP);
+    Rcpp::traits::input_parameter< int >::type width(widthSEXP);
     Rcpp::traits::input_parameter< int >::type by(bySEXP);
     Rcpp::traits::input_parameter< Rcpp::String const& >::type align(alignSEXP);
     Rcpp::traits::input_parameter< Rcpp::LogicalVector >::type na_rm(na_rmSEXP);
@@ -72,13 +72,13 @@ BEGIN_RCPP
 END_RCPP
 }
 // roll_median_cpp
-Rcpp::NumericVector roll_median_cpp(Rcpp::NumericVector x, unsigned int width, int by, Rcpp::String const& align, Rcpp::LogicalVector na_rm);
+Rcpp::NumericVector roll_median_cpp(Rcpp::NumericVector x, int width, int by, Rcpp::String const& align, Rcpp::LogicalVector na_rm);
 RcppExport SEXP _MazamaRollUtils_roll_median_cpp(SEXP xSEXP, SEXP widthSEXP, SEXP bySEXP, SEXP alignSEXP, SEXP na_rmSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< Rcpp::NumericVector >::type x(xSEXP);
-    Rcpp::traits::input_parameter< unsigned int >::type width(widthSEXP);
+    Rcpp::traits::input_parameter< int >::type width(widthSEXP);
     Rcpp::traits::input_parameter< int >::type by(bySEXP);
     Rcpp::traits::input_parameter< Rcpp::String const& >::type align(alignSEXP);
     Rcpp::traits::input_parameter< Rcpp::LogicalVector >::type na_rm(na_rmSEXP);
@@ -87,13 +87,13 @@ BEGIN_RCPP
 END_RCPP
 }
 // roll_min_cpp
-Rcpp::NumericVector roll_min_cpp(Rcpp::NumericVector x, unsigned int width, int by, Rcpp::String const& align, Rcpp::LogicalVector na_rm);
+Rcpp::NumericVector roll_min_cpp(Rcpp::NumericVector x, int width, int by, Rcpp::String const& align, Rcpp::LogicalVector na_rm);
 RcppExport SEXP _MazamaRollUtils_roll_min_cpp(SEXP xSEXP, SEXP widthSEXP, SEXP bySEXP, SEXP alignSEXP, SEXP na_rmSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< Rcpp::NumericVector >::type x(xSEXP);
-    Rcpp::traits::input_parameter< unsigned int >::type width(widthSEXP);
+    Rcpp::traits::input_parameter< int >::type width(widthSEXP);
     Rcpp::traits::input_parameter< int >::type by(bySEXP);
     Rcpp::traits::input_parameter< Rcpp::String const& >::type align(alignSEXP);
     Rcpp::traits::input_parameter< Rcpp::LogicalVector >::type na_rm(na_rmSEXP);
@@ -102,13 +102,13 @@ BEGIN_RCPP
 END_RCPP
 }
 // roll_prod_cpp
-Rcpp::NumericVector roll_prod_cpp(Rcpp::NumericVector x, unsigned int width, int by, Rcpp::String const& align, Rcpp::LogicalVector na_rm);
+Rcpp::NumericVector roll_prod_cpp(Rcpp::NumericVector x, int width, int by, Rcpp::String const& align, Rcpp::LogicalVector na_rm);
 RcppExport SEXP _MazamaRollUtils_roll_prod_cpp(SEXP xSEXP, SEXP widthSEXP, SEXP bySEXP, SEXP alignSEXP, SEXP na_rmSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< Rcpp::NumericVector >::type x(xSEXP);
-    Rcpp::traits::input_parameter< unsigned int >::type width(widthSEXP);
+    Rcpp::traits::input_parameter< int >::type width(widthSEXP);
     Rcpp::traits::input_parameter< int >::type by(bySEXP);
     Rcpp::traits::input_parameter< Rcpp::String const& >::type align(alignSEXP);
     Rcpp::traits::input_parameter< Rcpp::LogicalVector >::type na_rm(na_rmSEXP);
@@ -117,13 +117,13 @@ BEGIN_RCPP
 END_RCPP
 }
 // roll_sd_cpp
-Rcpp::NumericVector roll_sd_cpp(Rcpp::NumericVector x, unsigned int width, int by, Rcpp::String const& align, Rcpp::LogicalVector na_rm);
+Rcpp::NumericVector roll_sd_cpp(Rcpp::NumericVector x, int width, int by, Rcpp::String const& align, Rcpp::LogicalVector na_rm);
 RcppExport SEXP _MazamaRollUtils_roll_sd_cpp(SEXP xSEXP, SEXP widthSEXP, SEXP bySEXP, SEXP alignSEXP, SEXP na_rmSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< Rcpp::NumericVector >::type x(xSEXP);
-    Rcpp::traits::input_parameter< unsigned int >::type width(widthSEXP);
+    Rcpp::traits::input_parameter< int >::type width(widthSEXP);
     Rcpp::traits::input_parameter< int >::type by(bySEXP);
     Rcpp::traits::input_parameter< Rcpp::String const& >::type align(alignSEXP);
     Rcpp::traits::input_parameter< Rcpp::LogicalVector >::type na_rm(na_rmSEXP);
@@ -132,13 +132,13 @@ BEGIN_RCPP
 END_RCPP
 }
 // roll_sum_cpp
-Rcpp::NumericVector roll_sum_cpp(Rcpp::NumericVector x, unsigned int width, int by, Rcpp::String const& align, Rcpp::LogicalVector na_rm);
+Rcpp::NumericVector roll_sum_cpp(Rcpp::NumericVector x, int width, int by, Rcpp::String const& align, Rcpp::LogicalVector na_rm);
 RcppExport SEXP _MazamaRollUtils_roll_sum_cpp(SEXP xSEXP, SEXP widthSEXP, SEXP bySEXP, SEXP alignSEXP, SEXP na_rmSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< Rcpp::NumericVector >::type x(xSEXP);
-    Rcpp::traits::input_parameter< unsigned int >::type width(widthSEXP);
+    Rcpp::traits::input_parameter< int >::type width(widthSEXP);
     Rcpp::traits::input_parameter< int >::type by(bySEXP);
     Rcpp::traits::input_parameter< Rcpp::String const& >::type align(alignSEXP);
     Rcpp::traits::input_parameter< Rcpp::LogicalVector >::type na_rm(na_rmSEXP);
@@ -147,13 +147,13 @@ BEGIN_RCPP
 END_RCPP
 }
 // roll_var_cpp
-Rcpp::NumericVector roll_var_cpp(Rcpp::NumericVector x, unsigned int width, int by, Rcpp::String const& align, Rcpp::LogicalVector na_rm);
+Rcpp::NumericVector roll_var_cpp(Rcpp::NumericVector x, int width, int by, Rcpp::String const& align, Rcpp::LogicalVector na_rm);
 RcppExport SEXP _MazamaRollUtils_roll_var_cpp(SEXP xSEXP, SEXP widthSEXP, SEXP bySEXP, SEXP alignSEXP, SEXP na_rmSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< Rcpp::NumericVector >::type x(xSEXP);
-    Rcpp::traits::input_parameter< unsigned int >::type width(widthSEXP);
+    Rcpp::traits::input_parameter< int >::type width(widthSEXP);
     Rcpp::traits::input_parameter< int >::type by(bySEXP);
     Rcpp::traits::input_parameter< Rcpp::String const& >::type align(alignSEXP);
     Rcpp::traits::input_parameter< Rcpp::LogicalVector >::type na_rm(na_rmSEXP);

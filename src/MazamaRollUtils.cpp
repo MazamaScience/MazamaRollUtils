@@ -1,5 +1,7 @@
 #include <Rcpp.h>
-#include <stdlib.h>
+#include <algorithm>
+#include <cmath>
+#include <numeric>
 
 /* ----- Roll Class ----- */
 
@@ -36,12 +38,6 @@ public:
     by_ = by;
     na_rm_ = na_rm[0];
     weights_ = Rcpp::rep(1.0, width_);
-
-    // if (na_rm_[0]) {
-    //   Rprintf("'na_rm_' evaluates as TRUE");
-    // } else {
-    //   Rprintf("'na_rm_' evaluates as FALSE");
-    // }
 
     // Default weights
     if (!weights.isNull()) {
@@ -88,15 +84,6 @@ public:
     }
 
   }
-
-  // // Rolling Hampel
-  // Rcpp::NumericVector hampel() {
-  //   Rcpp::NumericVector out(length_, NA_REAL);
-  //   for (int i = start_; i < end_; i += by_) {
-  //     out[i] = windowHampel(i);
-  //   }
-  //   return out;
-  // }
 
   // Rolling Hampel filter
   Rcpp::NumericVector hampel() {
@@ -200,20 +187,6 @@ private:
   int half_width_;               // window half-width
   int start_;                    // start index
   int end_;                      // end index
-
-  // // Window Hampel
-  // double windowHampel(const int &index) {
-  //   const double kappa = 1.4826;
-  //   double mediawidth_i = windowMedian(index);
-  //   Rcpp::NumericVector tmp(width_, NA_REAL);
-  //   for (int i = 0; i < width_; ++i) { // MAD
-  //     int s = index - half_width_ + i;
-  //     tmp[i] = std::fabs(x_[s] - mediawidth_i);
-  //   }
-  //   std::nth_element(tmp.begin(), tmp.begin() + half_width_, tmp.end());
-  //   double mad = tmp[half_width_];
-  //   return std::fabs(x_[index] - mediawidth_i) / (kappa * mad);
-  // }
 
   // Window Hampel filter
   double windowHampel(const int &index) {
@@ -544,60 +517,10 @@ private:
 
 };
 
-/* ----- Rcpp Exported ----- */
-
-// //' @title Roll Hampel
-// //'
-// //' @description Apply a moving-window hampel value function to a numeric
-// //' vector.
-// //'
-// //' @details Each window of \code{n}-length is applied \code{weight} and then
-// //' slid/shifted/rolled \code{by} a positive integer amount about the window's
-// //' \code{align}-ment index.
-// //'
-// //' The \code{align} parameter determines the alignment of the return value
-// //' within the window. Thus:
-// //'
-// //' \itemize{
-// //'   \item{\code{align = -1 [*------]} will cause the returned vector to have width-1 \code{NA} values at the right end.}
-// //'   \item{\code{align = 0  [---*---]} will cause the returned vector to have width/2 \code{NA} values at either end.}
-// //'   \item{\code{align = 1  [------*]} will cause the returned vector to have width-1 \code{NA} values at the left end.}
-// //' }
-// //'
-// //' @param x Numeric vector.
-// //' @param width Integer width of the rolling window.
-// //' @param by An integer to shift the window by.
-// //' @param align A signed integer representing the position of the return value within the window.
-// //' \code{-1(left) | 0(center) | 1(right)}.
-// //'
-// //' @return Numeric vector of the same length as \code{x}.
-// //'
-// //' @examples
-// //' # load airquality
-// //' data("airquality")
-// //'
-// //' # calculate moving hampel value of next 3 measurements
-// //' roll_mean(airquality$Temp, width = 3, align = 1)
-// // [[Rcpp::export]]
-// Rcpp::NumericVector roll_hampel(
-//     Rcpp::NumericVector x,
-//     unsigned int width = 5,
-//     int by = 1,
-//     int align = 0
-// ) {
-//   Roll roll;
-//   Rcpp::Nullable<Rcpp::NumericVector> weights = R_NilValue;
-//   roll.init(x, width, by, align, na_rm, weights);
-//   return roll.hampel();
-// }
-
-// See:  https://stackoverflow.com/questions/67920759/rcpp-exportpattern
-// See:  https://stackoverflow.com/questions/68643101/building-rcpp-package-how-to-make-functions-internal
-
 // [[Rcpp::export(".roll_hampel_cpp")]]
 Rcpp::NumericVector roll_hampel_cpp(
     Rcpp::NumericVector x,
-    unsigned int width = 5,
+    int width = 5,
     int by = 1,
     Rcpp::String const& align = "center",
     Rcpp::LogicalVector na_rm = Rcpp::LogicalVector::create(0)
@@ -611,7 +534,7 @@ Rcpp::NumericVector roll_hampel_cpp(
 // [[Rcpp::export(".roll_MAD_cpp")]]
 Rcpp::NumericVector roll_MAD_cpp(
     Rcpp::NumericVector x,
-    unsigned int width = 5,
+    int width = 5,
     int by = 1,
     Rcpp::String const& align = "center",
     Rcpp::LogicalVector na_rm = Rcpp::LogicalVector::create(0)
@@ -625,7 +548,7 @@ Rcpp::NumericVector roll_MAD_cpp(
 // [[Rcpp::export(".roll_max_cpp")]]
 Rcpp::NumericVector roll_max_cpp(
     Rcpp::NumericVector x,
-    unsigned int width = 5,
+    int width = 5,
     int by = 1,
     Rcpp::String const& align = "center",
     Rcpp::LogicalVector na_rm = Rcpp::LogicalVector::create(0)
@@ -639,7 +562,7 @@ Rcpp::NumericVector roll_max_cpp(
 // [[Rcpp::export(".roll_mean_cpp")]]
 Rcpp::NumericVector roll_mean_cpp(
     Rcpp::NumericVector x,
-    unsigned int width = 5,
+    int width = 5,
     int by = 1,
     Rcpp::String const& align = "center",
     Rcpp::LogicalVector na_rm = Rcpp::LogicalVector::create(0),
@@ -653,7 +576,7 @@ Rcpp::NumericVector roll_mean_cpp(
 // [[Rcpp::export(".roll_median_cpp")]]
 Rcpp::NumericVector roll_median_cpp(
     Rcpp::NumericVector x,
-    unsigned int width = 5,
+    int width = 5,
     int by = 1,
     Rcpp::String const& align = "center",
     Rcpp::LogicalVector na_rm = Rcpp::LogicalVector::create(0)
@@ -667,7 +590,7 @@ Rcpp::NumericVector roll_median_cpp(
 // [[Rcpp::export(".roll_min_cpp")]]
 Rcpp::NumericVector roll_min_cpp(
     Rcpp::NumericVector x,
-    unsigned int width = 5,
+    int width = 5,
     int by = 1,
     Rcpp::String const& align = "center",
     Rcpp::LogicalVector na_rm = Rcpp::LogicalVector::create(0)
@@ -681,7 +604,7 @@ Rcpp::NumericVector roll_min_cpp(
 // [[Rcpp::export(".roll_prod_cpp")]]
 Rcpp::NumericVector roll_prod_cpp(
     Rcpp::NumericVector x,
-    unsigned int width = 5,
+    int width = 5,
     int by = 1,
     Rcpp::String const& align = "center",
     Rcpp::LogicalVector na_rm = Rcpp::LogicalVector::create(0)
@@ -695,7 +618,7 @@ Rcpp::NumericVector roll_prod_cpp(
 // [[Rcpp::export(".roll_sd_cpp")]]
 Rcpp::NumericVector roll_sd_cpp(
     Rcpp::NumericVector x,
-    unsigned int width = 5,
+    int width = 5,
     int by = 1,
     Rcpp::String const& align = "center",
     Rcpp::LogicalVector na_rm = Rcpp::LogicalVector::create(0)
@@ -709,7 +632,7 @@ Rcpp::NumericVector roll_sd_cpp(
 // [[Rcpp::export(".roll_sum_cpp")]]
 Rcpp::NumericVector roll_sum_cpp(
     Rcpp::NumericVector x,
-    unsigned int width = 5,
+    int width = 5,
     int by = 1,
     Rcpp::String const& align = "center",
     Rcpp::LogicalVector na_rm = Rcpp::LogicalVector::create(0)
@@ -723,7 +646,7 @@ Rcpp::NumericVector roll_sum_cpp(
 // [[Rcpp::export(".roll_var_cpp")]]
 Rcpp::NumericVector roll_var_cpp(
     Rcpp::NumericVector x,
-    unsigned int width = 5,
+    int width = 5,
     int by = 1,
     Rcpp::String const& align = "center",
     Rcpp::LogicalVector na_rm = Rcpp::LogicalVector::create(0)
