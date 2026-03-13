@@ -2,7 +2,7 @@
 % Please edit documentation in R/findOutliers.R
 \name{findOutliers}
 \alias{findOutliers}
-\title{Outlier Detection with a Rolling Hampel Filter}
+\title{Outlier detection with a rolling Hampel filter}
 \usage{
 findOutliers(
   x,
@@ -19,7 +19,7 @@ findOutliers(
 
 \item{thresholdMin}{Numeric threshold for outlier detection}
 
-\item{selectivity}{Value between [0-1] used in determining outliers, or
+\item{selectivity}{Value between 0 and 1 used in determining outliers, or
 \code{NA} if \code{fixedThreshold=TRUE}.}
 
 \item{fixedThreshold}{Logical specifying whether outlier detection uses
@@ -29,9 +29,8 @@ findOutliers(
 A vector of indices associated with outliers in the incoming data \code{x}.
 }
 \description{
-A wrapper for the \code{roll_hampel()} function that counts
-outliers using either a user specified threshold value or a threshold value
-based on the statistics of the incoming data.
+A wrapper around [roll_hampel()] that identifies outliers using either
+a fixed threshold or a threshold derived from the input data.
 }
 \details{
 The \code{thresholdMin} level is similar to a sigma value for normally

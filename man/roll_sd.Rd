@@ -14,42 +14,40 @@ roll_sd(x, width = 1L, by = 1L, align = c("center", "left", "right"))
 \item{by}{Integer shift by which the window is moved each iteration.}
 
 \item{align}{Character position of the return value within the window. One of:
-\code{"left" | "center" | "right"}.}
+`"left" | "center" | "right"`.}
 }
 \value{
-Numeric vector of the same length as \code{x}.
+Numeric vector of the same length as `x`.
 }
 \description{
 Apply a moving-window standard deviation function to a
 numeric vector.
 }
 \details{
-For every index in the incoming vector \code{x}, a value is returned that
-is the standard deviation of all values in \code{x} that fall within a window of width
-\code{width}.
+For every index in the incoming vector `x`, a value is returned that
+is the standard deviation of all values in `x` that fall within a window of width
+`width`.
 
-The \code{align} parameter determines the alignment of the return value
+The `align` parameter determines the alignment of the return value
 within the window. Thus:
 
 \itemize{
-  \item{\code{align = -1 [*------]} will cause the returned vector to have width-1 \code{NA} values at the right end.}
-  \item{\code{align = 0  [---*---]} will cause the returned vector to have width/2 \code{NA} values at either end.}
-  \item{\code{align = 1  [------*]} will cause the returned vector to have width-1 \code{NA} values at the left end.}
+  \item{`align = "left"   [*------]` will cause the returned vector to have width-1 `NA` values at the right end.}
+  \item{`align = "center" [---*---]` will cause the returned vector to have width/2 `NA` values at either end.}
+  \item{`align = "right"  [------*]` will cause the returned vector to have width-1 `NA` values at the left end.}
 }
 
-For large vectors, the\code{by} parameter can be used to force the window
-to jump ahead \code{by} indices for the next calculation. Indices that are
-skipped over will be assigned \code{NA} values so that the return vector still has
+For large vectors, the `by` parameter can be used to force the window
+to jump ahead `by` indices for the next calculation. Indices that are
+skipped over will be assigned `NA` values so that the return vector still has
 the same length as the incoming vector. This can dramatically speed up
 calculations for high resolution time series data.
 }
 \note{
-No \code{na.rm} argument is provided as interpretation of the results
+No `na.rm` argument is provided as interpretation of the results
 is not at all clear.
 }
 \examples{
-library(MazamaRollUtils)
-
 # Example air quality time series
 t <- example_pm25$datetime
 x <- example_pm25$pm25

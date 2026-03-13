@@ -1,18 +1,16 @@
 Package: MazamaRollUtils
 Type: Package
 Title: Efficient Rolling Functions
-Version: 0.1.4
-Date: 2025-05-07
+Version: 1.0.0
+Date: 2026-03-13
 Authors@R: c(
     person("Jonathan", "Callahan", email="jonathan.s.callahan@gmail.com", role=c("aut", "cre")),
     person("Hans", "Martin", email="hansmrtn@gmail.com", role=c("aut"))
     )
-Maintainer: Jonathan Callahan <jonathan.s.callahan@gmail.com>
-Description: A suite of compiled functions calculating rolling mins, means, 
-    maxes and other statistics. This package is designed to meet the needs of
-    data processing systems for environmental time series.
+Description: Fast rolling-window functions for numeric vectors.
+    Designed for efficient processing of environmental time-series data.
 License: GPL-3
-URL: https://github.com/MazamaScience/MazamaRollUtils
+URL: https://github.com/MazamaScience/MazamaRollUtils, https://mazamascience.github.io/MazamaRollUtils/
 BugReports: https://github.com/MazamaScience/MazamaRollUtils/issues
 Depends:
     R (>= 4.0.0)
@@ -26,7 +24,8 @@ Suggests:
     testthat (>= 3.2.0),
     zoo
 LinkingTo: Rcpp
-Encoding: UTF-8
 VignetteBuilder: knitr
+Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.3.1
+RoxygenNote: 7.3.3
+Config/testthat/edition: 3

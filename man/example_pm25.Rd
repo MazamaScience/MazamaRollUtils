@@ -5,17 +5,20 @@
 \alias{example_pm25}
 \title{Example timeseries dataset}
 \format{
-A dataframe with columns "datetime" and "pm25".
+A data frame with 2 columns:
+\describe{
+  \item{datetime}{POSIXct timestamp of the observation}
+  \item{pm25}{PM2.5 concentration (µg/m³)}
+}
 }
 \usage{
 example_pm25
 }
 \description{
-The \code{example_pm25_data} dataset provides example timeseries
-data for practicing and code examples. This data represents hourly air quality
-measurements.
+The `example_pm25` dataset provides example timeseries data for practicing
+and code examples. This dataset represents hourly air quality measurements.
 
-This dataset was was generated on 2021-09-22 by running:
+The dataset was generated on 2021-09-22 by running:
 
 \preformatted{
 library(AirSensor)

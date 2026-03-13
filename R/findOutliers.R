@@ -1,8 +1,7 @@
-#' @title Outlier Detection with a Rolling Hampel Filter
+#' Outlier detection with a rolling Hampel filter
 #'
-#' @description A wrapper for the \code{roll_hampel()} function that counts
-#' outliers using either a user specified threshold value or a threshold value
-#' based on the statistics of the incoming data.
+#' A wrapper around [roll_hampel()] that identifies outliers using either
+#' a fixed threshold or a threshold derived from the input data.
 #'
 #' @details
 #'
@@ -37,7 +36,7 @@
 #' @param x Numeric vector.
 #' @param width Integer width of the rolling window.
 #' @param thresholdMin Numeric threshold for outlier detection
-#' @param selectivity Value between [0-1] used in determining outliers, or
+#' @param selectivity Value between 0 and 1 used in determining outliers, or
 #' \code{NA} if \code{fixedThreshold=TRUE}.
 #' @param fixedThreshold Logical specifying whether outlier detection uses
 #' \code{selectivity}  (see Details).
@@ -61,50 +60,46 @@
 #' title("Outlier detection using a Hampel filter")
 
 findOutliers <- function(
-  x,
-  width = 25,
-  thresholdMin = 7,
-  selectivity = NA,
-  fixedThreshold = TRUE
-  ) {
+    x,
+    width = 25,
+    thresholdMin = 7,
+    selectivity = NA,
+    fixedThreshold = TRUE
+) {
 
-  if ( !is.logical(fixedThreshold) ) {
-    warning(paste0('findOutliers() argument fixedThreshold=', fixedThreshold,' is not a logical value.  Using default value.'))
+  if (!is.logical(fixedThreshold)) {
+    warning(
+      sprintf(
+        "Argument 'fixedThreshold' must be logical; got %s. Using TRUE.",
+        deparse(fixedThreshold)
+      )
+    )
     fixedThreshold <- TRUE
   }
 
   h <- roll_hampel(x, width)
 
-  #if 50%+ of values in window are the same, then h blows up to Inf. In this case, set to NA.
-
+  # If 50%+ of values in a window are identical, h can become Inf.
+  # In that case, replace Inf with NA.
   h[is.infinite(h)] <- NA
 
-  if ( all(is.na(h)) ) {
-    stop("roll_hampel returns a vector with all NA or NaN (50%+ of values in all windows are identical)")
+  if (all(is.na(h))) {
+    stop(
+      "roll_hampel() returned all NA values; this can occur when 50% or more ",
+      "of values in every rolling window are identical."
+    )
   }
 
   maxH <- max(h, na.rm = TRUE)
 
-  if ( maxH < thresholdMin ) {
-
-    # If no values cross thresholdMin, return an empty vector
-    return(which(h > maxH)) # integer vector of length zero
-
+  if (maxH < thresholdMin) {
+    return(integer(0))
   } else {
-
-    # Some values cross thresholdMin.
-
-    if ( fixedThreshold ) {
-      # Pick outliers based on thresholdMin
-      outliers <- which(h > thresholdMin)
-      return(outliers)
+    if (fixedThreshold) {
+      return(which(h > thresholdMin))
     } else {
-      # Pick outliers based on maxH and selectivity
-      outliers <- which(h > maxH * selectivity)
-      return(outliers)
+      return(which(h > maxH * selectivity))
     }
-
   }
 
 }
-
