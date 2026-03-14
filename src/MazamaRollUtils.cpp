@@ -204,15 +204,28 @@ private:
   // Window Hampel filter
   double windowHampel(const int &index) {
     const double kappa = 1.4826;
+
     double median = windowMedian(index);
     if (ISNAN(median)) {
       return NA_REAL;
     }
+
     double MAD = windowMAD(index);
     if (ISNAN(MAD)) {
       return NA_REAL;
     }
-    return std::fabs(x_[index] - median) / (kappa * MAD);
+
+    double deviation = std::fabs(x_[index] - median);
+
+    if (MAD == 0) {
+      if (deviation == 0) {
+        return 0.0;
+      } else {
+        return R_PosInf;
+      }
+    }
+
+    return deviation / (kappa * MAD);
   }
 
   // Window Median Absolute Deviation
@@ -319,7 +332,6 @@ private:
 
   // Window Median
   double windowMedian(const int &index) {
-    int na_count = 0;
     int valid_count = 0;
     Rcpp::NumericVector tmp(width_);
 
@@ -330,19 +342,17 @@ private:
         if (!na_rm_) {
           return NA_REAL;
         }
-        na_count += 1;
       } else if (ISNAN(x_[s])) {
         if (!na_rm_) {
           return NA_REAL;
         }
-        na_count += 1;
       } else {
         tmp[valid_count] = x_[s];
         valid_count += 1;
       }
     }
 
-    if (na_count == width_) {
+    if (valid_count == 0) {
       return NA_REAL;
     }
 
