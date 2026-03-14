@@ -188,6 +188,19 @@ private:
   int start_;                    // start index
   int end_;                      // end index
 
+  int windowIndex(int index, int i) const {
+    switch (align_code_) {
+    case -1:
+      return index + i;
+    case 0:
+      return index - half_width_ + i;
+    case 1:
+      return index - (width_ - 1) + i;
+    default:
+      Rcpp::stop("Invalid internal alignment code.");
+    }
+  }
+
   // Window Hampel filter
   double windowHampel(const int &index) {
     const double kappa = 1.4826;
@@ -204,44 +217,38 @@ private:
 
   // Window Median Absolute Deviation
   double windowMAD(const int &index) {
-    int na_count = 0;
     double median = windowMedian(index);
     if (ISNAN(median)) {
       return NA_REAL;
     }
-    Rcpp::NumericVector tmp(width_, NA_REAL);
+
+    int valid_count = 0;
+    Rcpp::NumericVector tmp(width_);
+
     for (int i = 0; i < width_; ++i) {
-      int s;
-      switch (align_code_) {
-      case -1:
-        s = index + i;
-        break;
-      case 0:
-        s = index - half_width_ + i;
-        break;
-      case 1:
-        s = index - (width_ - 1) + i;
-        break;
-      }
-      if ( s < 0 ) {
+      int s = windowIndex(index, i);
+
+      if (s < 0 || s >= length_) {
         if (!na_rm_) {
           return NA_REAL;
         }
-        na_count += 1;
       } else if (ISNAN(x_[s])) {
         if (!na_rm_) {
           return NA_REAL;
         }
-        na_count += 1;
       } else {
-        tmp[i] = std::fabs(x_[s] - median);
+        tmp[valid_count] = std::fabs(x_[s] - median);
+        valid_count += 1;
       }
     }
-    if (na_count == width_) {
+
+    if (valid_count == 0) {
       return NA_REAL;
     }
-    std::nth_element(tmp.begin(), tmp.begin() + half_width_, tmp.end());
-    return tmp[half_width_];
+
+    int mid = valid_count / 2;
+    std::nth_element(tmp.begin(), tmp.begin() + mid, tmp.begin() + valid_count);
+    return tmp[mid];
   }
 
   // Window Maximum
@@ -249,18 +256,7 @@ private:
     int na_count = 0;
     double max = x_[index];
     for (int i = 0; i < width_; ++i) {
-      int s;
-      switch (align_code_) {
-      case -1:
-        s = index + i;
-        break;
-      case 0:
-        s = index - half_width_ + i;
-        break;
-      case 1:
-        s = index - (width_ - 1) + i;
-        break;
-      }
+      int s = windowIndex(index, i);
       if ( s < 0 ) {
         if (!na_rm_) {
           return NA_REAL;
@@ -288,21 +284,13 @@ private:
   // Window Mean
   double windowMean(const int &index) {
     int na_count = 0;
-    double mean = 0;
+    double weighted_sum = 0.0;
+    double used_weight_sum = 0.0;
+
     for (int i = 0; i < width_; ++i) {
-      int s;
-      switch (align_code_) {
-      case -1:
-        s = index + i;
-        break;
-      case 0:
-        s = index - half_width_ + i;
-        break;
-      case 1:
-        s = index - (width_ - 1) + i;
-        break;
-      }
-      if ( s < 0 ) {
+      int s = windowIndex(index, i);
+
+      if (s < 0 || s >= length_) {
         if (!na_rm_) {
           return NA_REAL;
         }
@@ -313,34 +301,32 @@ private:
         }
         na_count += 1;
       } else {
-        mean += x_[s] * weights_[i];
+        weighted_sum += x_[s] * weights_[i];
+        used_weight_sum += weights_[i];
       }
     }
+
     if (na_count == width_) {
       return NA_REAL;
     }
-    mean /= (double)width_;
-    return mean;
+
+    if (used_weight_sum == 0.0) {
+      return NA_REAL;
+    }
+
+    return weighted_sum / used_weight_sum;
   }
 
   // Window Median
   double windowMedian(const int &index) {
     int na_count = 0;
-    Rcpp::NumericVector tmp(width_, NA_REAL);
+    int valid_count = 0;
+    Rcpp::NumericVector tmp(width_);
+
     for (int i = 0; i < width_; ++i) {
-      int s;
-      switch (align_code_) {
-      case -1:
-        s = index + i;
-        break;
-      case 0:
-        s = index - half_width_ + i;
-        break;
-      case 1:
-        s = index - (width_ - 1) + i;
-        break;
-      }
-      if ( s < 0 ) {
+      int s = windowIndex(index, i);
+
+      if (s < 0 || s >= length_) {
         if (!na_rm_) {
           return NA_REAL;
         }
@@ -351,14 +337,18 @@ private:
         }
         na_count += 1;
       } else {
-        tmp[i] = x_[s];
+        tmp[valid_count] = x_[s];
+        valid_count += 1;
       }
     }
+
     if (na_count == width_) {
       return NA_REAL;
     }
-    std::nth_element(tmp.begin(), tmp.begin() + half_width_, tmp.end());
-    return tmp[half_width_];
+
+    int mid = valid_count / 2;
+    std::nth_element(tmp.begin(), tmp.begin() + mid, tmp.begin() + valid_count);
+    return tmp[mid];
   }
 
   // Window Minimum
@@ -366,18 +356,7 @@ private:
     int na_count = 0;
     double min = x_[index];
     for (int i = 0; i < width_; ++i) {
-      int s;
-      switch (align_code_) {
-      case -1:
-        s = index + i;
-        break;
-      case 0:
-        s = index - half_width_ + i;
-        break;
-      case 1:
-        s = index - (width_ - 1) + i;
-        break;
-      }
+      int s = windowIndex(index, i);
       if ( s < 0 ) {
         if (!na_rm_) {
           return NA_REAL;
@@ -407,18 +386,7 @@ private:
     int na_count = 0;
     double prod = 1;
     for (int i = 0; i < width_; ++i) {
-      int s;
-      switch (align_code_) {
-      case -1:
-        s = index + i;
-        break;
-      case 0:
-        s = index - half_width_ + i;
-        break;
-      case 1:
-        s = index - (width_ - 1) + i;
-        break;
-      }
+      int s = windowIndex(index, i);
       if ( s < 0 ) {
         if (!na_rm_) {
           return NA_REAL;
@@ -444,18 +412,7 @@ private:
     int na_count = 0;
     double sum = 0;
     for (int i = 0; i < width_; ++i) {
-      int s;
-      switch (align_code_) {
-      case -1:
-        s = index + i;
-        break;
-      case 0:
-        s = index - half_width_ + i;
-        break;
-      case 1:
-        s = index - (width_ - 1) + i;
-        break;
-      }
+      int s = windowIndex(index, i);
       if ( s < 0 ) {
         if (!na_rm_) {
           return NA_REAL;
@@ -482,18 +439,7 @@ private:
     double var = 0;
     double mean = windowMean(index);
     for (int i = 0; i < width_; ++i) {
-      int s;
-      switch (align_code_) {
-      case -1:
-        s = index + i;
-        break;
-      case 0:
-        s = index - half_width_ + i;
-        break;
-      case 1:
-        s = index - (width_ - 1) + i;
-        break;
-      }
+      int s = windowIndex(index, i);
       if ( s < 0 ) {
         if (!na_rm_) {
           return NA_REAL;

@@ -1,6 +1,7 @@
 test_that("na removal is supported", {
 
   x <- c(1:4, NA, 6:10)
+  x2 <- c(1:3, NA, NA, NA, 7:10)
 
   # roll_max
   expect_equal(
@@ -19,8 +20,17 @@ test_that("na removal is supported", {
   )
   expect_equal(
     roll_mean(x, 3, na.rm = TRUE),
-    c(NA, 2, 3, 2.33333, 3.33333, 4.33333, 7, 8, 9, NA),
-    tolerance = .00001
+    c(NA, 2, 3, 3.5, 5, 6.5, 7, 8, 9, NA)
+  )
+
+  # roll_mean
+  expect_equal(
+    roll_mean(x2, 3, na.rm = FALSE),
+    c(NA, 2, NA, NA, NA, NA, NA, 8, 9, NA)
+  )
+  expect_equal(
+    roll_mean(x2, 3, na.rm = TRUE),
+    c(NA, 2, 2.5, 3,NA, 7, 7.5, 8, 9, NA)
   )
 
   ##############################################################################
