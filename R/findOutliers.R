@@ -5,31 +5,31 @@
 #'
 #' @details
 #'
-#' The \code{thresholdMin} level is similar to a sigma value for normally
+#' The `thresholdMin` level is similar to a sigma value for normally
 #' distributed data. Hampel filter values above 6 indicate a data value that is
 #' extremely unlikely to be part of a normal distribution  (~ 1/500 million) and
 #' therefore very likely to be an outlier. By choosing a relatively large value
-#' for \code{thresholdMin} we make it less likely that we will generate false
+#' for `thresholdMin` we make it less likely that we will generate false
 #' positives. False positives can include high frequency environmental noise.
 #'
-#' With the default setting of \code{fixedThreshold = TRUE} any value above the
-#' threshold is considered an outlier and the \code{selectivity} is ignored.
+#' With the default setting of `fixedThreshold = TRUE` any value above the
+#' threshold is considered an outlier and the `selectivity` is ignored.
 #'
-#' The \code{selectivity} is a value between 0 and 1 and is used to generate an
-#' appropriate threshold for outlier detection based on the statistics of the
-#' incoming data. A lower value for \code{selectivity} will result in more
-#' outliers while a value closer to 1.0 will result in fewer. If
-#' \code{fixedThreshold=TRUE}, \code{selectivity} may have a value of \code{NA}.
+#' The `selectivity` is a value between 0 and 1 and is used to generate an
+#' appropriate threshold for outlier detection based on the Hampel filter values computed from the
+#' incoming data. A lower value for `selectivity` will result in more
+#' outliers, while a value closer to 1.0 will result in fewer. If
+#' `fixedThreshold=TRUE`, `selectivity` may have a value of `NA`.
 #'
-#' When the user specifies \code{fixedThreshold=FALSE}, the \code{thresholdMin}
-#' and \code{selectivity} parameters work like squelch and volume on a CB radio:
-#' \code{thresholdMin} sets a noise threshold below which you don't want anything
-#' returned while \code{selectivity} adjusts the number of points defined as
+#' When the user specifies `fixedThreshold=FALSE`, the `thresholdMin`
+#' and `selectivity` parameters work like squelch and volume on a CB radio:
+#' `thresholdMin` sets a noise threshold below which you don't want anything
+#' returned while `selectivity` adjusts the number of points defined as
 #' outliers by setting a new threshold defined by the maximum value of
-#' \code{roll_hampel} multiplied by \code{selectivity}.
+#' `roll_hampel` multiplied by `selectivity`.
 #'
-#' \code{width}, the window width, is a parameter that is passed to
-#' \code{roll_hampel()}.
+#' `width`, the window width, is a parameter that is passed to
+#' `roll_hampel()`.
 #'
 #' @note This function is copied from the \pkg{seismicRoll} package.
 #'
@@ -37,13 +37,13 @@
 #' @param width Integer width of the rolling window.
 #' @param thresholdMin Numeric threshold for outlier detection
 #' @param selectivity Value between 0 and 1 used in determining outliers, or
-#' \code{NA} if \code{fixedThreshold=TRUE}.
+#' `NA` if `fixedThreshold=TRUE`.
 #' @param fixedThreshold Logical specifying whether outlier detection uses
-#' \code{selectivity}  (see Details).
+#' `selectivity`  (see Details).
 #'
-#' @return A vector of indices associated with outliers in the incoming data \code{x}.
+#' @return A vector of indices associated with outliers in the incoming data `x`.
 #'
-#' @seealso \code{\link{roll_hampel}}
+#' @seealso [roll_hampel()]
 #' @examples
 #' # Noisy sinusoid with outliers
 #' a <- jitter(sin(0.1*seq(1e4)),amount=0.2)

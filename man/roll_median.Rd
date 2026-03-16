@@ -20,34 +20,34 @@ roll_median(
 \item{by}{Integer shift by which the window is moved each iteration.}
 
 \item{align}{Character position of the return value within the window. One of:
-`"left" | "center" | "right"`.}
+\code{"left" | "center" | "right"}.}
 
-\item{na.rm}{Logical specifying whether `NA` values should be removed
+\item{na.rm}{Logical specifying whether \code{NA} values should be removed
 before the calculations within each window.}
 }
 \value{
-Numeric vector of the same length as `x`.
+Numeric vector of the same length as \code{x}.
 }
 \description{
 Apply a moving-window median function to a numeric vector.
 }
 \details{
-For every index in the incoming vector `x`, a value is returned that
-is the median of all values in `x` that fall within a window of width
-`width`.
+For every index in the incoming vector \code{x}, a value is returned that
+is the median of all values in \code{x} that fall within a window of width
+\code{width}.
 
-The `align` parameter determines the alignment of the return value
+The \code{align} parameter determines the alignment of the return value
 within the window. Thus:
 
 \itemize{
-  \item{`align = "left"   [*------]` will cause the returned vector to have width - 1 `NA` values at the right end.}
-  \item{`align = "center" [---*---]` will cause the returned vector to have `NA` values at either end as needed for centered alignment.}
-  \item{`align = "right"  [------*]` will cause the returned vector to have width - 1 `NA` values at the left end.}
+\item{\verb{align = "left"   [*------]} will cause the returned vector to have width - 1 \code{NA} values at the right end.}
+\item{\verb{align = "center" [---*---]} will cause the returned vector to have \code{NA} values at either end as needed for centered alignment.}
+\item{\verb{align = "right"  [------*]} will cause the returned vector to have width - 1 \code{NA} values at the left end.}
 }
 
-For large vectors, the `by` parameter can be used to force the window
-to jump ahead `by` indices for the next calculation. Indices that are
-skipped over will be assigned `NA` values so that the return vector still has
+For large vectors, the \code{by} parameter can be used to force the window
+to jump ahead \code{by} indices for the next calculation. Indices that are
+skipped over will be assigned \code{NA} values so that the return vector still has
 the same length as the incoming vector. This can dramatically speed up
 calculations for high resolution time series data.
 }

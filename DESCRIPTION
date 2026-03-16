@@ -2,20 +2,24 @@ Package: MazamaRollUtils
 Type: Package
 Title: Efficient Rolling Functions
 Version: 1.0.0
-Date: 2026-03-13
 Authors@R: c(
-    person("Jonathan", "Callahan", email="jonathan.s.callahan@gmail.com", role=c("aut", "cre")),
-    person("Hans", "Martin", email="hansmrtn@gmail.com", role=c("aut"))
+    person("Jonathan", "Callahan",
+           email = "jonathan.s.callahan@gmail.com",
+           role = c("aut", "cre")),
+    person("Hans", "Martin",
+           email = "hansmrtn@gmail.com",
+           role = c("aut"))
     )
 Description: Fast rolling-window functions for numeric vectors.
     Designed for efficient processing of environmental time-series data.
 License: GPL-3
-URL: https://github.com/MazamaScience/MazamaRollUtils, https://mazamascience.github.io/MazamaRollUtils/
+URL: https://github.com/MazamaScience/MazamaRollUtils,
+     https://mazamascience.github.io/MazamaRollUtils/
 BugReports: https://github.com/MazamaScience/MazamaRollUtils/issues
 Depends:
     R (>= 4.0.0)
-Imports: 
-  Rcpp (>= 1.0.10),
+Imports:
+    Rcpp (>= 1.0.10)
 Suggests:
     knitr,
     markdown,
@@ -23,9 +27,11 @@ Suggests:
     roxygen2,
     testthat (>= 3.2.0),
     zoo
-LinkingTo: Rcpp
+LinkingTo:
+    Rcpp
 VignetteBuilder: knitr
 Encoding: UTF-8
 LazyData: true
+Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.3
 Config/testthat/edition: 3

@@ -7,15 +7,15 @@
 \format{
 A data frame with 2 columns:
 \describe{
-  \item{datetime}{POSIXct timestamp of the observation}
-  \item{pm25}{PM2.5 concentration (µg/m³)}
+\item{datetime}{POSIXct timestamp of the observation}
+\item{pm25}{PM2.5 concentration (µg/m³)}
 }
 }
 \usage{
 example_pm25
 }
 \description{
-The `example_pm25` dataset provides example timeseries data for practicing
+The \code{example_pm25} dataset provides example timeseries data for practicing
 and code examples. This dataset represents hourly air quality measurements.
 
 The dataset was generated on 2021-09-22 by running:

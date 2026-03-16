@@ -29,7 +29,7 @@ findOutliers(
 A vector of indices associated with outliers in the incoming data \code{x}.
 }
 \description{
-A wrapper around [roll_hampel()] that identifies outliers using either
+A wrapper around \code{\link[=roll_hampel]{roll_hampel()}} that identifies outliers using either
 a fixed threshold or a threshold derived from the input data.
 }
 \details{
@@ -44,9 +44,9 @@ With the default setting of \code{fixedThreshold = TRUE} any value above the
 threshold is considered an outlier and the \code{selectivity} is ignored.
 
 The \code{selectivity} is a value between 0 and 1 and is used to generate an
-appropriate threshold for outlier detection based on the statistics of the
+appropriate threshold for outlier detection based on the Hampel filter values computed from the
 incoming data. A lower value for \code{selectivity} will result in more
-outliers while a value closer to 1.0 will result in fewer. If
+outliers, while a value closer to 1.0 will result in fewer. If
 \code{fixedThreshold=TRUE}, \code{selectivity} may have a value of \code{NA}.
 
 When the user specifies \code{fixedThreshold=FALSE}, the \code{thresholdMin}
@@ -78,5 +78,5 @@ points(o_indices, a[o_indices], pch = 16, cex = 0.8, col = 'red')
 title("Outlier detection using a Hampel filter")
 }
 \seealso{
-\code{\link{roll_hampel}}
+\code{\link[=roll_hampel]{roll_hampel()}}
 }
