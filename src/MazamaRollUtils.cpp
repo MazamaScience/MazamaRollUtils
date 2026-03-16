@@ -79,7 +79,7 @@ public:
     } else if (align == "center") {
       align_code_ = 0;
       start_ = half_width_;
-      end_ = length_ - half_width_;
+      end_ = length_ - (width_ - 1) + half_width_;
     } else if (align == "right") {
       align_code_ = 1;
       start_ = width - 1;
