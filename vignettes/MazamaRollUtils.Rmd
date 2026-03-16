@@ -1,7 +1,6 @@
 ---
 title: "Introduction to MazamaRollUtils"
 author: "Jonathan Callahan, Mazama Science"
-date: "September 22, 2021"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Introduction to MazamaRollUtils}
@@ -22,14 +21,14 @@ knitr::opts_chunk$set(
 
 ## Background
 
-Analysis of time series data often involves applying "rolling" functions to calculate,
-_e.g._ a "moving average". These functions are straightforward to write in any language
+Time series analysis often uses rolling calculations such as moving averages.
+These functions are straightforward to write in any language
 and it makes sense to have C++ versions of common rolling functions available
 to R as they dramatically speed up calculations. Several packages exist that 
 provide some version of this functionality:
 
 * [zoo](https://cran.r-project.org/package=zoo) -- 
-core R package with a specific data model
+widely used package for ordered observations and rolling calculations
 * [seismicRoll](https://cran.r-project.org/package=seismicRoll) -- rolling functions focused on seismology
 * [RcppRoll](https://cran.r-project.org/package=RcppRoll) --
 rolling functions for basic statistics
@@ -51,7 +50,7 @@ install.packages('MazamaRollUtils')
 Install the latest version from GitHub with:
 
 ```
-devtools::install_github("MazamaScience/MazamaRollUtils")
+remotes::install_github("MazamaScience/MazamaRollUtils")
 ```
 
 ## Features
@@ -89,14 +88,16 @@ All of the `roll_~()` functions accept the same arguments where appropriate:
 * `x` -- Numeric vector input.
 * `width` -- Integer width of the rolling window.
 * `by` -- Integer shift to use when sliding the window to the next location
-align Character position of the return value within the window. One of: `"left" | "center" | "right"`.
-* `na.rm` -- Logical specifying whether \code{NA} values should be removed 
+* `align` -- Character position of the return value within the window. One of: `"left" | "center" | "right"`.
+* `na.rm` -- Logical specifying whether `NA` values should be removed 
 before the calculations within each window.
 
 The `roll_mean()` function also accepts:
 
 * `weights` -- Numeric vector of size `width` specifying each window index weight. 
 If `NULL`, unit weights are used.
+
+For statistical clarity, `roll_sd()` and `roll_var()` do not provide a `na.rm` argument.
 
 ### Predictable Return Length
 
