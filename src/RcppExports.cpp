@@ -161,6 +161,17 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// roll_nowcast_cpp
+Rcpp::NumericVector roll_nowcast_cpp(Rcpp::NumericVector x);
+RcppExport SEXP _MazamaRollUtils_roll_nowcast_cpp(SEXP xSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type x(xSEXP);
+    rcpp_result_gen = Rcpp::wrap(roll_nowcast_cpp(x));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_MazamaRollUtils_roll_hampel_cpp", (DL_FUNC) &_MazamaRollUtils_roll_hampel_cpp, 5},
@@ -173,6 +184,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_MazamaRollUtils_roll_sd_cpp", (DL_FUNC) &_MazamaRollUtils_roll_sd_cpp, 5},
     {"_MazamaRollUtils_roll_sum_cpp", (DL_FUNC) &_MazamaRollUtils_roll_sum_cpp, 5},
     {"_MazamaRollUtils_roll_var_cpp", (DL_FUNC) &_MazamaRollUtils_roll_var_cpp, 5},
+    {"_MazamaRollUtils_roll_nowcast_cpp", (DL_FUNC) &_MazamaRollUtils_roll_nowcast_cpp, 1},
     {NULL, NULL, 0}
 };
 

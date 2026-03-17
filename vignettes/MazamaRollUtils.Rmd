@@ -74,6 +74,7 @@ Additional rolling functions with no equivalent in base R include:
 
 * `roll_MAD()` -- Median Absolute Deviation
 * `roll_hampel()` -- Hampel filter
+* `roll_nowcast()` -- US EPA NowCast
 
 Other functions wrap the rolling functions to provide enhanced 
 functionality. These are not required to return vectors of the same length as
@@ -98,6 +99,13 @@ The `roll_mean()` function also accepts:
 If `NULL`, unit weights are used.
 
 For statistical clarity, `roll_sd()` and `roll_var()` do not provide a `na.rm` argument.
+
+The `roll_nowcast()` function only accepts the `x` argument and is defined as having:
+
+* `width = 12`
+* `by = 1`
+* `align = "right"`
+* `na.rm = TRUE`
 
 ### Predictable Return Length
 

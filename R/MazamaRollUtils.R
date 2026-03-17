@@ -1,3 +1,53 @@
+#' Roll NowCast
+#'
+#' @description Apply the EPA NowCast algorithm to a numeric vector of hourly
+#' particulate matter measurements.
+#'
+#' @details
+#'
+#' The EPA NowCast is a weighted average designed to emphasize more recent
+#' hourly PM values while still using up to the previous 12 hours of data.
+#' The weighting depends on how much concentrations vary within the window:
+#' rapidly changing conditions place more weight on the most recent hours,
+#' while stable conditions allow older hours to contribute more evenly.
+#'
+#' For every index in the incoming vector x, a value is returned that is the
+#' NowCast associated with that hour.
+#'
+#' This calculation is always right-aligned:
+#'
+#' \itemize{
+#'   \item{`[-----------*]` where `*` marks the hour receiving the NowCast value.}
+#' }
+#'
+#' Early values use all available data back to the beginning of the series,
+#' so the first 11 positions may be calculated from fewer than 12 hours.
+#'
+#' Missing values are allowed, but at least 2 valid values must be present in
+#' the most recent 3 hours or the result for that index will be `NA`.
+#'
+#' Returned values are rounded to one decimal place.
+#'
+#' @param x Numeric vector of hourly PM measurements.
+#'
+#' @return Numeric vector of the same length as `x`.
+#'
+#' @examples
+#' x <- c(10, 12, 11, 13, 15, 18, 20, 25, 30, 28, 26, 24, 22)
+#' roll_nowcast(x)
+#'
+#' @export
+roll_nowcast <- function(x) {
+
+  if (!is.numeric(x)) {
+    stop("'x' must be a numeric vector.")
+  }
+
+  result <- .roll_nowcast_cpp(as.numeric(x))
+
+  return(result)
+}
+
 #' Roll Hampel
 #'
 #' @description Apply a moving-window Hampel function to a numeric vector.

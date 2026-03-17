@@ -44,7 +44,7 @@ install.packages('MazamaRollUtils')
 Install the latest version from GitHub with:
 
 ```
-devtools::install_github("MazamaScience/MazamaRollUtils")
+remotes::install_github("MazamaScience/MazamaRollUtils")
 ```
 
 ## Examples

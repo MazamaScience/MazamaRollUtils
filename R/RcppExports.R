@@ -41,3 +41,7 @@
     .Call(`_MazamaRollUtils_roll_var_cpp`, x, width, by, align, na_rm)
 }
 
+.roll_nowcast_cpp <- function(x) {
+    .Call(`_MazamaRollUtils_roll_nowcast_cpp`, x)
+}
+

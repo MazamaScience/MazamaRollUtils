@@ -7,6 +7,7 @@ export(findOutliers)
 export(roll_hampel)
 
 # Rolling statistics
+export(roll_nowcast)
 export(roll_MAD)
 export(roll_max)
 export(roll_mean)

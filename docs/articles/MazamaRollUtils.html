@@ -12,14 +12,13 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script><meta property="og:title" content="Introduction to MazamaRollUtils">
-<meta property="og:description" content="MazamaRollUtils">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
-    
+
 
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -33,7 +32,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MazamaRollUtils</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.0</span>
       </span>
     </div>
 
@@ -53,7 +52,7 @@
 <li>
   <a href="https://github.com/MazamaScience/MazamaRollUtils/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
-     
+
   </a>
 </li>
       </ul>
@@ -64,7 +63,7 @@
 </div>
 <!--/.navbar -->
 
-      
+
 
       </header><div class="row">
   <div class="col-md-9 contents">
@@ -73,7 +72,6 @@
                         <h4 data-toc-skip class="author">Jonathan
 Callahan, Mazama Science</h4>
             
-            <h4 data-toc-skip class="date">September 22, 2021</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/MazamaScience/MazamaRollUtils/blob/HEAD/vignettes/MazamaRollUtils.Rmd" class="external-link"><code>vignettes/MazamaRollUtils.Rmd</code></a></small>
       <div class="hidden name"><code>MazamaRollUtils.Rmd</code></div>
@@ -85,16 +83,15 @@ Callahan, Mazama Science</h4>
 <div class="section level2">
 <h2 id="background">Background<a class="anchor" aria-label="anchor" href="#background"></a>
 </h2>
-<p>Analysis of time series data often involves applying “rolling”
-functions to calculate, <em>e.g.</em> a “moving average”. These
-functions are straightforward to write in any language and it makes
-sense to have C++ versions of common rolling functions available to R as
-they dramatically speed up calculations. Several packages exist that
-provide some version of this functionality:</p>
+<p>Time series analysis often uses rolling calculations such as moving
+averages. These functions are straightforward to write in any language
+and it makes sense to have C++ versions of common rolling functions
+available to R as they dramatically speed up calculations. Several
+packages exist that provide some version of this functionality:</p>
 <ul>
 <li>
-<a href="https://cran.r-project.org/package=zoo" class="external-link">zoo</a> – core R
-package with a specific data model</li>
+<a href="https://cran.r-project.org/package=zoo" class="external-link">zoo</a> – widely
+used package for ordered observations and rolling calculations</li>
 <li>
 <a href="https://cran.r-project.org/package=seismicRoll" class="external-link">seismicRoll</a> –
 rolling functions focused on seismology</li>
@@ -115,7 +112,7 @@ of data analysts at any level of R expertise.</p>
 <p>Install from CRAN with:</p>
 <pre><code><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">'MazamaRollUtils'</span><span class="op">)</span></span></code></pre>
 <p>Install the latest version from GitHub with:</p>
-<pre><code><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"MazamaScience/MazamaRollUtils"</span><span class="op">)</span></span></code></pre>
+<pre><code><span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"MazamaScience/MazamaRollUtils"</span><span class="op">)</span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 id="features">Features<a class="anchor" aria-label="anchor" href="#features"></a>
@@ -144,6 +141,8 @@ include:</p>
 <code><a href="../reference/roll_MAD.html">roll_MAD()</a></code> – Median Absolute Deviation</li>
 <li>
 <code><a href="../reference/roll_hampel.html">roll_hampel()</a></code> – Hampel filter</li>
+<li>
+<code><a href="../reference/roll_nowcast.html">roll_nowcast()</a></code> – US EPA NowCast</li>
 </ul>
 <p>Other functions wrap the rolling functions to provide enhanced
 functionality. These are not required to return vectors of the same
@@ -166,11 +165,14 @@ where appropriate:</p>
 <code>width</code> – Integer width of the rolling window.</li>
 <li>
 <code>by</code> – Integer shift to use when sliding the window to
-the next location align Character position of the return value within
+the next location</li>
+<li>
+<code>align</code> – Character position of the return value within
 the window. One of: <code>"left" | "center" | "right"</code>.</li>
 <li>
-<code>na.rm</code> – Logical specifying whether values should be
-removed before the calculations within each window.</li>
+<code>na.rm</code> – Logical specifying whether <code>NA</code>
+values should be removed before the calculations within each
+window.</li>
 </ul>
 <p>The <code><a href="../reference/roll_mean.html">roll_mean()</a></code> function also accepts:</p>
 <ul>
@@ -178,6 +180,17 @@ removed before the calculations within each window.</li>
 <code>weights</code> – Numeric vector of size <code>width</code>
 specifying each window index weight. If <code>NULL</code>, unit weights
 are used.</li>
+</ul>
+<p>For statistical clarity, <code><a href="../reference/roll_sd.html">roll_sd()</a></code> and
+<code><a href="../reference/roll_var.html">roll_var()</a></code> do not provide a <code>na.rm</code>
+argument.</p>
+<p>The <code><a href="../reference/roll_nowcast.html">roll_nowcast()</a></code> function only accepts the
+<code>x</code> argument and is defined as having:</p>
+<ul>
+<li><code>width = 12</code></li>
+<li><code>by = 1</code></li>
+<li><code>align = "right"</code></li>
+<li><code>na.rm = TRUE</code></li>
 </ul>
 </div>
 <div class="section level3">
@@ -213,7 +226,7 @@ data but suffices to demonstrate usage of package functions.</p>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">t</span>, <span class="va">x</span>, pch <span class="op">=</span> <span class="fl">16</span>, cex <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/lines.html" class="external-link">lines</a></span><span class="op">(</span><span class="va">t</span>, <span class="fu"><a href="../reference/roll_mean.html">roll_mean</a></span><span class="op">(</span><span class="va">x</span>, width <span class="op">=</span> <span class="fl">24</span><span class="op">)</span>, col <span class="op">=</span> <span class="st">'red'</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/title.html" class="external-link">title</a></span><span class="op">(</span><span class="st">"24-hour Rolling Mean"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="MazamaRollUtils_files/figure-html/example_1-1.png" width="672"></p>
+<p><img src="MazamaRollUtils_files/figure-html/example_1-1.png" class="r-plt" width="672"></p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/layout.html" class="external-link">layout</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span></code></pre></div>
 </div>
@@ -250,7 +263,7 @@ indices.</p>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">t</span>, <span class="va">max_daily_hour</span>, col <span class="op">=</span> <span class="st">'red'</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">t</span>, <span class="va">x</span>, pch <span class="op">=</span> <span class="fl">16</span>, cex <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/title.html" class="external-link">title</a></span><span class="op">(</span><span class="st">"Hourly Daily Max"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="MazamaRollUtils_files/figure-html/example_2-1.png" width="672"></p>
+<p><img src="MazamaRollUtils_files/figure-html/example_2-1.png" class="r-plt" width="672"></p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/layout.html" class="external-link">layout</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span></code></pre></div>
 </div>
@@ -281,16 +294,14 @@ function to be applied to our data.</p>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">t</span>, <span class="va">x</span>, pch <span class="op">=</span> <span class="fl">16</span>, cex <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/lines.html" class="external-link">lines</a></span><span class="op">(</span><span class="va">t</span>, <span class="va">EMA</span>, col <span class="op">=</span> <span class="st">'red'</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/title.html" class="external-link">title</a></span><span class="op">(</span><span class="st">"9-Element Exponential Moving Average"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="MazamaRollUtils_files/figure-html/example_3-1.png" width="672"></p>
+<p><img src="MazamaRollUtils_files/figure-html/example_3-1.png" class="r-plt" width="672"></p>
 </div>
 </div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
 
-        <nav id="toc" data-toggle="toc"><h2 data-toc-skip>Contents</h2>
-    </nav>
-</div>
+      </div>
 
 </div>
 
@@ -303,16 +314,16 @@ function to be applied to our data.</p>
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
       </footer>
 </div>
 
-  
 
 
-  
+
+
 
   </body>
 </html>
